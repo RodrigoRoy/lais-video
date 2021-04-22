@@ -32,6 +32,11 @@
         Control de la descripción
         <v-icon>mdi-account-details</v-icon>
       </v-tab>
+
+      <v-tab href="#adicional">
+        Adicional
+        <v-icon>mdi-view-grid-plus</v-icon>
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -93,7 +98,7 @@
 
             <v-text-field label="Número de casetes"></v-text-field>
 
-            <v-select :items="['Color', 'Blanco y negro', 'Color y B/N']" label="Color"></v-select>
+            <v-select :items="['Color', 'Blanco y negro']" label="Color"></v-select>
 
             <v-select :items="['Dolby', 'Dolby Digital', 'Estéreo', 'Estéreo mezclado', 'Monoaural']" label="Audio"></v-select>
 
@@ -148,6 +153,16 @@
               </template>
               <v-date-picker v-model="video.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false"></v-date-picker>
             </v-menu>
+          </v-form>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item value="adicional" >
+        <v-card flat>
+          <v-form>
+            <v-file-input show-size counter chips accept="video/*" prepend-icon="mdi-camera" label="Registro audiovisual"></v-file-input>
+            <v-file-input show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
+            <v-file-input show-size counter chips accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación"></v-file-input>
           </v-form>
         </v-card>
       </v-tab-item>

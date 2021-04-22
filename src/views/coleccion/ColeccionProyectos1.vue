@@ -244,13 +244,13 @@ export default {
         {
           identificacion: {
             codigoReferencia: 'MXIM-AV-2-7-1',
-            titulo: 'Registros en campo'
+            titulo: 'Registros de campo'
           }
         },
         {
           identificacion: {
             codigoReferencia: 'MXIM-AV-2-7-2',
-            titulo: 'Entrevista'
+            titulo: 'Entrevistas'
           }
         },
         {

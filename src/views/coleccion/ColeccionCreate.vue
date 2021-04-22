@@ -32,6 +32,11 @@
         Control de la descripción
         <v-icon>mdi-account-details</v-icon>
       </v-tab>
+
+      <v-tab href="#adicional">
+        Adicional
+        <v-icon>mdi-view-grid-plus</v-icon>
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -40,7 +45,7 @@
           <v-form>
             <v-text-field label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" required></v-text-field>
 
-            <v-text-field label="Título del registro" hint="Título de la unidad de descripción"></v-text-field>
+            <v-text-field label="Título" hint="Título de la unidad de descripción"></v-text-field>
 
             <!-- <v-text-field label="País" hint="País o países de producción del registro en video"></v-text-field> -->
             <v-autocomplete :items="paises" item-text="nombre" label="País" hint="País o países de producción del registro en video"></v-autocomplete>
@@ -130,6 +135,15 @@
               </template>
               <v-date-picker v-model="coleccion.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false"></v-date-picker>
             </v-menu>
+          </v-form>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item value="adicional" >
+        <v-card flat>
+          <v-form>
+            <v-file-input show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
+            <v-textarea label="Presentación" hint="" auto-grow rows="5" row-height="25" ></v-textarea>
           </v-form>
         </v-card>
       </v-tab-item>

@@ -14,7 +14,7 @@ import ColeccionView from './views/coleccion/ColeccionView.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
-// import Busqueda from './views/Busqueda.vue'
+import Busqueda from './views/Busqueda.vue'
 import * as auth from './services/AuthService'
 
 Vue.use(Router)
@@ -127,6 +127,7 @@ const routes = new Router({
     {
       path: '/search',
       name: 'search',
+      component: Busqueda
     },
     {
       path: '/register',

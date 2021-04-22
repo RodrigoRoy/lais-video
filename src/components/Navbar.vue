@@ -1,12 +1,14 @@
 <template>
   <header>
-    <v-app-bar app absolute dark scroll-target="#app-container" color="primary" :hide-on-scroll="true">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="headline">
+    <v-app-bar app absolute dark scroll-target="#app-container" color="#5c6bc088" :hide-on-scroll="true"> <!-- color="primary" -->
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+      <a href="https://www.institutomora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/moraEscalado.png')" height="40"/></a>
+      <a href="http://lais.mora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/lais_logo.png')" height="40"/></a>
+      <!-- <v-toolbar-title class="headline">
         Registros en video
-      </v-toolbar-title>
+      </v-toolbar-title> -->
       <v-spacer></v-spacer>
-      <v-btn text v-if="!$store.state.isLoggedIn">
+      <!-- <v-btn text v-if="!$store.state.isLoggedIn">
         <router-link to="/registrar" class="nav-link" exact>Registrar</router-link>
       </v-btn>
       <v-btn text v-if="!$store.state.isLoggedIn">
@@ -14,7 +16,53 @@
       </v-btn>
       <v-btn text v-if="$store.state.isLoggedIn">
         <a v-on:click.prevent="logout()" class="nav-link" href="#">Salir</a>
+      </v-btn> -->
+
+
+      Inicio
+      <v-btn icon>
+        <router-link to="/" exact><v-icon>mdi-home</v-icon></router-link>
       </v-btn>
+      Acerca de
+      <v-btn icon>
+        <router-link to="/" exact><v-icon>mdi-information</v-icon></router-link>
+      </v-btn>
+      Colección
+      <v-btn icon>
+        <router-link to="/coleccion" exact><v-icon>mdi-apps</v-icon></router-link>
+      </v-btn>
+
+      <v-text-field hide-details placeholder="Buscar" single-line dense filled rounded class="shrink"></v-text-field>
+      <v-btn icon>
+        <router-link to="/search" exact><v-icon>mdi-magnify</v-icon></router-link>
+      </v-btn>
+
+      <v-menu bottom left >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon color="yellow" v-bind="attrs" v-on="on" >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-if="!$store.state.isLoggedIn">
+            <v-list-item-title>
+              <router-link to="/registrar" class="nav-link" exact>Registrar</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="!$store.state.isLoggedIn">
+            <v-list-item-title>
+              <router-link to="/login" class="nav-link" exact>Entrar</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="$store.state.isLoggedIn">
+            <v-list-item-title>
+              <a v-on:click.prevent="logout()" class="nav-link" href="#">Salir</a>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>

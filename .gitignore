@@ -2,6 +2,7 @@
 node_modules
 /dist
 /prod-server
+/src/files
 
 # local env files
 *.env

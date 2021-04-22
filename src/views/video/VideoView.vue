@@ -250,19 +250,22 @@
             </v-col>
             <v-col xs="12" sm="12" md="4">
               <p class="font-weight-bold">
-                Portada
+                <v-icon left>mdi-image</v-icon>Portada
               </p>
               <p>
-                <v-img :src="require('@/assets/videopreview.png')" height="150px"></v-img>
+                <v-img :src="require('@/assets/videopreview2.png')" height="220px"  contain></v-img>
               </p>
               <p class="font-weight-bold">
-                Video
+                <v-icon left>mdi-video</v-icon>Video
               </p>
               <p>
-                <video width="100%" height="250px" controls>
-                  <source :src="require('@/assets/videoplayback.mp4')" type="video/mp4">
+                <video width="100%" height="240px" controls>
+                  <source :src="require('@/assets/videoplayback2.mp4')" type="video/mp4">
                   Tu navegador web no soporta la reproducción de video
                 </video>
+              </p>
+              <p>
+                <a href="Calificacion_preview.pdf" target="_blank"><v-icon left>mdi-file-document</v-icon>Documento de calificación</a>
               </p>
             </v-col>
           </v-row>
