@@ -3,22 +3,25 @@ import mongoose from 'mongoose';
 const coleccionSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: String,
-    titulo: String,
     // pais: [String], // INFERIDO
     fecha: Date,
-    proyectoInvestigacion: String,
+    nivelDescripcion: {type: String, enum: ['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']},
+    titulo: String,
+    proyectoInvestigacion: String, // Sólo para proyectos
     investigacion: String,
     coordinacionProyecto: String,
+    coordinacionAudiovisual: String,
   },
   contexto: {
     historiaInstitucional: String,
+    historiaArchivistica: String,
     semblanzaBiografica: String,
   },
   contenidoEstructura: {
     alcanceContenido: String,
     valoracionSeleccionEliminacion: String,
     nuevosIngresos: String,
-    organizacion: String,
+    organizacion: String, // No es necesaria??
   },
   accesoUso: {
     condicionesAcceso: {type: String, enum: ['Usos reservados para consulta in situ', 'Usos no lucrativos', 'Usos lucrativos']},
@@ -34,7 +37,7 @@ const coleccionSchema = new mongoose.Schema({
   },
   adicional: {
     imagen: String,
-    // presentacion: String,
+    presentacion: String,
   }
 },{
   collection: 'conjuntoDocumental',

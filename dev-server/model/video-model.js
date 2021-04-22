@@ -11,11 +11,14 @@ const videoSchema = new mongoose.Schema({
     personasEntrevistadas: [String],
     entrevistador: String,
     camara: String,
+    iluminacion: String,
+    asistente: String,
+    sonido: String,
     asistente: String,
   },
   contenidoEstructura: {
     descripcionGeneral: String,
-    estructuraFormal: String,
+    estructuraFormal: {type: String, enum: ['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Registro de material']},
     descriptorOnomastico: String,
     descriptorToponimico: String,
   },
@@ -40,7 +43,7 @@ const videoSchema = new mongoose.Schema({
   },
   controlDescripcion: {
     nombreArchivero: String, //[{type: Schema.Types.ObjectId, ref: 'Usuario'}]
-    notaArchivero: String,
+    // notaArchivero: String,
     fechaDescripcion: new Date().toISOString().substr(0, 10),
     fechaActualizacion: new Date().toISOString().substr(0, 10),
   },
