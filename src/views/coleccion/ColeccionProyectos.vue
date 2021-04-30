@@ -34,7 +34,7 @@
             <v-toolbar-title>{{ coleccion.identificacion.titulo }}</v-toolbar-title>
           </v-toolbar>
           <v-row>
-            <v-col xs="12" sm="12" md="8">
+            <v-col xs="12" sm="12" md="7">
               <v-tabs vertical>
                 <v-tab>
                   <v-icon left>mdi-film</v-icon>
@@ -196,17 +196,28 @@
                 </v-tab-item>
               </v-tabs>
             </v-col>
-            <v-col xs="12" sm="12" md="4">
+            <v-col xs="12" sm="12" md="5">
               <p>
                 <v-img :src="require('@/assets/Foto_Acervo1.png')" height="220px"  contain></v-img>
               </p>
               <!-- Presentación -->
-              <p>
+              <vue-markdown breaks linkify html typographer>
+                **Lorem ipsum dolor sit amet**
+
+                Lorem ipsum dolor sit amet, _consectetur adipiscing elit_. Sed quis eleifend mi. Vestibulum id ex sit amet felis finibus tristique eu eu purus. Donec varius neque velit, sit amet tincidunt orci ullamcorper et. Ut ut eros cursus, auctor risus congue, convallis nulla. In laoreet in nisl sit amet pretium. In vehicula ipsum vel mauris pellentesque tincidunt. Proin eu bibendum enim. Praesent sit amet consequat orci.
+
+
+                Cras lobortis pharetra purus, vitae feugiat turpis iaculis sit amet. Fusce euismod justo ut lacus imperdiet vulputate. Donec viverra quam vel urna varius, ac euismod leo fringilla. Phasellus sed arcu id diam blandit cursus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Cras aliquet consectetur enim, eget feugiat dolor ornare eu. Ut posuere maximus augue vel euismod.
+
+
+                https://www.npmjs.com/package/vue-markdown
+              </vue-markdown>
+              <!-- <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis eleifend mi. Vestibulum id ex sit amet felis finibus tristique eu eu purus. Donec varius neque velit, sit amet tincidunt orci ullamcorper et. Ut ut eros cursus, auctor risus congue, convallis nulla. In laoreet in nisl sit amet pretium. In vehicula ipsum vel mauris pellentesque tincidunt. Proin eu bibendum enim. Praesent sit amet consequat orci.
               </p>
               <p>
                 Cras lobortis pharetra purus, vitae feugiat turpis iaculis sit amet. Fusce euismod justo ut lacus imperdiet vulputate. Donec viverra quam vel urna varius, ac euismod leo fringilla. Phasellus sed arcu id diam blandit cursus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Cras aliquet consectetur enim, eget feugiat dolor ornare eu. Ut posuere maximus augue vel euismod.
-              </p>
+              </p> -->
             </v-col>
           </v-row>
         </v-card-text>
@@ -220,6 +231,8 @@
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
+
 export default {
   data () {
     return {
@@ -428,6 +441,9 @@ export default {
     goTo: function(){
       this.$router.push({name: 'coleccion-projects1'});
     },
+  },
+  components: {
+    VueMarkdown
   }
 }
 </script>

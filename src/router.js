@@ -120,6 +120,11 @@ const routes = new Router({
       component: ColeccionProyectos
     },
     {
+      path: '/proyectos',
+      name: 'projects',
+      component: ColeccionProyectos
+    },
+    {
       path: '/coleccion',
       name: 'coleccion-view',
       component: ColeccionView
