@@ -142,6 +142,8 @@
 </template>
 
 <script>
+import * as coleccionService from '../../services/ColeccionService'
+
 export default {
   data () {
     return {
@@ -191,18 +193,24 @@ export default {
     }
   },
   methods: {
-    setSemblanza: function(){
-      console.log("blur semblanza");
-      console.log("investigacion: ", this.coleccion.identificacion.investigacion);
-      // const person = this.searchArray(this.coleccion.identificacion.investigacion, this.people);
-      const person = this.people.find(o => o.nombre === this.coleccion.identificacion.investigacion);
-      console.log("persona: ", person);
-      this.coleccion.contexto.semblanzaBiografica = person.semblanza;
-      console.log("semblanza: ", this.coleccion.contexto.semblanzaBiografica);
-    },
-    onSubmit: function(){
-      console.log("Enviar formulario...");
-      console.log(this.coleccion);
+    // setSemblanza: function(){
+    //   console.log("blur semblanza");
+    //   console.log("investigacion: ", this.coleccion.identificacion.investigacion);
+    //   // const person = this.searchArray(this.coleccion.identificacion.investigacion, this.people);
+    //   const person = this.people.find(o => o.nombre === this.coleccion.identificacion.investigacion);
+    //   console.log("persona: ", person);
+    //   this.coleccion.contexto.semblanzaBiografica = person.semblanza;
+    //   console.log("semblanza: ", this.coleccion.contexto.semblanzaBiografica);
+    // },
+    onSubmit: async function(){
+      if(!this.$refs.videoForm.validate()) // Se activa validación del formulario
+        return;
+      const request = {
+        coleccion: this.coleccion
+      };
+      const newColeccion = await coleccionService.createColection(request);
+      console.log("Colección creadad en base de datos");
+      console.log(newColeccion.data.id);
     },
   }
 }
