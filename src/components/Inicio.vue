@@ -7,7 +7,7 @@
 
       <v-col cols="12">
         <h1 class="display-2 font-weight-bold mb-6">
-          Colección de Registros de Video del LAIS
+          Colección de Registros en Video del LAIS
         </h1>
 
         <!-- <h2 class="font-weight-bold mb-3">
@@ -19,7 +19,7 @@
         </p>
 
         <p class="mt-3">
-          <v-btn color="primary" elevation="6" large to="/coleccion">Ver colección</v-btn>
+          <v-btn color="primary" elevation="6" large to="/proyectos">Ver colección</v-btn>
         </p>
       </v-col>
 

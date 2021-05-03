@@ -25,11 +25,11 @@
       </v-btn>
       Acerca de
       <v-btn icon>
-        <router-link to="/" exact><v-icon>mdi-information</v-icon></router-link>
+        <router-link to="/acerca" exact><v-icon>mdi-information</v-icon></router-link>
       </v-btn>
       Colección
       <v-btn icon>
-        <router-link to="/coleccion" exact><v-icon>mdi-apps</v-icon></router-link>
+        <router-link to="/proyectos" exact><v-icon>mdi-apps</v-icon></router-link>
       </v-btn>
 
       <v-text-field hide-details placeholder="Buscar" single-line dense filled rounded class="shrink"></v-text-field>

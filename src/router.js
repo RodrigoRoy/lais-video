@@ -15,6 +15,7 @@ import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
 import Busqueda from './views/Busqueda.vue'
+import About from './views/About.vue'
 import * as auth from './services/AuthService'
 
 Vue.use(Router)
@@ -67,6 +68,11 @@ const routes = new Router({
           next('/login');
         }
       }
+    },
+    {
+      path: '/acerca',
+      name: 'acerca-de',
+      component: About
     },
     {
       path: '/video/nuevo',

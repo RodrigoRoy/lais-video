@@ -228,11 +228,11 @@
                         <br>
                         {{ coleccion.controlDescripcion.nombreArchivero }}
                       </p>
-                      <p>
+                      <!-- <p>
                         <span class="font-weight-bold">Nota del archivero</span>
                         <br>
                         {{ coleccion.controlDescripcion.notaArchivero }}
-                      </p>
+                      </p> -->
                       <p>
                         <span class="font-weight-bold">Fecha de descripción</span>
                         <br>
