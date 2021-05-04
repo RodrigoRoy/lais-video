@@ -141,7 +141,7 @@ const routes = new Router({
       component: Busqueda
     },
     {
-      path: '/register',
+      path: '/registrar',
       name: 'register',
       component: Register,
       beforeEnter: (to, from, next) => {

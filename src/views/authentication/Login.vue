@@ -1,42 +1,46 @@
 <template>
-  <div>
-    <h1>Login Route</h1>
-    <form class="custom-form" v-on:submit.prevent="onSubmit">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input v-model="username" type="text" class="form-control" id="username" placeholder="Username" />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-secondary">Login</button>
-      </div>
-    </form>
-  </div>
+  <v-form ref="formulario" v-model="valid" lazy-validation v-on:submit.prevent="onSubmit">
+    <v-text-field v-model="username" :rules="rules.username" label="Nombre de usuario" required ></v-text-field>
+    <v-text-field v-model="password" :rules="rules.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" label="Contraseña" required></v-text-field>
+
+    <v-btn type="submit" :disabled="!valid" color="primary" class="mr-4"> Entrar </v-btn>
+  </v-form>
 </template>
 
 <script>
-import * as auth from '../../services/AuthService'
+// import * as auth from '../../services/AuthService'
 
 export default{
   name: 'login',
   data: function(){
     return {
       username: '',
-      password: ''
+      password: '',
+      valid: true,
+      show1: false,
+      rules: {
+        username: [
+          value => !!value || 'El nombre de usuario es necesario',
+        ],
+        password: [
+          value => !!value || 'La contraseña es necesaria',
+        ],
+      }
     };
   },
   methods: {
     onSubmit: async function(/*event*/){
       // event.preventDefault(); // equivalent to use v-on:submit.prevent
+      if(!this.$refs.formulario.validate()) // Se activa validación del formulario
+        return;
       const user = {
         username: this.username,
         password: this.password
       };
-      await auth.login(user);
-      this.$router.push({name: 'home'});
+      // await auth.login(user);
+      // this.$router.push({name: 'home'});
+      console.log('Enviando formulario...');
+      console.log(user);
     }
   }
 }
