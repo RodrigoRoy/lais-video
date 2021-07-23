@@ -270,10 +270,10 @@ export default {
         {
           text: 'Proyectos',
           disabled: false,
-          href: '/coleccion/proyectos',
+          href: '/proyectos',
         },
         {
-          text: 'Km C-62 Un nómada del riel (2000)',
+          text: 'Ejemplo Proyecto',
           disabled: false,
           href: '/coleccion/proyectos/1',
         },

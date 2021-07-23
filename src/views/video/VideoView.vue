@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 class="text-h3 text-center">Nombre de la colección</h2>
+    <h2 class="text-h3 text-center">Entrevista controlada (ejemplo)</h2>
     <v-breadcrumbs :items="items" class="justify-center"></v-breadcrumbs>
 
     <v-row no-gutters align="center" justify="center">
@@ -250,13 +250,13 @@
             </v-col>
             <v-col xs="12" sm="12" md="4">
               <p class="font-weight-bold">
-                <v-icon left>mdi-image</v-icon>Portada
-              </p>
+                <v-icon left>mdi-image</v-icon>Imagen
+              </p>>
               <p>
                 <v-img :src="require('@/assets/videopreview2.png')" height="220px"  contain></v-img>
               </p>
               <p class="font-weight-bold">
-                <v-icon left>mdi-video</v-icon>Video
+                <v-icon left>mdi-video</v-icon>Fragmento del registro
               </p>
               <p>
                 <video width="100%" height="240px" controls>
@@ -330,24 +330,24 @@ export default {
       },
       items: [
         {
-          text: 'Grupo',
+          text: 'Proyectos',
           disabled: false,
-          href: 'coleccion',
+          href: 'proyectos',
         },
         {
-          text: 'Subgrupo 1',
+          text: 'Ejemplo Proyecto',
           disabled: false,
-          href: 'coleccion',
+          href: 'coleccion/proyectos/1',
         },
         {
-          text: 'Subgrupo 2',
+          text: 'Entrevista',
           disabled: false,
-          href: 'coleccion',
+          href: 'coleccion/proyectos/2',
         },
         {
-          text: 'Subgrupo 3',
+          text: 'Entrevista controlada',
           disabled: true,
-          href: 'coleccion',
+          href: 'video',
         }
       ],
       dialog: false,

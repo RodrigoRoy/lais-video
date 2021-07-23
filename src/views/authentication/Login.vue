@@ -33,14 +33,14 @@ export default{
       // event.preventDefault(); // equivalent to use v-on:submit.prevent
       if(!this.$refs.formulario.validate()) // Se activa validación del formulario
         return;
-      const user = {
-        username: this.username,
-        password: this.password
-      };
+      // const user = {
+      //   username: this.username,
+      //   password: this.password
+      // };
       // await auth.login(user);
       // this.$router.push({name: 'home'});
-      console.log('Enviando formulario...');
-      console.log(user);
+      // console.log('Enviando formulario...');
+      // console.log(user);
     }
   }
 }

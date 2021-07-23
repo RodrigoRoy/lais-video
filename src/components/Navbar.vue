@@ -1,7 +1,7 @@
 <template>
   <header>
     <v-app-bar app absolute dark scroll-target="#app-container" color="#5c6bc088" :hide-on-scroll="true"> <!-- color="primary" -->
-      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <a href="https://www.institutomora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/moraEscalado.png')" height="40"/></a>
       <a href="http://lais.mora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/lais_logo.png')" height="40"/></a>
       <!-- <v-toolbar-title class="headline">
@@ -69,7 +69,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
-            Registros en video
+            Accesos directos
           </v-list-item-title>
           <v-list-item-subtitle>
             {{this.$store.state.username ? this.$store.state.username : ''}}
@@ -97,7 +97,7 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link to="/video" exact>Ver registro</router-link>
+              <router-link to="/video" exact>Unidad documental</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -108,7 +108,7 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link to="/coleccion" exact>Ver colección</router-link>
+              <router-link to="/proyectos" exact>Proyectos</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -119,7 +119,7 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link to="/video/nuevo" exact>Nuevo registro</router-link>
+              <router-link to="/video/nuevo" exact>Formulario unidad documental</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -130,7 +130,7 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link to="/coleccion/nuevo" exact>Nueva colección</router-link>
+              <router-link to="/coleccion/nuevo" exact>Formulario conjunto documental</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>

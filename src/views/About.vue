@@ -26,23 +26,24 @@
             <v-tab-item value="tab-1">
               <v-card flat>
                 <v-card-text>
-                  <h1>
+                  <h1 class="text-h3 font-weight-bold my-4">
                     Acerca del sitio
                   </h1>
-                  <p>
-                    Nam sagittis nisi at elementum dapibus. Proin et lacinia nulla. In efficitur eros id mauris malesuada molestie. Ut eros purus, euismod scelerisque aliquet sit amet, interdum faucibus tellus. Sed est augue, volutpat ac ex nec, dignissim commodo tortor. Pellentesque ut eleifend massa. Vivamus sagittis eleifend magna sed varius. Aliquam semper pellentesque metus non gravida. Donec interdum mattis justo, vel tempus dolor vehicula a. Etiam sed risus eu ex aliquet cursus.
+                  <p class="text-body-1">
+                    El acervo audiovisual del Laboratorio Audiovisual de Investigación Social alberga tres colecciones que corresponden a los documentales reunidos de forma continua desde 1994, los registros audiovisuales propios en el marco de diversos proyectos de investigación del Laboratorio y los materiales audiovisuales recopilados de diferente procedencia institucional y particular.
                   </p>
-                  <!-- <p>
-                    Duis rhoncus tortor quis sagittis blandit. Donec luctus sit amet massa sed congue. Vestibulum vitae lectus mattis, gravida nibh vel, lobortis mauris. Proin porta magna pellentesque, rutrum nisl et, fermentum felis. Curabitur orci quam, rhoncus at consectetur non, rutrum eget sapien. Sed posuere interdum pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec accumsan leo a ligula placerat pulvinar. Suspendisse lacus felis, eleifend a lacus eu, finibus gravida dolor. Proin et porttitor ante. In semper egestas ullamcorper.
-                  </p> -->
-                  <h1>
+                  <p class="text-body-1">
+                    Varios de estos títulos, registros y materiales, pueden ser útiles para otras investigaciones y sobre todo impulsar más estudios sobre lo audiovisual, de ahí el propósito central de poner en acceso su documentación y facilitar el camino para indagar con ellos y sobre ellos.
+                  </p>
+
+                  <h1 class="text-h3 font-weight-bold mt-8 mb-4">
                     La colección de registros en video
                   </h1>
-                  <p>
-                    Nam sagittis nisi at elementum dapibus. Proin et lacinia nulla. In efficitur eros id mauris malesuada molestie. Ut eros purus, euismod scelerisque aliquet sit amet, interdum faucibus tellus. Sed est augue, volutpat ac ex nec, dignissim commodo tortor. Pellentesque ut eleifend massa. Vivamus sagittis eleifend magna sed varius. Aliquam semper pellentesque metus non gravida. Donec interdum mattis justo, vel tempus dolor vehicula a. Etiam sed risus eu ex aliquet cursus.
+                  <p class="text-body-1">
+                    Esta colección se integra a partir de los registros audiovisuales en video que las/os integrantes del LAIS han realizado desde 1993 para varios proyectos de investigación. Inician en 1993 los registros en video, con la, con la primera producción del Instituto: Un Pueblo en la Memoria (Roca, 1994).
                   </p>
-                  <p>
-                    Duis rhoncus tortor quis sagittis blandit. Donec luctus sit amet massa sed congue. Vestibulum vitae lectus mattis, gravida nibh vel, lobortis mauris. Proin porta magna pellentesque, rutrum nisl et, fermentum felis. Curabitur orci quam, rhoncus at consectetur non, rutrum eget sapien. Sed posuere interdum pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec accumsan leo a ligula placerat pulvinar. Suspendisse lacus felis, eleifend a lacus eu, finibus gravida dolor. Proin et porttitor ante. In semper egestas ullamcorper.
+                  <p class="text-body-1">
+                    Estos proyectos de investigación han sido realizados por diversos equipos de trabajo, siempre con la participación de algún integrante del LAIS. Ya fuera que implicaran la realización de un documental o una exposición, o bien la construcción de fuentes visuales y audiovisuales para la investigación, estos proyectos implicaron registros fotográficos y audiovisuales que fueron conformando esta colección con el tiempo, que integra sobre todo registros de entrevistas, registros en campo y también algunas reproducciones digitales de material gráfico.
                   </p>
                   <p class="text-center">
                     <img class="mr-5" :src="require('../assets/moraEscalado.png')" height="70"/>

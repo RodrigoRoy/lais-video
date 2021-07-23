@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="pa-6">
     <v-form ref="videoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
       <v-tabs v-model="tab" centered icons-and-text >
         <v-tabs-slider></v-tabs-slider>
@@ -43,26 +43,24 @@
       <v-tabs-items v-model="tab">
         <v-tab-item value="identificacion" >
           <v-card flat>
-            <v-text-field v-model="video.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" required></v-text-field>
-
-            <v-text-field v-model="video.identificacion.titulo" label="Título del registro" hint="Título de la unidad de descripción"></v-text-field>
+            <v-text-field v-model="video.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" :rules="rules.codigoReferencia" required></v-text-field>
 
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
                 <v-text-field v-model="video.identificacion.fecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
-              <v-date-picker v-model="video.identificacion.fecha" @input="menuCalendar1 = false"></v-date-picker>
+              <v-date-picker v-model="video.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months type="month"></v-date-picker>
             </v-menu>
 
             <v-text-field v-model="video.identificacion.lugar" label="Lugar" hint="Nombre de los lugares, partiendo de lo general a lo particular"></v-text-field>
 
             <v-text-field v-model="video.identificacion.pais" label="País" hint="País o países de producción del registro en video"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.duracion" label="Duración" hint="Duración de la obra en formato horas, minutos, segundos. Ejemplo: 01:24:37"></v-text-field>
+            <v-text-field v-model="video.identificacion.duracion" label="Duración" hint="Duración de la obra en formato horas, minutos, segundos. Ejemplo: 01:24:37" :rules="rules.duracion"></v-text-field>
 
             <v-text-field v-model="video.identificacion.personasEntrevistadas" label="Personas entrevistadas" hint="Persona de la cual se registra su testimonio"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.entrevistador" label="Entrevistador(a)" hint="Persona encargada de realizar la entrevista"></v-text-field>
+            <v-text-field v-model="video.identificacion.entrevistador" label="Entrevistador/a" hint="Persona encargada de realizar la entrevista"></v-text-field>
 
             <v-text-field v-model="video.identificacion.camara" label="Cámara" hint="Persona encargada de operar la cámara de video"></v-text-field>
 
@@ -70,7 +68,7 @@
 
             <v-text-field v-model="video.identificacion.sonido" label="Sonido" hint="Persona encargada de la colocación de los micrófonos y grabación de sonido"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.asistente" label="Asistente(s)" hint="Persona encargada de apoyar en diversas labores técnicas"></v-text-field>
+            <v-text-field v-model="video.identificacion.asistente" label="Asistente/s" hint="Persona encargada de apoyar en diversas labores técnicas"></v-text-field>
           </v-card>
         </v-tab-item>
 
@@ -78,7 +76,7 @@
           <v-card flat>
             <v-textarea v-model="video.contenidoEstructura.descripcionGeneral" label="Descripción general" hint="Contenido del material. Se describen los lugares y/o acciones registradas, según tipos de plano, emplazamientos y movimientos" auto-grow rows="3" row-height="25" ></v-textarea>
 
-            <v-select v-model="video.contenidoEstructura.estructuraFormal" :items="['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Registro de material']" label="Estructura formal"></v-select>
+            <v-select v-model="video.contenidoEstructura.estructuraFormal" :items="['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Reproducción de material']" label="Estructura formal"></v-select>
 
             <v-text-field v-model="video.contenidoEstructura.descriptorOnomastico" label="Descriptor onomástico" hint="Nombres de las personas (nombre y apellido) que aparecen el registro"></v-text-field>
 
@@ -128,7 +126,7 @@
           <v-card flat>
             <!-- <v-textarea v-model="video.controlDescripcion.notaArchivero" label="Nota del archivero" hint="Fuentes usadas para complementar la información de la ficha (producción original, sitios web, publicaciones, etc.)" auto-grow rows="3" row-height="25" ></v-textarea> -->
 
-            <v-text-field v-model="video.controlDescripcion.nombreArchivero" label="Nombre del archivero" hint="Nombre de quien elaboró la ficha de la unidad"></v-text-field>
+            <v-text-field v-model="video.controlDescripcion.nombreArchivero" label="Nombre de archivera/o" hint="Nombre de quien elaboró la ficha de la unidad"></v-text-field>
 
             <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
@@ -148,16 +146,16 @@
 
         <v-tab-item value="adicional" >
           <v-card flat>
-            <v-file-input v-model="video.adicional.imagen" show-size counter chips accept="video/*" prepend-icon="mdi-camera" label="Registro audiovisual"></v-file-input>
-            <v-file-input v-model="video.adicional.video" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
-            <v-file-input v-model="video.adicional.calificacion" show-size counter chips accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación"></v-file-input>
+            <v-file-input v-model="video.adicional.imagen" show-size counter chips accept="video/*" prepend-icon="mdi-camera" label="Fragmento de registro audiovisual"></v-file-input>
+            <v-file-input v-model="video.adicional.video" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Imagen"></v-file-input>
+            <v-file-input v-model="video.adicional.calificacion" show-size counter chips accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación del registro"></v-file-input>
           </v-card>
         </v-tab-item>
       </v-tabs-items>
 
-      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>Registrar</v-btn>
+      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large @click="validate">Registrar</v-btn>
     </v-form>
-    <pre>{{ video }}</pre>
+    <!-- <pre>{{ video }}</pre> -->
   </v-card>
 </template>
 
@@ -165,7 +163,6 @@
 export default {
   data () {
     return {
-      validForm: true,
       video: {
         identificacion: {
           fecha: new Date().toISOString().substr(0, 10),
@@ -187,12 +184,27 @@ export default {
       menuCalendar2: false,
       menuCalendar3: false,
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      validForm: true,
+      rules: {
+        codigoReferencia: [
+          value => !!value || 'El código de referencia es necesario',
+          value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
+        ],
+        duracion: [
+          value => /(^\d{1,3}:\d{1,2}(:\d{1,2}){0,1}$){0,1}/.test(value) || 'La duración debe estar en el formato correcto'
+        ]
+      }
     }
   },
   methods: {
+    validate () {
+      this.$refs.videoForm.validate()
+    },
     onSubmit: function(){
-      console.log("Enviar formulario...");
-      console.log(this.video);
+      if(!this.$refs.videoForm.validate()) // Se activa validación del formulario
+        return;
+      // console.log("Enviar formulario...");
+      // console.log(this.video);
     },
   }
 }

@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const coleccionSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: String,
+    titulo: String,
+    proyectoInvestigacion: String, // Sólo para proyectos
     // pais: [String], // INFERIDO
     fecha: Date,
     nivelDescripcion: {type: String, enum: ['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']},
-    titulo: String,
-    proyectoInvestigacion: String, // Sólo para proyectos
     investigacion: String,
     coordinacionProyecto: String,
     coordinacionAudiovisual: String,

@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <v-form ref="videoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
+  <v-card class="pa-6">
+    <v-form ref="coleccionForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
       <v-tabs v-model="tab" centered icons-and-text >
         <v-tabs-slider></v-tabs-slider>
 
@@ -43,22 +43,22 @@
       <v-tabs-items v-model="tab">
         <v-tab-item value="identificacion" >
           <v-card flat>
-            <v-text-field v-model="coleccion.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" required></v-text-field>
+            <v-text-field v-model="coleccion.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" :rules="rules.codigoReferencia" required></v-text-field>
 
             <!-- <v-autocomplete v-model="coleccion.identificacion.pais" :items="paises" item-text="nombre" label="País" hint="País o países de producción del registro en video"></v-autocomplete> -->
+
+            <v-text-field v-model="coleccion.identificacion.titulo" label="Título" hint="Título de la unidad de descripción"></v-text-field>
+
+            <v-text-field v-model="coleccion.identificacion.proyectoInvestigacion" label="Proyecto de investigación" hint="Proyecto de investigación para el cual fueron realizados los registros a documentar"></v-text-field>
 
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
                 <v-text-field v-model="coleccion.identificacion.fecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
-              <v-date-picker v-model="coleccion.identificacion.fecha" @input="menuCalendar1 = false"></v-date-picker>
+              <v-date-picker v-model="coleccion.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months></v-date-picker>
             </v-menu>
 
             <v-select v-model="coleccion.identificacion.nivelDescripcion" :items="['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']" label="Nivel de descripción"></v-select>
-
-            <v-text-field v-model="coleccion.identificacion.titulo" label="Título" hint="Título de la unidad de descripción"></v-text-field>
-
-            <v-text-field v-model="coleccion.identificacion.proyectoInvestigacion" label="Proyecto de investigación" hint="Proyecto de investigación para el cual fueron realizados los registros a documentar"></v-text-field>
 
             <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Persona(s) responsable(s) de la investigación para la cual se realizaron los registros a documentar"></v-text-field>
             <!-- <v-autocomplete v-model="coleccion.identificacion.investigacion" :items="people" item-text="nombre" label="Investigación" hint="Persona(s) responsable(s) de la investigación para la cual se realizaron los registros a documentar" v-model="coleccion.identificacion.investigacion" @blur="setSemblanza"></v-autocomplete> -->
@@ -135,19 +135,18 @@
         </v-tab-item>
       </v-tabs-items>
 
-      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>Registrar</v-btn>
+      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large @click="validate">Registrar</v-btn>
     </v-form>
-    <pre>{{ coleccion }}</pre>
+    <!-- <pre>{{ coleccion }}</pre> -->
   </v-card>
 </template>
 
 <script>
-import * as coleccionService from '../../services/ColeccionService'
+// import * as coleccionService from '../../services/ColeccionService'
 
 export default {
   data () {
     return {
-      validForm: true,
       coleccion: {
         identificacion: {
           fecha: new Date().toISOString().substr(0, 10),
@@ -170,6 +169,13 @@ export default {
       menuCalendar1: false,
       menuCalendar2: false,
       menuCalendar3: false,
+      validForm: true,
+      rules: {
+        codigoReferencia: [
+          value => !!value || 'El código de referencia es necesario',
+          value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
+        ]
+      },
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       paises: [
         { nombre: 'México', abbr: 'mx' },
@@ -202,15 +208,19 @@ export default {
     //   this.coleccion.contexto.semblanzaBiografica = person.semblanza;
     //   console.log("semblanza: ", this.coleccion.contexto.semblanzaBiografica);
     // },
-    onSubmit: async function(){
-      if(!this.$refs.videoForm.validate()) // Se activa validación del formulario
+    validate () {
+      this.$refs.coleccionForm.validate()
+    },
+    onSubmit: function(){
+      if(!this.$refs.coleccionForm.validate()) // Se activa validación del formulario
         return;
-      const request = {
-        coleccion: this.coleccion
-      };
-      const newColeccion = await coleccionService.createColection(request);
-      console.log("Colección creadad en base de datos");
-      console.log(newColeccion.data.id);
+      // const request = {
+      //   coleccion: this.coleccion
+      // };
+      // console.log(request);
+      // const newColeccion = await coleccionService.createColection(request);
+      // console.log("Colección creadad en base de datos");
+      // console.log(newColeccion.data.id);
     },
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 class="text-h3 text-center">Km. C-62 Un nómada del riel</h2>
+    <h2 class="text-h3 text-center">Ejemplo Proyecto</h2>
     <v-breadcrumbs :items="items" class="justify-center"></v-breadcrumbs>
 
     <v-row no-gutters align="center" justify="start">
@@ -264,11 +264,11 @@ export default {
         {
           text: 'Proyectos',
           disabled: false,
-          href: '/coleccion/proyectos',
+          href: '/proyectos',
         },
         {
-          text: 'Km C-62 Un nómada del riel (2000)',
-          disabled: false,
+          text: 'Ejemplo Proyecto',
+          disabled: true,
           href: '/coleccion/proyectos/1',
         }
       ],

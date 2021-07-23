@@ -1,4 +1,4 @@
-import Video from '../model/video-model.js';
+import Video from '../../model/video-model';
 import moment from 'moment';
 import * as auth from '../../services/auth-service';
 

@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const videoSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: String,
-    titulo: String,
     fecha: Date,
     lugar: String,
     pais: String,
     duracion: Number, // representado en total de segundos
+    duracionString: String, // representado en total de segundos
     personasEntrevistadas: [String],
     entrevistador: String,
     camara: String,
@@ -18,7 +18,7 @@ const videoSchema = new mongoose.Schema({
   },
   contenidoEstructura: {
     descripcionGeneral: String,
-    estructuraFormal: {type: String, enum: ['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Registro de material']},
+    estructuraFormal: {type: String, enum: ['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Reproducción de material']},
     descriptorOnomastico: String,
     descriptorToponimico: String,
   },
@@ -43,7 +43,6 @@ const videoSchema = new mongoose.Schema({
   },
   controlDescripcion: {
     nombreArchivero: String, //[{type: Schema.Types.ObjectId, ref: 'Usuario'}]
-    // notaArchivero: String,
     fechaDescripcion: new Date().toISOString().substr(0, 10),
     fechaActualizacion: new Date().toISOString().substr(0, 10),
   },

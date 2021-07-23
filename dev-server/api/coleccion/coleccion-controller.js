@@ -1,4 +1,4 @@
-import Coleccion from '../model/coleccion-model.js';
+import Coleccion from '../../model/coleccion-model.js';
 import moment from 'moment';
 import * as auth from '../../services/auth-service';
 
