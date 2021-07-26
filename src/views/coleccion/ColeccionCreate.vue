@@ -1,5 +1,6 @@
 <template>
   <v-card class="pa-6">
+    <v-card-title class="text-h3 justify-center">Registro de conjunto documental</v-card-title>
     <v-form ref="coleccionForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
       <v-tabs v-model="tab" centered icons-and-text >
         <v-tabs-slider></v-tabs-slider>

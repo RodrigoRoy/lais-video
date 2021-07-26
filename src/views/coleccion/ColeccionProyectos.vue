@@ -3,14 +3,17 @@
     <h2 class="text-h3 text-center">Proyectos de investigación</h2>
     <v-breadcrumbs :items="items" class="justify-center"></v-breadcrumbs>
 
-    <v-row no-gutters align="center" justify="start">
+    <v-row no-gutters align="start" justify="start">
       <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
       <!-- <v-col cols="12" md="3" v-for="n in 16" :key="n"> -->
         <v-card class="ma-4 pa-4" outlined tile @click="goTo()">
           <v-img :src="require('@/assets/Caratulas_Proyectos/' + coleccion.adicional.imagen)" height="150px"></v-img>
-          <v-card-title class="justify-center">
-            <div class="text-truncate">
-              {{ coleccion.identificacion.titulo }}
+          <v-card-title class="text-center justify-center">
+            <div class="d-none d-md-block">
+              {{ coleccion.identificacion.titulo | truncate(35) }}
+            </div>
+            <div class="text-truncate d-md-none">
+              {{ coleccion.identificacion.titulo}}
             </div>
             <!-- <div>
               {{ coleccion.identificacion. }}
@@ -299,7 +302,8 @@ export default {
             titulo: 'Cuando la Rumba Nos Conoció...'
           },
           adicional: {
-            imagen: 'Cuando la Rumba Nos Conoció 1.png'
+            imagen: 'Cuando la Rumba Nos Conoció 1.png',
+            presentacion: 'Cuando la Rumba nos conoció\n\nEs un proyecto de documental derivado de los registros en video creados por Carlos Hernández y Humberto Galarza durante su participación en un Taller de Cine Documental impartido en la Escuela Internacional de Cine y Televisión de San Antonio de los Baños, Cuba.\nSe incluyen registros hechos con algunas comparsas en la ciudad de La Habana, así como entrevistas hechas en los lugares donde se interpretaban piezas musicales y se bailaba.\nTambién existen registros hechos en distintos centros de entretenimiento donde se puede ver la interpretación musical de varios géneros característicos de la isla.\nDerivado de este trabajo se produjo el documental *Cuando la Rumba Nos Conoció…* (1998)'
           }
         },
         {
@@ -338,7 +342,8 @@ export default {
             titulo: 'El Arte de Hacer Ciudad. Testimonios del Arquitecto Mario Pani'
           },
           adicional: {
-            imagen: 'El arte de hacer_2.png'
+            imagen: 'El arte de hacer_2.png',
+            presentacion: '*El arte de hacer ciudad*\n\nEs un proyecto de investigación que aborda la vida del arquitecto Mario Pani. Un trabajo coordinado por Graciela de Garay, realizado en conjunto con Carlos Hernández, Paris García y Felipe Morales Leal.\nParte fundamental del proyecto son las entrevistas a profundidad realizadas a una serie de arquitectos conocedores de la vida y obra de Mario Pani, complementadas por algunas otras hechas a familiares y especialistas en el tema.\nSe cuenta con videograbaciones de las entrevistas, además de registros en video de las principales obras del arquitecto Pani.\nDerivado de esta investigación se produjo el documental *El arte de hacer ciudad* (2001).'
           }
         },
         {
@@ -372,10 +377,11 @@ export default {
         {
           identificacion: {
             codigoReferencia: 'MXIM-AV-2-12',
-            titulo: 'El Triángulo de Tacubaya. Historia de Cine Hipódromo Condesa'
+            titulo: 'El Triángulo de Tacubaya. Historia del Cine Hipódromo Condesa'
           },
           adicional: {
-            imagen: 'Triángulo_1.png'
+            imagen: 'Triángulo_1.png',
+            presentacion: '*El triángulo de Tacubaya*\n\nEs una investigación original hecha por Felipe Morales Leal para obtener el grado en la licenciatura en Ciencias de la Comunicación de la UNAM, el tema principal es la historia del cine Hipódromo Condesa ubicado en el barrio de Tacubaya, en la ciudad de México.\nLa investigación entrelaza la historia del Edificio Ermita, lugar donde se ubica la sala de proyección, los cambios en el barrio y la historia de la exhibición cinematográfica durante el siglo XX. Se trabajó con diversas fuentes documentales, fotográficas y audiovisuales. El proyecto cuenta con registros hechos durante el proceso de investigación, existen imágenes del exterior e interior del cine Hipódromo, registros de fachadas de otros cines a inicios del siglo XX, tomas de la ciudad de México y videograbaciones de 7 entrevistas.\nDerivado de este trabajo se produjo el documental *El triángulo de Tacubaya* (2005), además de la tesis de grado.'
           }
         },
         {

@@ -13,6 +13,10 @@ Vue.filter('date', (value) => {
   return moment(value).format('DD/MM/YYYY');
 });
 
+Vue.filter('truncate', (value, length, clamp) => {
+    return value.slice(0, length) + (length < value.length ? clamp || '...' : '')
+});
+
 new Vue({
   router,
   store,
