@@ -32,7 +32,7 @@ const coleccionSchema = new mongoose.Schema({
   },
   controlDescripcion: {
     // documentalistas: [{type: String}], //[{type: Schema.Types.ObjectId, ref: 'Usuario'}], // INFERIDO
-    reglasNormas: {type: String, trim: true, default: 'LAIS, Lineamientos para la descripción de registros en video propios, 2021'},
+    reglasNormas: {type: String, trim: true, default: 'LAIS, Lineamientos para la descripción de Registros de video propios, 2021'},
     //actualizacionDescripcion: {type: Date} // IMPLÍCITO (updatedAt)
   },
   adicional: {

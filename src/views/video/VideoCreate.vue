@@ -44,44 +44,44 @@
       <v-tabs-items v-model="tab">
         <v-tab-item value="identificacion" >
           <v-card flat>
-            <v-text-field v-model="video.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" :rules="rules.codigoReferencia" required></v-text-field>
+            <v-text-field v-model="video.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1-2" :rules="rules.codigoReferencia" required></v-text-field>
 
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
-              <template v-slot:activator="{ on }">
-                <v-text-field v-model="video.identificacion.fecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field :value="computedFecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" @click:clear="date = null"></v-text-field>
               </template>
-              <v-date-picker v-model="video.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months type="month"></v-date-picker>
+              <v-date-picker v-model="video.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months></v-date-picker>
             </v-menu>
 
-            <v-text-field v-model="video.identificacion.lugar" label="Lugar" hint="Nombre de los lugares, partiendo de lo general a lo particular"></v-text-field>
+            <v-text-field v-model="video.identificacion.lugar" label="Lugar de registro" hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.pais" label="País" hint="País o países de producción del registro en video"></v-text-field>
+            <v-combobox v-model="video.identificacion.pais" :items="paises" label="País" hint="País o países de producción del registro en video"></v-combobox>
 
-            <v-text-field v-model="video.identificacion.duracion" label="Duración" hint="Duración de la obra en formato horas, minutos, segundos. Ejemplo: 01:24:37" :rules="rules.duracion"></v-text-field>
+            <v-text-field v-model="video.identificacion.duracion" label="Duración" hint="Se consigna la duración del registro en minutos" :rules="rules.duracion"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.personasEntrevistadas" label="Personas entrevistadas" hint="Persona de la cual se registra su testimonio"></v-text-field>
+            <v-text-field v-model="video.identificacion.personasEntrevistadas" label="Persona entrevistada" hint="Persona que entabla un diálogo con la persona que dirige la entrevista"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.entrevistador" label="Entrevistador/a" hint="Persona encargada de realizar la entrevista"></v-text-field>
+            <v-text-field v-model="video.identificacion.entrevistador" label="Persona que entrevista" hint="Persona encargada de realizar la entrevista"></v-text-field>
 
             <v-text-field v-model="video.identificacion.camara" label="Cámara" hint="Persona encargada de operar la cámara de video"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.iluminacion" label="Iluminación" hint="Persona encargada de la colocación de las lámparas"></v-text-field>
+            <v-text-field v-model="video.identificacion.iluminacion" label="Iluminación" hint="Persona encargada de la colocación de las lámparas en la realización de una entrevista o en el trabajo de campo"></v-text-field>
 
             <v-text-field v-model="video.identificacion.sonido" label="Sonido" hint="Persona encargada de la colocación de los micrófonos y grabación de sonido"></v-text-field>
 
-            <v-text-field v-model="video.identificacion.asistente" label="Asistente/s" hint="Persona encargada de apoyar en diversas labores técnicas"></v-text-field>
+            <v-text-field v-model="video.identificacion.asistente" label="Asistente" hint="Persona o personas encargadas de apoyar en diversas labores técnicas"></v-text-field>
           </v-card>
         </v-tab-item>
 
         <v-tab-item value="contenidoEstructura" >
           <v-card flat>
-            <v-textarea v-model="video.contenidoEstructura.descripcionGeneral" label="Descripción general" hint="Contenido del material. Se describen los lugares y/o acciones registradas, según tipos de plano, emplazamientos y movimientos" auto-grow rows="3" row-height="25" ></v-textarea>
+            <v-textarea v-model="video.contenidoEstructura.descripcionGeneral" label="Descripción general" hint="Contenido del material. Se describen los lugares, personas y/o acciones registradas, según tipos de plano, emplazamientos y movimientos" auto-grow rows="3" row-height="25" ></v-textarea>
 
-            <v-select v-model="video.contenidoEstructura.estructuraFormal" :items="['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Reproducción de material']" label="Estructura formal"></v-select>
+            <v-select v-model="video.contenidoEstructura.estructuraFormal" :items="['Grabación en campo', 'Registro con entrevista', 'Registro de materiales', 'Entrevista controlada', 'Entrevista en campo', 'Entrevista con imágenes', 'Entrevista con acción']" label="Estructura formal"></v-select>
 
             <v-text-field v-model="video.contenidoEstructura.descriptorOnomastico" label="Descriptor onomástico" hint="Nombres de las personas (nombre y apellido) que aparecen el registro"></v-text-field>
 
-            <v-text-field v-model="video.contenidoEstructura.descriptorToponimico" label="Descriptor toponímico" hint="Nombres de los lugares que aparecen en el registro"></v-text-field>
+            <v-text-field v-model="video.contenidoEstructura.descriptorToponimico" label="Descriptor toponímico" hint="nombres de las localidades o sitios que aparecen en el registro"></v-text-field>
           </v-card>
         </v-tab-item>
 
@@ -109,8 +109,6 @@
 
         <v-tab-item value="documentacionAsociada" >
           <v-card flat>
-            <v-textarea v-model="video.documentacionAsociada.existenciaLocalizacionCopias" label="Existencia y localización de copias" hint="Existencia de copias del material en algún otro acervo" auto-grow rows="3" row-height="25" ></v-textarea>
-
             <v-textarea v-model="video.documentacionAsociada.unidadesDescripcionRelacionadas" label="Unidades de descripción relacionada" hint="Relación que existe entre dos o más unidades de la misma colección a partir de coincidencias temáticas o conceptuales" auto-grow rows="3" row-height="25" ></v-textarea>
 
             <v-textarea v-model="video.documentacionAsociada.documentosAsociados" label="Documentos asociados" hint="Publicación o documento que tenga relación directa con la producción catalogada. La relación puede ser temática, autoral, etc." auto-grow rows="3" row-height="25" ></v-textarea>
@@ -127,20 +125,20 @@
           <v-card flat>
             <!-- <v-textarea v-model="video.controlDescripcion.notaArchivero" label="Nota del archivero" hint="Fuentes usadas para complementar la información de la ficha (producción original, sitios web, publicaciones, etc.)" auto-grow rows="3" row-height="25" ></v-textarea> -->
 
-            <v-text-field v-model="video.controlDescripcion.nombreArchivero" label="Nombre de archivera/o" hint="Nombre de quien elaboró la ficha de la unidad"></v-text-field>
+            <v-text-field v-model="video.controlDescripcion.nombreArchivero" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad"></v-text-field>
 
             <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="video.controlDescripcion.fechaDescripcion" label="Fecha de descripción" hint="Fecha en que se elaboró la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
+                <v-text-field :value="computedFechaDescripcion" label="Fecha de descripción" hint="Fecha en que se elaboró la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
-              <v-date-picker v-model="video.controlDescripcion.fechaDescripcion" @input="menuCalendar2 = false"></v-date-picker>
+              <v-date-picker v-model="video.controlDescripcion.fechaDescripcion" @input="menuCalendar2 = false" readonly></v-date-picker>
             </v-menu>
 
             <v-menu v-model="menuCalendar3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="video.controlDescripcion.fechaActualizacion" label="Fecha de actualización" hint="Fecha de la última modificación a la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
+                <v-text-field :value="computedFechaActualizacion" label="Fecha de actualización" hint="Fecha de la última modificación a la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
-              <v-date-picker v-model="video.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false"></v-date-picker>
+              <v-date-picker v-model="video.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false" readonly></v-date-picker>
             </v-menu>
           </v-card>
         </v-tab-item>
@@ -161,42 +159,47 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  data () {
-    return {
-      video: {
-        identificacion: {
-          fecha: new Date().toISOString().substr(0, 10),
-        },
-        contenidoEstructura: {},
-        accesoUso: {},
-        documentacionAsociada: {},
-        notas: {},
-        controlDescripcion: {
-          fechaDescripcion: new Date().toISOString().substr(0, 10),
-          fechaActualizacion: new Date().toISOString().substr(0, 10),
-        },
-        adicional: {
-          isPublic: true,
-        }
+  data: () => ({
+    video: {
+      identificacion: {
+        fecha: new Date().toISOString().substr(0, 10),
       },
-      tab: null,
-      menuCalendar1: false,
-      menuCalendar2: false,
-      menuCalendar3: false,
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      validForm: true,
-      rules: {
-        codigoReferencia: [
-          value => !!value || 'El código de referencia es necesario',
-          value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
-        ],
-        duracion: [
-          value => /(^\d{1,3}:\d{1,2}(:\d{1,2}){0,1}$){0,1}/.test(value) || 'La duración debe estar en el formato correcto'
-        ]
+      contenidoEstructura: {},
+      accesoUso: {},
+      documentacionAsociada: {},
+      notas: {},
+      controlDescripcion: {
+        fechaDescripcion: new Date().toISOString().substr(0, 10),
+        fechaActualizacion: new Date().toISOString().substr(0, 10),
+      },
+      adicional: {
+        isPublic: true,
       }
+    },
+    paises: ['Afganistán', 'Akrotiri', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Anguila', 'Antártida', 'Antigua y Barbuda', 'Arabia Saudí', 'Arctic Ocean', 'Argelia', 'Argentina', 'Armenia', 'Aruba', 'Ashmore and Cartier Islands', 'Atlantic Ocean', 'Australia', 'Austria', 'Azerbaiyán', 'Bahamas', 'Bahráin', 'Bangladesh', 'Barbados', 'Bélgica', 'Belice', 'Benín', 'Bermudas', 'Bielorrusia', 'Birmania; Myanmar', 'Bolivia', 'Bosnia y Hercegovina', 'Botsuana', 'Brasil', 'Brunéi', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Bután', 'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Chad', 'Chile', 'China', 'Chipre', 'Clipperton Island', 'Colombia', 'Comoras', 'Congo', 'Coral Sea Islands', 'Corea del Norte', 'Corea del Sur', 'Costa de Marfil', 'Costa Rica', 'Croacia', 'Cuba', 'Curacao', 'Dhekelia', 'Dinamarca', 'Dominica', 'Ecuador', 'Egipto', 'El Salvador', 'El Vaticano', 'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 'Estados Unidos', 'Estonia', 'Etiopía', 'Filipinas', 'Finlandia', 'Fiyi', 'Francia', 'Gabón', 'Gambia', 'Gaza Strip', 'Georgia', 'Ghana', 'Gibraltar', 'Granada', 'Grecia', 'Groenlandia', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea Ecuatorial', 'Guinea-Bissau', 'Guyana', 'Haití', 'Honduras', 'Hong Kong', 'Hungría', 'India', 'Indian Ocean', 'Indonesia', 'Irán', 'Iraq', 'Irlanda', 'Isla Bouvet', 'Isla Christmas', 'Isla Norfolk', 'Islandia', 'Islas Caimán', 'Islas Cocos', 'Islas Cook', 'Islas Feroe', 'Islas Georgia del Sur y Sandwich del Sur', 'Islas Heard y McDonald', 'Islas Malvinas', 'Islas Marianas del Norte', 'Islas Marshall', 'Islas Pitcairn', 'Islas Salomón', 'Islas Turcas y Caicos', 'Islas Vírgenes Americanas', 'Islas Vírgenes Británicas', 'Israel', 'Italia', 'Jamaica', 'Jan Mayen', 'Japón', 'Jersey', 'Jordania', 'Kazajistán', 'Kenia', 'Kirguizistán', 'Kiribati', 'Kosovo', 'Kuwait', 'Laos', 'Lesoto', 'Letonia', 'Líbano', 'Liberia', 'Libia', 'Liechtenstein', 'Lituania', 'Luxemburgo', 'Macao', 'Macedonia', 'Madagascar', 'Malasia', 'Malaui', 'Maldivas', 'Malí', 'Malta', 'Man, Isle of', 'Marruecos', 'Mauricio', 'Mauritania', 'México', 'Micronesia', 'Moldavia', 'Mónaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Mozambique', 'Mundo', 'Namibia', 'Nauru', 'Navassa Island', 'Nepal', 'Nicaragua', 'Níger', 'Nigeria', 'Niue', 'Noruega', 'Nueva Caledonia', 'Nueva Zelanda', 'Omán', 'Pacific Ocean', 'Países Bajos', 'Pakistán', 'Palaos', 'Panamá', 'Papúa-Nueva Guinea', 'Paracel Islands', 'Paraguay', 'Perú', 'Polinesia Francesa', 'Polonia', 'Portugal', 'Puerto Rico', 'Qatar', 'Reino Unido', 'República Centroafricana', 'República Democrática del Congo', 'República Dominicana', 'Ruanda', 'Rumania', 'Rusia', 'Sáhara Occidental', 'Samoa', 'Samoa Americana', 'San Bartolomé', 'San Cristóbal y Nieves', 'San Marino', 'San Martín', 'San Pedro y Miquelón', 'San Vicente y las Granadinas', 'Santa Helena', 'Santa Lucía', 'Santo Tomé y Príncipe', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leona', 'Singapur', 'Sint Maarten', 'Siria', 'Somalia', 'Southern Ocean', 'Spratly Islands', 'Sri Lanka', 'Suazilandia', 'Sudáfrica', 'Sudán', 'Sudán del Sur', 'Suecia', 'Suiza', 'Surinam', 'Svalbard y Jan Mayen', 'Tailandia', 'Taiwán', 'Tanzania', 'Tayikistán', 'Territorio Británico del Océano Indico', 'Territorios Australes Franceses', 'Timor Oriental', 'Togo', 'Tokelau', 'Tonga', 'Trinidad y Tobago', 'Túnez', 'Turkmenistán', 'Turquía', 'Tuvalu', 'Ucrania', 'Uganda', 'Unión Europea', 'Uruguay', 'Uzbekistán', 'Vanuatu', 'Venezuela', 'Vietnam', 'Wake Island', 'Wallis y Futuna', 'West Bank', 'Yemen', 'Yibuti', 'Zambia', 'Zimbabue'],
+    tab: null,
+    menuCalendar1: false,
+    menuCalendar2: false,
+    menuCalendar3: false,
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    validForm: true,
+    rules: {
+      codigoReferencia: [
+        value => !!value || 'El código de referencia es necesario. Ejemplo: MXIM-AV-2-3-1-2',
+        value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1-2',
+      ],
+      duracion: [
+        value => /^\d+$/.test(value) || 'La duración debe ser el número de minutos'
+      ],
+      duracion2: [
+        value => /(^\d{1,3}:\d{1,2}(:\d{1,2}){0,1}$){0,1}/.test(value) || 'La duración debe estar en el formato correcto'
+      ]
     }
-  },
+  }),
+
   methods: {
     validate () {
       this.$refs.videoForm.validate()
@@ -207,6 +210,18 @@ export default {
       // console.log("Enviar formulario...");
       // console.log(this.video);
     },
+  },
+
+  computed: {
+    computedFecha(){
+      return this.video.identificacion.fecha ? moment(this.video.identificacion.fecha).format('DD/MM/YYYY') : '';
+    },
+    computedFechaDescripcion(){
+      return this.video.controlDescripcion.fechaDescripcion ? moment(this.video.controlDescripcion.fechaDescripcion).format('DD/MM/YYYY') : '';
+    },
+    computedFechaActualizacion(){
+      return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
+    }
   }
 }
 </script>

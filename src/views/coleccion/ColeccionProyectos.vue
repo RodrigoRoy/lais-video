@@ -24,8 +24,11 @@
           </v-card-subtitle>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn icon @click.stop.prevent="goTo()">
+              <v-icon>mdi-folder-open</v-icon>
+            </v-btn>
             <v-btn icon @click.stop.prevent="openDialog(coleccion)">
-              <v-icon>mdi-more</v-icon>
+              <v-icon>mdi-open-in-new</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -362,7 +365,8 @@ export default {
             titulo: 'De dolor y esperanza. El asilo un pasado presente'
           },
           adicional: {
-            imagen: 'Foto_Acervo1.png'
+            imagen: 'De dolor y esperanza.jpg',
+            presentacion: '*De dolor y esperanza. El asilo un pasado presente*: Silvia Dutrénit Bielous, Carlos Hernández Marines y Guadalupe Rodríguez de Ita, Instituto Mora, 1997, 60 min.\n\nEl proyecto de investigación institucional *Dictaduras y asilo. Experiencias en las embajadas mexicanas en el Cono Sur*, coordinado por Silvia Dutrénit Bielous y Guadalupe Rodríguez de Ita, estuvo dedicado a conocer y analizar el fenómeno del asilo diplomático durante las décadas de los 70 y de los 80 del siglo XX.\nEn esas décadas Argentina, Chile y Uruguay vivieron bajo dictaduras de carácter militar o cívico militar. En esas circunstancias, las representaciones diplomáticas mexicanas en los  países sureños, desempeñaron un papel de vital importancia al otorgar asilo. Su puesta en práctica permitió la protección de un número muy considerable de perseguidos políticos.\nEl proyecto contó para algunas de sus publicaciones con el apoyo del Archivo Histórico Diplomático de la SREM y de la Secretaría de Cultura del Gobierno de la Ciudad. Uno de los resultados de esta investigación, que cuenta en particular con 33 registros videograbados, es el documental *De dolor y esperanza…* (1997).\nEl documental tiene como foco de atención la aplicación de la política de asilo y el efecto que su práctica tuvo tanto en los funcionarios diplomáticos como en los asilados. Para su realización se utilizaron diferentes fuentes orales, documentales y fotográficas. Las entrevistas a los protagonistas del asilo resultan material destacado así como una serie fotográfica y otra documental.'
           }
         },
         {
@@ -410,7 +414,8 @@ export default {
             titulo: 'Más allá del reglamento. Avatares de un embajador mexicano, Vicente Muñiz arroyo 1974-1977'
           },
           adicional: {
-            imagen: 'Foto_Acervo1.png'
+            imagen: 'Mas alla del reglamento.jpg',
+            presentacion: '*Más allá del reglamento: avatares de un embajador mexicano: Vicente Muñiz Arroyo. 1974-1977.* Ana Buriano, Silvia Dutrénit Bielous y Carlos Hernández Marines.\n\nEl proyecto de investigación *El embajador Vicente Muñiz Arroyo*, de Ana Buriano Castro y Silvia Dutrénit Bielous, tuvo como objetivo historiar a este embajador mexicano a través de su biografía y sus contextos. En particular, la atención fue puesta en su desempeño como diplomático responsable de la embajada mexicana en Montevideo durante los primeros años de una represión muy extendida (1974-1977) y como servidor público en otras responsabilidades del gobierno mexicano.\nMuñiz Arroyo nacido en Churintzio, Michoacán, dejó huella en la historia diplomática de América Latina. Embajador durante algunos años de la dictadura en Uruguay, en el marco de la Operación Cóndor, otorgó refugio a cientos de perseguidos. Su convicción de cumplir el sentido del derecho de asilo, su valentía personal en circunstancias de intensa represión y su solidaridad con los asilados, lo ubican como un diplomático excepcional que fue “más allá del reglamento” para proteger a los perseguidos.\nEn el desarrollo de la investigación se llevaron a cabo distintas actividades que enriquecieron el conocimiento de un personaje muy entrañable para asilados, integrantes del cuerpo diplomático y colaboradores o colegas en distintas actividades de sector público. En los diferentes foros fue posible entrevistar a muchas de esas personas cuyos testimonios están guardados en registros audiovisuales.\nEl documental es un producto destacado del proyecto en donde convergen miradas sobre sus desafiantes acciones inmersas en tiempos difíciles. Múltiples recuerdos se recrean e incitan al afecto y la alegría, así como el dolor que conlleva la recreación. Como fuentes principales del documental están los registros audiovisuales de las entrevistas y foros, documentos de época y fotografías'
           }
         },
         {
@@ -428,7 +433,7 @@ export default {
             titulo: 'Región Transfronteriza México-Guatemala'
           },
           adicional: {
-            imagen: 'Foto_Acervo1.png'
+            imagen: 'Region transfronteriza.jpg'
           }
         },
         {
@@ -437,7 +442,8 @@ export default {
             titulo: 'Desaparición forzada y equipos de antropología forense: Diálogos en América Latina'
           },
           adicional: {
-            imagen: 'Foto_Acervo1.png'
+            imagen: 'Desaparicion forzada.jpg',
+            presentacion: '*Desaparición forzada y equipos de antropología forense: Diálogo en América Latina*. Realización: Silvia Dutrénit Bielous y Araceli Leal Castillo, México, Instituto Mora-LAIS/CONACyT, 2019, 76 min.\n\nEl proyecto Conacyt-Mora (clave CB 2012/177295) titulado *El trabajo de los equipos de Antropología Forense en América Latina: otra ruta de acceso al conocimiento de la represión y violencia políticas*, cuya responsable fue Silvia Dutrénit Bielous, contó con la participación de colegas de México y la región con un enfoque interdisciplinario.\nLa mirada investigativa dio cuenta de los sucesos que, a partir de los años 80 del siglo XX, con el despuntar de algunas transiciones a la democracia algunos países de la región, dieron lugar al proceso de constitución de Equipos de Antropología Forense. Equipos o grupos independientes de los Estados, con una concepción humanitaria, relacionada con las violaciones a los derechos humanos, y con una integración interdisciplinaria.\nEl estudio realizado en varios países hizo posible historiar el nacimiento, la integración, la metodología, los retos, los logros y las limitaciones de estos equipos. Es de destacar que durante la investigación se llevaron a cabo 32 entrevistas videograbadas en los países de estudio (Argentina, Chile, Guatemala, México y Uruguay).\nEl documental *Desaparición Forzada…* (2019), es fruto de esta investigación y uno de los productos que de ella derivaron. En el mismo se presenta un diálogo donde confluyen las voces de antropólogos forenses, familiares, jueces y activistas de derechos humanos, en torno a las estrategias de búsqueda de desaparecidos y ejecutados, así como los procesos de identificación, entrega de los restos a los familiares y acerca de los desafíos para dar cumplimiento al derecho a la verdad y a la reparación.\nDurante la realización se trabajó con diversas fuentes orales, documentales, fotográficas y audiovisuales.  En especial los registros audiovisuales de las entrevistas, una serie fotográfica y otra documental.'
           }
         }
       ],

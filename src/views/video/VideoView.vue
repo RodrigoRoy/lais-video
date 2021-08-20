@@ -79,22 +79,22 @@
                         {{ coleccion.identificacion.pais }}
                       </p>
                       <p>
-                        <span class="font-weight-bold">Lugar</span>
+                        <span class="font-weight-bold">Lugar de registro</span>
                         <br>
                         {{ coleccion.identificacion.lugar }}
                       </p>
                       <p>
                         <span class="font-weight-bold">Duración</span>
                         <br>
-                        {{ coleccion.identificacion.duracion }}
+                        {{ coleccion.identificacion.duracion }} minutos
                       </p>
                       <p>
-                        <span class="font-weight-bold">Personas entrevistadas</span>
+                        <span class="font-weight-bold">Persona entrevistada</span>
                         <br>
                         {{ coleccion.identificacion.personasEntrevistadas }}
                       </p>
                       <p>
-                        <span class="font-weight-bold">Entrevistador</span>
+                        <span class="font-weight-bold">Persona que entrevista</span>
                         <br>
                         {{ coleccion.identificacion.entrevistador }}
                       </p>
@@ -104,7 +104,7 @@
                         {{ coleccion.identificacion.camara }}
                       </p>
                       <p>
-                        <span class="font-weight-bold">Asistencia</span>
+                        <span class="font-weight-bold">Asistente</span>
                         <br>
                         {{ coleccion.identificacion.asistente }}
                       </p>
@@ -192,11 +192,6 @@
                   <v-card flat>
                     <v-card-text>
                       <p>
-                        <span class="font-weight-bold">Existencia y localización de copias</span>
-                        <br>
-                        {{ coleccion.documentacionAsociada.existenciaLocalizacionCopias }}
-                      </p>
-                      <p>
                         <span class="font-weight-bold">Unidades de descripción relacionadas</span>
                         <br>
                         {{ coleccion.documentacionAsociada.unidadesDescripcionRelacionadas }}
@@ -251,7 +246,7 @@
             <v-col xs="12" sm="12" md="4">
               <p class="font-weight-bold">
                 <v-icon left>mdi-image</v-icon>Imagen
-              </p>>
+              </p>
               <p>
                 <v-img :src="require('@/assets/videopreview2.png')" height="220px"  contain></v-img>
               </p>
@@ -314,7 +309,6 @@ export default {
           requisitosTecnicos: 'Cras et purus sodales, lacinia neque id',
         },
         documentacionAsociada: {
-          existenciaLocalizacionCopias: 'In hac habitasse platea dictumst. Mauris ac dapibus neque. Nunc faucibus est eget rhoncus scelerisque. Proin venenatis ante sit amet libero fermentum varius. Donec tempor aliquam pretium',
           unidadesDescripcionRelacionadas: 'Praesent faucibus pharetra nunc, quis venenatis nunc semper at. Suspendisse congue, leo convallis pulvinar convallis',
           documentosAsociados: 'Donec dapibus posuere maximus. Nam lacus enim, commodo vitae sodales non, sodales sed lacus. Sed eget feugiat nisl, non blandit massa. Mauris metus nisi, hendrerit nec tortor ac, molestie tempor dui. In gravida metus nibh, ut interdum tortor aliquam et. Sed eu sollicitudin dolor. Etiam vel nisl quam. Etiam ac velit id sapien rutrum tincidunt ac sed lorem. Suspendisse egestas consequat lectus ac rutrum. ',
         },

@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <Navbar />
-    <v-content id="app-container">
+    <v-main id="app-container">
       <router-view/>
-    </v-content>
+    </v-main>
     <!-- <Footer /> -->
   </v-app>
 </template>
@@ -32,5 +32,8 @@ export default {
     ),
     url('./assets/background2.jpg') no-repeat center center fixed !important;
   background-size: cover;
+
+  /* font-family: 'Roboto', 'Open Sans', serif !important;
+  font-size: 22px !important; */
 }
 </style>

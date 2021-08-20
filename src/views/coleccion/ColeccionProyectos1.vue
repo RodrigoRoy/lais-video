@@ -18,8 +18,11 @@
           </v-card-subtitle>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn icon @click.stop.prevent="dialog = true">
-              <v-icon>mdi-more</v-icon>
+            <v-btn icon @click.stop.prevent="goTo()">
+              <v-icon>mdi-folder-open</v-icon>
+            </v-btn>
+            <v-btn icon @click.stop.prevent="openDialog(coleccion)">
+              <v-icon>mdi-open-in-new</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>

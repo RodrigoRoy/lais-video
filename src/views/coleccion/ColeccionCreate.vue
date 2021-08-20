@@ -54,35 +54,35 @@
 
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="coleccion.identificacion.fecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
+                <v-text-field :value="computedFecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
               <v-date-picker v-model="coleccion.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months></v-date-picker>
             </v-menu>
 
             <v-select v-model="coleccion.identificacion.nivelDescripcion" :items="['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']" label="Nivel de descripción"></v-select>
 
-            <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Persona(s) responsable(s) de la investigación para la cual se realizaron los registros a documentar"></v-text-field>
+            <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Personas responsables de la investigación para la cual se realizaron los registros a documentar"></v-text-field>
             <!-- <v-autocomplete v-model="coleccion.identificacion.investigacion" :items="people" item-text="nombre" label="Investigación" hint="Persona(s) responsable(s) de la investigación para la cual se realizaron los registros a documentar" v-model="coleccion.identificacion.investigacion" @blur="setSemblanza"></v-autocomplete> -->
 
-            <v-text-field v-model="coleccion.identificacion.coordinacionProyecto" label="Coordinación del proyecto" hint="Persona coordinadora del proyecto de investigación en el marco del cual se realizaron los registros a documentar"></v-text-field>
+            <v-text-field v-model="coleccion.identificacion.coordinacionProyecto" label="Coordinación del proyecto" hint="Personas coordinadoras del proyecto de investigación en el marco del cual se realizaron los registros a documentar"></v-text-field>
 
-            <v-text-field v-model="coleccion.identificacion.coordinacionAudiovisual" label="Coordinación de producción audiovisual" hint="Persona(s) coordinadora(s) de la documentación audiovisual durante el proceso de investigación"></v-text-field>
+            <v-text-field v-model="coleccion.identificacion.coordinacionAudiovisual" label="Coordinación de producción audiovisual" hint="Personas coordinadoras de la documentación audiovisual durante el proceso de investigación"></v-text-field>
           </v-card>
         </v-tab-item>
 
         <v-tab-item value="contexto" >
           <v-card flat>
-            <v-textarea v-model="coleccion.contexto.historiaInstitucional" label="Historia institucional" hint="datos sobre el origen, evolución y desarrollo de la entidad productora de la colección, tomando en consideración a las personas físicas involucradas" auto-grow rows="3" row-height="25" ></v-textarea>
+            <v-textarea v-model="coleccion.contexto.historiaInstitucional" label="Historia institucional" hint="Datos sobre el origen, evolución y desarrollo de la entidad productora de la colección, tomando en consideración a las personas físicas involucradas" auto-grow rows="3" row-height="25" ></v-textarea>
 
-            <v-textarea v-model="coleccion.contexto.historiaArchivistica" label="Historia archivística" hint="historia y el desarrollo de la colección, indicando aquellos hechos que han contribuido a conformar su estructura y organización actual" auto-grow rows="3" row-height="25" ></v-textarea>
+            <v-textarea v-model="coleccion.contexto.historiaArchivistica" label="Historia archivística" hint="Historia y el desarrollo de la colección, indicando aquellos hechos que han contribuido a conformar su estructura y organización actual" auto-grow rows="3" row-height="25" ></v-textarea>
 
-            <v-textarea v-model="coleccion.contexto.semblanzaBiografica" label="Semblanza biográfica" hint="Básicos curriculares del/los investigador/es y el/los coordinador/es del proyecto y de la producción audiovisual" auto-grow rows="3" row-height="25"></v-textarea>
+            <v-textarea v-model="coleccion.contexto.semblanzaBiografica" label="Semblanza biográfica" hint="Básicos curriculares de las personas encargadas de la investigación, coordinación del proyecto y de la producción audiovisual" auto-grow rows="3" row-height="25"></v-textarea>
           </v-card>
         </v-tab-item>
 
         <v-tab-item value="contenidoEstructura" >
           <v-card flat>
-            <v-textarea v-model="coleccion.contenidoEstructura.alcanceContenido" label="Alcance y contenido" hint="Descripción del valor potencial de la colección y señalar para quienes puede ser útil" auto-grow rows="3" row-height="25" ></v-textarea>
+            <v-textarea v-model="coleccion.contenidoEstructura.alcanceContenido" label="Alcance y contenido" hint="Descripción del valor potencial de la colección y se señala para quiénes puede ser útil" auto-grow rows="3" row-height="25" ></v-textarea>
 
             <v-textarea v-model="coleccion.contenidoEstructura.valoracionSeleccionEliminacion" label="Valoración, selección y eliminación" hint="Se señala el criterio de selección y depuración de los materiales" auto-grow rows="3" row-height="25" ></v-textarea>
 
@@ -114,14 +114,14 @@
 
             <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="coleccion.controlDescripcion.fechaDescripcion" label="Fecha de descripción" hint="Fecha en que se elaboró la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
+                <v-text-field :value="computedFechaDescripcion" label="Fecha de descripción" hint="Fecha en que se elaboró la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
               <v-date-picker v-model="coleccion.controlDescripcion.fechaDescripcion" @input="menuCalendar2 = false"></v-date-picker>
             </v-menu>
 
             <v-menu v-model="menuCalendar3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="coleccion.controlDescripcion.fechaActualizacion" label="Fecha de actualización" hint="Fecha de la última modificación a la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
+                <v-text-field :value="computedFechaActualizacion" label="Fecha de actualización" hint="Fecha de la última modificación a la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
               <v-date-picker v-model="coleccion.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false"></v-date-picker>
             </v-menu>
@@ -144,61 +144,61 @@
 
 <script>
 // import * as coleccionService from '../../services/ColeccionService'
+import moment from 'moment'
 
 export default {
-  data () {
-    return {
-      coleccion: {
-        identificacion: {
-          fecha: new Date().toISOString().substr(0, 10),
-          nivelDescripcion: 'Fondo'
-        },
-        contexto: {},
-        contenidoEstructura: {
-          organizacion: 'Por proyecto de investigación',
-        },
-        accesoUso: {},
-        notas: {},
-        controlDescripcion: {
-          reglasNormas: 'LAIS, Lineamientos para la descripción de registros en video propios, 2021',
-          fechaDescripcion: new Date().toISOString().substr(0, 10),
-          fechaActualizacion: new Date().toISOString().substr(0, 10),
-        },
-        adicional: {},
+  data: () => ({
+    coleccion: {
+      identificacion: {
+        fecha: new Date().toISOString().substr(0, 10),
+        nivelDescripcion: 'Fondo'
       },
-      tab: null,
-      menuCalendar1: false,
-      menuCalendar2: false,
-      menuCalendar3: false,
-      validForm: true,
-      rules: {
-        codigoReferencia: [
-          value => !!value || 'El código de referencia es necesario',
-          value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
-        ]
+      contexto: {},
+      contenidoEstructura: {
+        organizacion: 'Por proyecto de investigación',
       },
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      paises: [
-        { nombre: 'México', abbr: 'mx' },
-        { nombre: 'Brasil', abbr: 'br' },
-        { nombre: 'Estados Unidos', abbr: 'us' },
-      ],
-      people: [
-        {
-          nombre: 'Lourdes Roca',
-          semblanza: 'Semblanza de Lourdes Roca...',
-        },
-        {
-          nombre: 'Felipe Morales',
-          semblanza: 'Semblanza de Felipe Morales...',
-        },
-        {
-          nombre: 'Carlos Hernández',
-          semblanza: 'Semblanza de Carlos Hernández...',
-        }
+      accesoUso: {},
+      notas: {},
+      controlDescripcion: {
+        reglasNormas: 'LAIS, Lineamientos para la descripción de Registros de video propios, 2021',
+        fechaDescripcion: new Date().toISOString().substr(0, 10),
+        fechaActualizacion: new Date().toISOString().substr(0, 10),
+      },
+      adicional: {},
+    },
+    tab: null,
+    menuCalendar1: false,
+    menuCalendar2: false,
+    menuCalendar3: false,
+    validForm: true,
+    rules: {
+      codigoReferencia: [
+        value => !!value || 'El código de referencia es necesario. Ejemplo: MXIM-AV-2-3-1',
+        value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
       ]
-    }
-  },
+    },
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    paises: [
+      { nombre: 'México', abbr: 'mx' },
+      { nombre: 'Brasil', abbr: 'br' },
+      { nombre: 'Estados Unidos', abbr: 'us' },
+    ],
+    people: [
+      {
+        nombre: 'Lourdes Roca',
+        semblanza: 'Semblanza de Lourdes Roca...',
+      },
+      {
+        nombre: 'Felipe Morales',
+        semblanza: 'Semblanza de Felipe Morales...',
+      },
+      {
+        nombre: 'Carlos Hernández',
+        semblanza: 'Semblanza de Carlos Hernández...',
+      }
+    ]
+  }),
+
   methods: {
     // setSemblanza: function(){
     //   console.log("blur semblanza");
@@ -223,6 +223,18 @@ export default {
       // console.log("Colección creadad en base de datos");
       // console.log(newColeccion.data.id);
     },
+  },
+
+  computed: {
+    computedFecha(){
+      return this.coleccion.identificacion.fecha ? moment(this.coleccion.identificacion.fecha).format('DD/MM/YYYY') : '';
+    },
+    computedFechaDescripcion(){
+      return this.coleccion.controlDescripcion.fechaDescripcion ? moment(this.coleccion.controlDescripcion.fechaDescripcion).format('DD/MM/YYYY') : '';
+    },
+    computedFechaActualizacion(){
+      return this.coleccion.controlDescripcion.fechaActualizacion ? moment(this.coleccion.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
+    }
   }
 }
 </script>

@@ -18,7 +18,7 @@ const videoSchema = new mongoose.Schema({
   },
   contenidoEstructura: {
     descripcionGeneral: String,
-    estructuraFormal: {type: String, enum: ['Entrevista controlada', 'Entrevista en campo', 'Entrevista con acción', 'Entrevista con imágenes', 'Grabación en campo', 'Reproducción de material']},
+    estructuraFormal: {type: String, enum: ['Grabación en campo', 'Registro con entrevista', 'Registro de materiales', 'Entrevista controlada', 'Entrevista en campo', 'Entrevista con imágenes', 'Entrevista con acción']},
     descriptorOnomastico: String,
     descriptorToponimico: String,
   },
@@ -34,7 +34,6 @@ const videoSchema = new mongoose.Schema({
     requisitosTecnicos: String,
   },
   documentacionAsociada: {
-    existenciaLocalizacionCopias: String,
     unidadesDescripcionRelacionadas: String,
     documentosAsociados: String,
   },
