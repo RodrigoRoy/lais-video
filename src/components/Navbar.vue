@@ -19,17 +19,17 @@
       </v-btn> -->
 
 
-      Inicio
-      <v-btn icon>
-        <router-link to="/" exact><v-icon>mdi-home</v-icon></router-link>
+      
+      <v-btn rounded color="transparent">
+        <router-link to="/" exact>Inicio<v-icon>mdi-home</v-icon></router-link>
       </v-btn>
-      Acerca de
-      <v-btn icon>
-        <router-link to="/acerca" exact><v-icon>mdi-information</v-icon></router-link>
+      
+      <v-btn rounded color="transparent">
+        <router-link to="/acerca" exact>Acerca de<v-icon>mdi-information</v-icon></router-link>
       </v-btn>
-      Colección
-      <v-btn icon>
-        <router-link to="/proyectos" exact><v-icon>mdi-apps</v-icon></router-link>
+      
+      <v-btn rounded color="transparent">
+        <router-link to="/proyectos" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
       </v-btn>
 
       <v-text-field hide-details placeholder="Buscar" single-line dense filled rounded class="shrink"></v-text-field>
@@ -161,4 +161,5 @@ export default {
   color: inherit;
   text-decoration: none;
 }
+
 </style>
