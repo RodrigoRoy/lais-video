@@ -1,3 +1,6 @@
+<!-- Componente que representa una ventana emergente (dialog) para un conjunto documental -->
+<!-- TODO: Actualizar e incorporar en "ColecciónProyectos.vue", "ColecciónProyectos1.vue" y "ColecciónProyectos2.vue" -->
+
 <template>
   <v-dialog v-model="dialog" overlay-opacity="0.80">
     <v-card>

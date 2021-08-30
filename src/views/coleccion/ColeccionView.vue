@@ -1,11 +1,15 @@
+<!-- Vista de los conjuntos documentales (grupos audiovisuales)
+Se reutiliza la misma vista para cualquier conjunto documental -->
+
 <template>
   <v-container>
+    <!-- Encabezado con título del conjunto y el camino dentro de la colección (breadcrumbs) en caso de tener -->
     <h2 class="text-h3 text-center">Entrevista controlada</h2>
-    <v-breadcrumbs :items="items" class="justify-center"></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs>
 
+    <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
     <v-row no-gutters align="center" justify="start">
       <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
-      <!-- <v-col cols="12" md="3" v-for="n in 16" :key="n"> -->
         <v-card class="ma-4 pa-4" outlined tile @click="goTo()">
           <v-img :src="require('@/assets/Foto_Acervo1.png')" height="150px"></v-img>
           <v-card-title class="justify-center">
@@ -26,6 +30,8 @@
       </v-col>
     </v-row>
 
+    <!-- Diseño de la ventana emergente (dialog) que muestra toda la información del conjunto -->
+    <!-- El diseño se basa en usar un elemento card con pestañas (tabs) -->
     <v-dialog v-model="dialog" overlay-opacity="0.80">
       <v-card>
         <!-- <v-card-title class="headline">Información completa</v-card-title> -->
@@ -102,6 +108,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -118,6 +125,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -144,6 +152,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -160,6 +169,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -171,6 +181,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -194,6 +205,7 @@
             </v-tab-item>
           </v-tabs>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="dialog = false">Cerrar</v-btn>
@@ -207,6 +219,8 @@
 export default {
   data () {
     return {
+      // El objeto coleccion representa un conjunto documental, es decir, un grupo jerarquico dentro de la organización del acervo
+      // Nota: el objeto coleccion será obtenido desde la base de datos en futuras iteraciones del código
       coleccion: {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-3',
@@ -240,6 +254,9 @@ export default {
           fechaActualizacion: new Date().toISOString().substr(0, 10),
         }
       },
+
+      // El objeto colecciones (en plural) tiene la información mínima de todos los subconjuntos que contiene el conjunto actual
+      // Nota: el objeto colecciones será obtenido desde la base de datos en futuras iteraciones del código
       colecciones: [
         {
           identificacion: {
@@ -272,7 +289,9 @@ export default {
           }
         },
       ],
-      items: [
+
+      // Representación jerárquica de los conjuntos a los que pertenecen las unidades documentales
+      breadcrumbs: [
         {
           text: 'Proyectos',
           disabled: false,
@@ -294,10 +313,14 @@ export default {
           href: 'coleccion',
         }
       ],
+
+      // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
       dialog: false,
     }
   },
+
   methods: {
+    // Permite de manera programática ir a una ubicación definida en el archivo router.js
     goTo: function(){
       this.$router.push({name: 'coleccion-view'});
     },

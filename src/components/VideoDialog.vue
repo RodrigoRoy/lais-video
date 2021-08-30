@@ -1,3 +1,6 @@
+<!-- Componente que representa una ventana emergente (dialog) para una unidad documental -->
+<!-- TODO: Actualizar e incorporar en "VideoView.vue" -->
+
 <template>
   <v-dialog v-model="dialog" overlay-opacity="0.80">
     <v-card>

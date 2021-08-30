@@ -1,6 +1,10 @@
+<!-- Componente que representa la barra superior y lateral que está siempre presente en todas las páginas del proyecto -->
+<!-- Hay dos elementos principales: la barra superior (app-bar) y el menú laterial auxiliar (navigation-drawer) -->
+
 <template>
   <header>
     <v-app-bar app absolute dark scroll-target="#app-container" color="#5c6bc088" :hide-on-scroll="true"> <!-- color="primary" -->
+      <!-- Iconos del lado izquierdo -->
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <a href="https://www.institutomora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/moraEscalado.png')" height="40"/></a>
       <a href="http://lais.mora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/lais_logo.png')" height="40"/></a>
@@ -8,35 +12,27 @@
         Registros en video
       </v-toolbar-title> -->
       <v-spacer></v-spacer>
-      <!-- <v-btn text v-if="!$store.state.isLoggedIn">
-        <router-link to="/registrar" class="nav-link" exact>Registrar</router-link>
-      </v-btn>
-      <v-btn text v-if="!$store.state.isLoggedIn">
-        <router-link to="/login" class="nav-link" exact>Entrar</router-link>
-      </v-btn>
-      <v-btn text v-if="$store.state.isLoggedIn">
-        <a v-on:click.prevent="logout()" class="nav-link" href="#">Salir</a>
-      </v-btn> -->
 
-
-      
+      <!-- Botones y opciones principales -->
       <v-btn rounded color="transparent">
         <router-link to="/" exact>Inicio<v-icon>mdi-home</v-icon></router-link>
       </v-btn>
-      
+
       <v-btn rounded color="transparent">
         <router-link to="/acerca" exact>Acerca de<v-icon>mdi-information</v-icon></router-link>
       </v-btn>
-      
+
       <v-btn rounded color="transparent">
         <router-link to="/proyectos" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
       </v-btn>
 
+      <!-- Barra de búsqueda -->
       <v-text-field hide-details placeholder="Buscar" single-line dense filled rounded class="shrink"></v-text-field>
       <v-btn icon>
         <router-link to="/search" exact><v-icon>mdi-magnify</v-icon></router-link>
       </v-btn>
 
+      <!-- Menú situado a la derecha para registro e inicio de sesión -->
       <v-menu bottom left >
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon color="yellow" v-bind="attrs" v-on="on" >
@@ -44,6 +40,7 @@
           </v-btn>
         </template>
 
+        <!-- Contenido del menu para registro e inicio de sesión -->
         <v-list>
           <v-list-item v-if="!$store.state.isLoggedIn">
             <v-list-item-title>
@@ -65,12 +62,15 @@
 
     </v-app-bar>
 
+    <!-- Contenido del menú laterial auxiliar -->
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list-item>
         <v-list-item-content>
+          <!-- Título -->
           <v-list-item-title class="title">
             Accesos directos
           </v-list-item-title>
+          <!-- Nombre de usuario -->
           <v-list-item-subtitle>
             {{this.$store.state.username ? this.$store.state.username : ''}}
           </v-list-item-subtitle>
@@ -79,6 +79,7 @@
 
       <v-divider></v-divider>
 
+      <!-- Accesos directos del menú lateral -->
       <v-list dense nav>
         <v-list-item link>
           <v-list-item-icon>
@@ -139,27 +140,32 @@
   </header>
 </template>
 
+
 <script>
-import * as auth from '../services/AuthService';
+import * as auth from '../services/AuthService'; // servicio global para autentificación de usuarios
 
 export default {
-  name: 'Navbar',
+  name: 'Navbar', // Nombre del componente actual
   data: () => ({
-    drawer: null, // navigation-drawer
+    // Auxiliar para indicar en que momento el menú lateral (navigation-drawer) está activo/visible o no
+    drawer: null,
   }),
+
   methods: {
+    // Funcionalidad al cerrar sesión
     logout: function(){
       auth.logout();
-      this.$router.push({name: 'home'});
+      this.$router.push({name: 'home'}); // Enviar a página inicial
     }
   }
 }
 </script>
 
+
 <style scoped>
+/* Quita el efecto subrayado en enlaces de la barra superior (app-bar) */
 .v-application a {
   color: inherit;
   text-decoration: none;
 }
-
 </style>

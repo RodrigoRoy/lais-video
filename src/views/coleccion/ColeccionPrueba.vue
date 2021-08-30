@@ -1,3 +1,5 @@
+<!-- Archivo de prueba para separar en un componente toda la ventana emergente (dialog) -->
+
 <template>
   <v-container>
     <h2 class="text-h3 text-center">Proyectos</h2>
@@ -5,7 +7,6 @@
 
     <v-row no-gutters align="center" justify="start">
       <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
-      <!-- <v-col cols="12" md="3" v-for="n in 16" :key="n"> -->
         <v-card class="ma-4 pa-4" outlined tile @click="goTo()">
           <v-img :src="require('@/assets/Foto_Acervo1.png')" height="150px"></v-img>
           <v-card-title class="justify-center">

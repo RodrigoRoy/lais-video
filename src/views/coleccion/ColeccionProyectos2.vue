@@ -1,11 +1,15 @@
+<!-- Vista provisional para representar los conjuntos documentales
+Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.vue" y "ColeccionProyectos2.vue" serán fusionados en una única vista reutilizable y el código será unificado en "ColeccionView.vue" -->
+
 <template>
   <v-container>
+    <!-- Encabezado con título del conjunto y el camino dentro de la colección (breadcrumbs) en caso de tener -->
     <h2 class="text-h3 text-center">Entrevista</h2>
-    <v-breadcrumbs :items="items" class="justify-center"></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs>
 
+    <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
     <v-row no-gutters align="center" justify="start">
       <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
-      <!-- <v-col cols="12" md="3" v-for="n in 16" :key="n"> -->
         <v-card class="ma-4 pa-4" outlined tile @click="goTo()">
           <v-img :src="require('@/assets/Foto_Acervo1.png')" height="150px"></v-img>
           <v-card-title class="justify-center">
@@ -29,6 +33,8 @@
       </v-col>
     </v-row>
 
+    <!-- Diseño de la ventana emergente (dialog) que muestra toda la información del conjunto -->
+    <!-- El diseño se basa en usar un elemento card con pestañas (tabs) -->
     <v-dialog v-model="dialog" overlay-opacity="0.80">
       <v-card>
         <!-- <v-card-title class="headline">Información completa</v-card-title> -->
@@ -105,6 +111,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -121,6 +128,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -147,6 +155,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -163,6 +172,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -174,6 +184,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
@@ -208,88 +219,97 @@
 
 <script>
 export default {
-  data () {
-    return {
-      coleccion: {
+  data: () => ({
+    // El objeto coleccion representa un conjunto documental, es decir, un grupo jerarquico dentro de la organización del acervo
+    // Nota: el objeto coleccion será obtenido desde la base de datos en futuras iteraciones del código
+    coleccion: {
+      identificacion: {
+        codigoReferencia: 'MXIM-AV-2-3',
+        titulo: 'Lorem ipsum',
+        pais: 'México',
+        fecha: new Date().toISOString().substr(0, 10),
+        proyectoInvestigacion: 'Consectetur adipiscing elit',
+        investigacion: 'Praesent rutrum',
+        coordinacionProyecto: 'Malesuada elit',
+      },
+      contexto: {
+        historiaInstitucional: 'In hac habitasse platea dictumst. Mauris ac dapibus neque. Nunc faucibus est eget rhoncus scelerisque. Proin venenatis ante sit amet libero fermentum varius. Donec tempor aliquam pretium',
+        semblanzaBiografica: 'Praesent faucibus pharetra nunc, quis venenatis nunc semper at. Suspendisse congue, leo convallis pulvinar convallis, mauris est bibendum felis, sed dignissim urna elit vel nibh',
+      },
+      contenidoEstructura: {
+        alcanceContenido: 'Vestibulum viverra dolor nec tempus ullamcorper',
+        valoracionSeleccionEliminacion: 'Pellentesque venenatis velit ligula',
+        nuevosIngresos: 'Ac congue diam gravida vel',
+        organizacion: 'Por proyecto de investigación',
+      },
+      accesoUso: {
+        condicionesAcceso: 'Usos reservados para consulta in situ',
+        condicionesReproduccion: 'Aenean vehicula ultricies euismod',
+      },
+      notas: {
+        notas: 'Vivamus eleifend nisl eu nisi laoreet, tristique sagittis leo tristique. Aliquam vitae diam vel velit posuere lobortis',
+      },
+      controlDescripcion: {
+        documentalistas: 'Duis dictum leo sit',
+        fechaDescripcion: new Date().toISOString().substr(0, 10),
+        fechaActualizacion: new Date().toISOString().substr(0, 10),
+      }
+    },
+
+    // El objeto colecciones (en plural) tiene la información mínima de todos los subconjuntos que contiene el conjunto actual
+    // Nota: el objeto colecciones será obtenido desde la base de datos en futuras iteraciones del código
+    colecciones: [
+      {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-3',
-          titulo: 'Lorem ipsum',
-          pais: 'México',
-          fecha: new Date().toISOString().substr(0, 10),
-          proyectoInvestigacion: 'Consectetur adipiscing elit',
-          investigacion: 'Praesent rutrum',
-          coordinacionProyecto: 'Malesuada elit',
-        },
-        contexto: {
-          historiaInstitucional: 'In hac habitasse platea dictumst. Mauris ac dapibus neque. Nunc faucibus est eget rhoncus scelerisque. Proin venenatis ante sit amet libero fermentum varius. Donec tempor aliquam pretium',
-          semblanzaBiografica: 'Praesent faucibus pharetra nunc, quis venenatis nunc semper at. Suspendisse congue, leo convallis pulvinar convallis, mauris est bibendum felis, sed dignissim urna elit vel nibh',
-        },
-        contenidoEstructura: {
-          alcanceContenido: 'Vestibulum viverra dolor nec tempus ullamcorper',
-          valoracionSeleccionEliminacion: 'Pellentesque venenatis velit ligula',
-          nuevosIngresos: 'Ac congue diam gravida vel',
-          organizacion: 'Por proyecto de investigación',
-        },
-        accesoUso: {
-          condicionesAcceso: 'Usos reservados para consulta in situ',
-          condicionesReproduccion: 'Aenean vehicula ultricies euismod',
-        },
-        notas: {
-          notas: 'Vivamus eleifend nisl eu nisi laoreet, tristique sagittis leo tristique. Aliquam vitae diam vel velit posuere lobortis',
-        },
-        controlDescripcion: {
-          documentalistas: 'Duis dictum leo sit',
-          fechaDescripcion: new Date().toISOString().substr(0, 10),
-          fechaActualizacion: new Date().toISOString().substr(0, 10),
+          codigoReferencia: 'MXIM-AV-2-7-2-1',
+          titulo: 'Entrevista controlada'
         }
       },
-      colecciones: [
-        {
-          identificacion: {
-            codigoReferencia: 'MXIM-AV-2-7-2-1',
-            titulo: 'Entrevista controlada'
-          }
-        },
-        {
-          identificacion: {
-            codigoReferencia: 'MXIM-AV-2-7-2-2',
-            titulo: 'Entrevista en campo'
-          }
-        },
-        {
-          identificacion: {
-            codigoReferencia: 'MXIM-AV-2-7-2-3',
-            titulo: 'Entrevista con acción'
-          }
-        },
-        {
-          identificacion: {
-            codigoReferencia: 'MXIM-AV-2-7-2-4',
-            titulo: 'Entrevista con imágenes'
-          }
+      {
+        identificacion: {
+          codigoReferencia: 'MXIM-AV-2-7-2-2',
+          titulo: 'Entrevista en campo'
         }
-      ],
-      items: [
-        {
-          text: 'Proyectos',
-          disabled: false,
-          href: '/proyectos',
-        },
-        {
-          text: 'Ejemplo Proyecto',
-          disabled: false,
-          href: '/coleccion/proyectos/1',
-        },
-        {
-          text: 'Entrevista',
-          disabled: true,
-          href: '/coleccion/proyectos/2',
+      },
+      {
+        identificacion: {
+          codigoReferencia: 'MXIM-AV-2-7-2-3',
+          titulo: 'Entrevista con acción'
         }
-      ],
-      dialog: false,
-    }
-  },
+      },
+      {
+        identificacion: {
+          codigoReferencia: 'MXIM-AV-2-7-2-4',
+          titulo: 'Entrevista con imágenes'
+        }
+      }
+    ],
+
+    // Representación jerárquica de los conjuntos a los que pertenecen las unidades documentales
+    breadcrumbs: [
+      {
+        text: 'Proyectos',
+        disabled: false,
+        href: '/proyectos',
+      },
+      {
+        text: 'Ejemplo Proyecto',
+        disabled: false,
+        href: '/coleccion/proyectos/1',
+      },
+      {
+        text: 'Entrevista',
+        disabled: true,
+        href: '/coleccion/proyectos/2',
+      }
+    ],
+
+    // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
+    dialog: false,
+  }),
+  
   methods: {
+    // Permite de manera programática ir a una ubicación definida en el archivo router.js
     goTo: function(){
       this.$router.push({name: 'video-view'});
     },

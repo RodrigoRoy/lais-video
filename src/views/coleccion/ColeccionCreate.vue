@@ -1,10 +1,16 @@
+<!-- Formulario de ingreso de la información de un conjunto documental (grupo) -->
+
 <template>
   <v-card class="pa-6">
+    <!-- Título -->
     <v-card-title class="text-h3 justify-center">Registro de conjunto documental</v-card-title>
+
+    <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contexto, etc) -->
     <v-form ref="coleccionForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
       <v-tabs v-model="tab" centered icons-and-text >
         <v-tabs-slider></v-tabs-slider>
 
+        <!-- Encabezados de pestañas -->
         <v-tab href="#identificacion">
           Identificación
           <v-icon>mdi-film</v-icon>
@@ -41,17 +47,20 @@
         </v-tab>
       </v-tabs>
 
+      <!-- Contenido de cada área o pestaña (tab) -->
       <v-tabs-items v-model="tab">
         <v-tab-item value="identificacion" >
           <v-card flat>
             <v-text-field v-model="coleccion.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1" :rules="rules.codigoReferencia" required></v-text-field>
 
+            <!-- Nota: País o países podrían ser autogenerados a partir de la información de las unidades documentales contenida -->
             <!-- <v-autocomplete v-model="coleccion.identificacion.pais" :items="paises" item-text="nombre" label="País" hint="País o países de producción del registro en video"></v-autocomplete> -->
 
             <v-text-field v-model="coleccion.identificacion.titulo" label="Título" hint="Título de la unidad de descripción"></v-text-field>
 
             <v-text-field v-model="coleccion.identificacion.proyectoInvestigacion" label="Proyecto de investigación" hint="Proyecto de investigación para el cual fueron realizados los registros a documentar"></v-text-field>
 
+            <!-- Los calendarios requiere parámetros adicionales que se indican en la documentación de Vuetify -->
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
                 <v-text-field :value="computedFecha" label="Fecha" hint="Fecha en que se hizo el registro" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
@@ -62,7 +71,6 @@
             <v-select v-model="coleccion.identificacion.nivelDescripcion" :items="['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']" label="Nivel de descripción"></v-select>
 
             <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Personas responsables de la investigación para la cual se realizaron los registros a documentar"></v-text-field>
-            <!-- <v-autocomplete v-model="coleccion.identificacion.investigacion" :items="people" item-text="nombre" label="Investigación" hint="Persona(s) responsable(s) de la investigación para la cual se realizaron los registros a documentar" v-model="coleccion.identificacion.investigacion" @blur="setSemblanza"></v-autocomplete> -->
 
             <v-text-field v-model="coleccion.identificacion.coordinacionProyecto" label="Coordinación del proyecto" hint="Personas coordinadoras del proyecto de investigación en el marco del cual se realizaron los registros a documentar"></v-text-field>
 
@@ -108,7 +116,8 @@
 
         <v-tab-item value="controlDescripcion" >
           <v-card flat>
-            <!-- <v-text-field v-model="coleccion.controlDescripcion.documentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field> -->
+            <!-- Nota: Los nombres podrían aparecen automáticamente porque pueden obtenerse del usuario que está conectado, según lo indica la base de datos -->
+            <v-text-field v-model="coleccion.controlDescripcion.documentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
 
             <v-text-field v-model="coleccion.controlDescripcion.reglasNormas" label="Reglas o normas" hint="Normas que se utilizaron para la elaboración de la ficha"></v-text-field>
 
@@ -136,22 +145,27 @@
         </v-tab-item>
       </v-tabs-items>
 
+      <!-- Botón para finalizar el llenado del formulario -->
       <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large @click="validate">Registrar</v-btn>
     </v-form>
+
+    <!-- Visualización textual del objeto coleccion (solo para efectos de prueba) -->
     <!-- <pre>{{ coleccion }}</pre> -->
   </v-card>
 </template>
 
 <script>
-// import * as coleccionService from '../../services/ColeccionService'
-import moment from 'moment'
+// import * as coleccionService from '../../services/ColeccionService' // servicio para usar api
+import moment from 'moment' // para formatos de fechas
 
 export default {
   data: () => ({
+    // El objeto coleccion representa una conjunto documental, es decir, un grupo audiovisual organizado por áreas
+    // Algunos campos deben inicializarse, por ejemplo fechas, mientras que otros son valores por default, por ejemplo reglas o normas.
     coleccion: {
       identificacion: {
         fecha: new Date().toISOString().substr(0, 10),
-        nivelDescripcion: 'Fondo'
+        nivelDescripcion: 'Grupo'
       },
       contexto: {},
       contenidoEstructura: {
@@ -166,52 +180,52 @@ export default {
       },
       adicional: {},
     },
+
+    // Auxiliar que representa numéricamente cuál pestaña (tab) está activa
     tab: null,
+
+    // Auxiliares para mostrar/ocultar los diferentes calendarios del formulario
     menuCalendar1: false,
     menuCalendar2: false,
     menuCalendar3: false,
+
+    // Auxiliar para indicar si todos los campos del formulario son válidos
     validForm: true,
+
+    // Reglas adicionales para validaciones personalizadas de ciertos campos
     rules: {
       codigoReferencia: [
         value => !!value || 'El código de referencia es necesario. Ejemplo: MXIM-AV-2-3-1',
         value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
       ]
     },
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    paises: [
-      { nombre: 'México', abbr: 'mx' },
-      { nombre: 'Brasil', abbr: 'br' },
-      { nombre: 'Estados Unidos', abbr: 'us' },
-    ],
-    people: [
-      {
-        nombre: 'Lourdes Roca',
-        semblanza: 'Semblanza de Lourdes Roca...',
-      },
-      {
-        nombre: 'Felipe Morales',
-        semblanza: 'Semblanza de Felipe Morales...',
-      },
-      {
-        nombre: 'Carlos Hernández',
-        semblanza: 'Semblanza de Carlos Hernández...',
-      }
-    ]
+
+    // Nota: Propuesta de representación de personas para el campo de investigación y sus semblanzas
+    // people: [
+    //   {
+    //     nombre: 'Lourdes Roca',
+    //     semblanza: 'Semblanza de Lourdes Roca...',
+    //   },
+    //   {
+    //     nombre: 'Felipe Morales',
+    //     semblanza: 'Semblanza de Felipe Morales...',
+    // ]
   }),
 
   methods: {
+    // Nota: Propuesta de método para asignar semnblanzas
     // setSemblanza: function(){
-    //   console.log("blur semblanza");
-    //   console.log("investigacion: ", this.coleccion.identificacion.investigacion);
     //   // const person = this.searchArray(this.coleccion.identificacion.investigacion, this.people);
     //   const person = this.people.find(o => o.nombre === this.coleccion.identificacion.investigacion);
-    //   console.log("persona: ", person);
     //   this.coleccion.contexto.semblanzaBiografica = person.semblanza;
-    //   console.log("semblanza: ", this.coleccion.contexto.semblanzaBiografica);
     // },
+
+    // Validación constante de los campos del formulario
     validate () {
       this.$refs.coleccionForm.validate()
     },
+
+    // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
     onSubmit: function(){
       if(!this.$refs.coleccionForm.validate()) // Se activa validación del formulario
         return;
@@ -225,7 +239,9 @@ export default {
     },
   },
 
+  // Métodos específicos para variables y valores calculados
   computed: {
+    // Dar formato dia/mes/año adecuado en las fechas que aparecen con calendarios
     computedFecha(){
       return this.coleccion.identificacion.fecha ? moment(this.coleccion.identificacion.fecha).format('DD/MM/YYYY') : '';
     },
