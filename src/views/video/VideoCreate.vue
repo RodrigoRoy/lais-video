@@ -63,6 +63,11 @@
 
             <v-text-field v-model="video.identificacion.lugar" label="Lugar de registro" hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></v-text-field>
 
+            <l-map style="height: 300px" :zoom="zoom" :center="center" @click="addMarker">
+              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+              <l-marker :lat-lng="markerLatLng" @click="removeMarker()" :visible="markerVisibility"></l-marker>
+            </l-map>
+
             <v-combobox v-model="video.identificacion.pais" :items="paises" label="País" hint="País o países de producción del registro en video"></v-combobox>
 
             <v-text-field v-model="video.identificacion.duracion" label="Duración" hint="Se consigna la duración del registro en minutos" :rules="rules.duracion"></v-text-field>
@@ -173,6 +178,18 @@
 
 <script>
 import moment from 'moment' // para formatos de fechas
+import L from 'leaflet';
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'; // elementos principales para mapas
+
+// Solución al problema de falta de icono en mapas según documentación oficial: https://vue2-leaflet.netlify.app/quickstart/#marker-icons-are-missing
+import { Icon } from 'leaflet';
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
+
 
 export default {
   data: () => ({
@@ -221,7 +238,16 @@ export default {
       duracion2: [
         value => /(^\d{1,3}:\d{1,2}(:\d{1,2}){0,1}$){0,1}/.test(value) || 'La duración debe estar en el formato correcto'
       ]
-    }
+    },
+
+    // Valores para usar en mapa
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution:
+    '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    zoom: 15,
+    center: L.latLng(19.37651880288312, -99.18512156842415),
+    markerLatLng: L.latLng(19.37651880288312, -99.18512156842415),
+    markerVisibility: true,
   }),
 
   methods: {
@@ -237,6 +263,16 @@ export default {
       // console.log(this.video);
       // TODO: Usar api para envio de información
     },
+    // Agregar marcador al dar clic en mapa
+    addMarker(event) {
+      this.markerLatLng = event.latlng;
+      this.markerVisibility = true;
+    },
+    // Eliminar marcador al dar clic en mapa
+    removeMarker() {
+      this.markerLatLng = undefined;
+      this.markerVisibility = false;
+    }
   },
 
   // Métodos específicos para variables y valores calculados
@@ -251,6 +287,12 @@ export default {
     computedFechaActualizacion(){
       return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
     }
-  }
+  },
+
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+  },
 }
 </script>

@@ -2,8 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import moment from 'moment'
-import vuetify from './plugins/vuetify'
+import moment from 'moment' // manejo de fechas
+import vuetify from './plugins/vuetify' // front-end material design
+import 'leaflet/dist/leaflet.css' // correcta visualización de mapas
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 
