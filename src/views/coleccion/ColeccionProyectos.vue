@@ -436,7 +436,8 @@ export default {
           titulo: 'Trinchera sonora. Voces y miradas de Radio Venceremos'
         },
         adicional: {
-          imagen: 'Trinchera_1.png'
+          imagen: 'Trinchera_1.png',
+          presentacion: '*Trinchera sonora (2017)*\n\nUna microhistoria de las voces subalternas develadas por la memoria visual. Mujeres y hombres que participaron en la emisora guerrillera Radio Venceremos (1981-1992), nos narran las motivaciones que llevaron al Ejército Revolucionario del Pueblo (ERP) a construir un sistema de comunicación alternativo y cómo se desarrollo la emisora hasta su última transmisión. Con algunas imágenes de archivo del Museo de la Palabra y la Imagen (MUPI) se constituyó una narrativa audiovisual sobre la trayectoria de la radio; registros fotográficos que permiten acercarnos a diferentes actores sociales periféricos, personas de a pie que se esforzaron por cambiar el rumbo de la historia y que colaboraron desde donde les tocó luchar: su Trinchera Sonora'
         }
       },
       {
@@ -445,7 +446,8 @@ export default {
           titulo: 'Región Transfronteriza México-Guatemala'
         },
         adicional: {
-          imagen: 'Region transfronteriza.jpg'
+          imagen: 'Region transfronteriza.jpg',
+          presentacion: '*Región Transfronteriza México-Guatemala:Dimensión regional y bases para su desarrollo integral*\n\nLa frontera separa y distingue los territorios de los países, pero no significa que sea abstracta y homogénea. Un primer acercamiento al límite internacional entre México y Guatemala en la región de Soconusco, nos ofrece un panorama que invita a reflexionar sobre su carácter heterogéneo y plural.\n\nLa planeación y el trabajo en equipo son clave y, desde diversas disciplinas, las miradas se enriquecen con un objetivo principal: documentar fotográfica y audiovisualmente los variados itinerarios y la cotidianidad de la frontera. Lo anterior es mucho más que operar equipos, es mirar primero muy bien para potenciar la documentación visual, fuentes de investigación que no hallaremos de otra manera más que construyéndolas.'
         }
       },
       {
