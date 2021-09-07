@@ -19,6 +19,9 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
             <div class="text-truncate d-md-none">
               {{ coleccion.identificacion.titulo}}
             </div>
+            <div class="font-weight-thin">
+              {{ coleccion.identificacion.fecha }}
+            </div>
           </v-card-title>
           <v-card-subtitle class="pb-0 text-center">
             {{ coleccion.identificacion.codigoReferencia }}
@@ -284,7 +287,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-1',
-          titulo: 'Un Pueblo en la Memoria'
+          titulo: 'Un Pueblo en la Memoria',
+          fecha: '1995'
         },
         adicional: {
           imagen: 'Un pueblo 1.png',
@@ -294,7 +298,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-2',
-          titulo: 'Tradición o Modernidad: Reto de una Generación. Testimonios del Arquitecto Luis Ortiz Macedo'
+          titulo: 'Tradición o Modernidad: Reto de una Generación. Testimonios del Arquitecto Luis Ortiz Macedo',
+          fecha: '1996'
         },
         adicional: {
           imagen: 'Tradición o modernidad 1.png',
@@ -304,7 +309,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-3',
-          titulo: 'El Buen Restaurador Ama Lo Antiguo. Testimonios del Arquitecto Ricardo de Robina'
+          titulo: 'El Buen Restaurador Ama Lo Antiguo. Testimonios del Arquitecto Ricardo de Robina',
+          fecha: '1996 - 1997'
         },
         adicional: {
           imagen: 'El Buen Restaurador  1.png',
@@ -314,7 +320,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-4',
-          titulo: 'Cuando la Rumba Nos Conoció...'
+          titulo: 'Cuando la Rumba Nos Conoció...',
+          fecha: '1998'
         },
         adicional: {
           imagen: 'Cuando la Rumba Nos Conoció 1.png',
@@ -324,7 +331,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-5',
-          titulo: 'Más vale paso que dure...'
+          titulo: 'Más vale paso que dure...',
+          fecha: '1998'
         },
         adicional: {
           imagen: 'Foto_Acervo1.png',
@@ -334,7 +342,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-6',
-          titulo: 'Mi Multi es Mi Multi. Historia del Multifamiliar Miguel Alemán'
+          titulo: 'Mi Multi es Mi Multi. Historia del Multifamiliar Miguel Alemán',
+          fecha: '1998 - 2000'
         },
         adicional: {
           imagen: 'Mi multi 2.png',
@@ -344,7 +353,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-7',
-          titulo: 'Km. C-62 Un nómada del riel'
+          titulo: 'Km. C-62 Un nómada del riel',
+          fecha: '2000'
         },
         adicional: {
           imagen: 'Km_1.png',
@@ -354,7 +364,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-8',
-          titulo: 'El Arte de Hacer Ciudad. Testimonios del Arquitecto Mario Pani'
+          titulo: 'El Arte de Hacer Ciudad. Testimonios del Arquitecto Mario Pani',
+          fecha: '2001'
         },
         adicional: {
           imagen: 'El arte de hacer_2.png',
@@ -364,7 +375,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-9',
-          titulo: 'Revelando el Rollo'
+          titulo: 'Revelando el Rollo',
+          fecha: '2001 - 2002'
         },
         adicional: {
           imagen: 'Revelando el rollo_1.png',
@@ -374,7 +386,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-10',
-          titulo: 'De dolor y esperanza. El asilo un pasado presente'
+          titulo: 'De dolor y esperanza. El asilo un pasado presente',
+          fecha: '2002'
         },
         adicional: {
           imagen: 'De dolor y esperanza.jpg',
@@ -384,7 +397,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-11',
-          titulo: 'Proyecto: Rudos vs. Técnicos/imágenes exitosas'
+          titulo: 'Proyecto: Rudos vs. Técnicos/imágenes exitosas',
+          fecha: '2005'
         },
         adicional: {
           imagen: 'Foto_Acervo1.png'
@@ -393,7 +407,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-12',
-          titulo: 'El Triángulo de Tacubaya. Historia del Cine Hipódromo Condesa'
+          titulo: 'El Triángulo de Tacubaya. Historia del Cine Hipódromo Condesa',
+          fecha: '2003 - 2005'
         },
         adicional: {
           imagen: 'Triángulo_1.png',
@@ -403,7 +418,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-13',
-          titulo: 'Ciudad Olimpia: El Año que Fuimos Modernos'
+          titulo: 'Ciudad Olimpia: El Año que Fuimos Modernos',
+          fecha: '2003 - 2005'
         },
         adicional: {
           imagen: 'Ciudad Olimpia_2.png',
@@ -413,7 +429,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-14',
-          titulo: 'De la Tele a la Boca… Una Reflexión sobre Desarrollo Infantil y Salud'
+          titulo: 'De la Tele a la Boca… Una Reflexión sobre Desarrollo Infantil y Salud',
+          fecha: '2008'
         },
         adicional: {
           imagen: 'De la TV_1.png',
@@ -423,7 +440,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-15',
-          titulo: 'Más allá del reglamento. Avatares de un embajador mexicano, Vicente Muñiz arroyo 1974-1977'
+          titulo: 'Más allá del reglamento. Avatares de un embajador mexicano, Vicente Muñiz arroyo 1974-1977',
+          fecha: '2010'
         },
         adicional: {
           imagen: 'Mas alla del reglamento.jpg',
@@ -433,7 +451,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-16',
-          titulo: 'Trinchera sonora. Voces y miradas de Radio Venceremos'
+          titulo: 'Trinchera sonora. Voces y miradas de Radio Venceremos',
+          fecha: '2017'
         },
         adicional: {
           imagen: 'Trinchera_1.png',
@@ -443,7 +462,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-17',
-          titulo: 'Región Transfronteriza México-Guatemala'
+          titulo: 'Región Transfronteriza México-Guatemala',
+          fecha: '2019'
         },
         adicional: {
           imagen: 'Region transfronteriza.jpg',
@@ -453,7 +473,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-18',
-          titulo: 'Desaparición forzada y equipos de antropología forense: Diálogos en América Latina'
+          titulo: 'Desaparición forzada y equipos de antropología forense: Diálogos en América Latina',
+          fecha: '2020'
         },
         adicional: {
           imagen: 'Desaparicion forzada.jpg',
