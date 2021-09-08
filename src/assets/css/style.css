@@ -40,6 +40,7 @@ div#app-container{
   padding: 2rem;
   background-color: #1d2733;
   overflow: auto;
+  font-family: Courier, "Lucida Console", monospace;
 }
 
 footer#custom-footer{

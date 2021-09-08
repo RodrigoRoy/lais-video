@@ -28,7 +28,7 @@ export default {
 #app-container{
   background-size: cover;
 
-  font-family: 'Roboto', 'Open Sans', serif !important;
+  font-family: 'Roboto', 'Open Sans', serif;
   font-size: 22px !important;
   
   background: linear-gradient(
