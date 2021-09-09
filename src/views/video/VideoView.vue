@@ -69,14 +69,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Código de referencia</span>
                           {{ video.identificacion.codigoReferencia }}
-                        <span @mouseover="upHint0 = true" @mouseleave="upHint0 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint0">Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1-2</span>
+                          <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1-2</span>
+                          </v-tooltip>
                         </span>
                       </p>
                       <p>
@@ -86,114 +86,98 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Fecha</span>
                         {{ video.identificacion.fecha | date}}
-
-                        <span @mouseover="upHint1 = true" @mouseleave="upHint1 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint1">Fecha en que se hizo el registro</span>
-                        </span>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>Fecha en que se hizo el registro</span>
+                          </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">País</span>
                         {{ video.identificacion.pais }}
-
-                        <span @mouseover="upHint2 = true" @mouseleave="upHint2 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint2">País o países de producción del registro en video</span>
-                        </span>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>País o países de producción del registro en video</span>
+                          </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Lugar de registro</span>
                         {{ video.identificacion.lugar }}
-
-                        <span @mouseover="upHint3 = true" @mouseleave="upHint3 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint3">Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general</span>
-                        </span>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general</span>
+                          </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Duración</span>
                         {{ video.identificacion.duracion }} minutos
-
-                        <span @mouseover="upHint4 = true" @mouseleave="upHint4 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint4">Se consigna la duración del registro en minutos</span>
-                        </span>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>Se consigna la duración del registro en minutos</span>
+                          </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Persona entrevistada</span>
                         {{ video.identificacion.personasEntrevistadas }}
-
-                        <span @mouseover="upHint5 = true" @mouseleave="upHint5 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint5">Persona que entabla un diálogo con la persona que dirige la entrevista</span>
-                        </span>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>Persona que entabla un diálogo con la persona que dirige la entrevista</span>
+                          </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Persona que entrevista</span>
                         {{ video.identificacion.entrevistador }}
-
-                        <span @mouseover="upHint6 = true" @mouseleave="upHint6 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint6">Persona encargada de realizar la entrevista</span>
-                        </span>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                              </svg>
+                            </template>
+                            <span>Persona encargada de realizar la entrevista</span>
+                          </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Cámara</span>
                         {{ video.identificacion.camara }}
-
-                        <span @mouseover="upHint7 = true" @mouseleave="upHint7 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint7">Persona encargada de operar la cámara de video</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Persona encargada de operar la cámara de video</span>
+                        </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Asistente</span>
                         {{ video.identificacion.asistente }}
-
-                        <span @mouseover="upHint8 = true" @mouseleave="upHint8 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint8">Persona o personas encargadas de apoyar en diversas labores técnicas</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Persona o personas encargadas de apoyar en diversas labores técnicas</span>
+                        </v-tooltip>
                       </p>
                     </v-card-text>
                   </v-card>
@@ -205,16 +189,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Descripción general</span>
                         {{ video.contenidoEstructura.descripcionGeneral }}
-
-                        <span @mouseover="upHint9 = true" @mouseleave="upHint9 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint9">Contenido del material. Se describen los lugares, personas y/o acciones registradas, según tipos de plano, emplazamientos y movimientos</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Contenido del material. Se describen los lugares, personas y/o acciones registradas, según tipos de plano, emplazamientos y movimientos</span>
+                        </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Estructura formal</span>
@@ -223,30 +205,28 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Descriptor onomástico</span>
                         {{ video.contenidoEstructura.descriptorOnomastico }}
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Nombres de las personas (nombre y apellido) que aparecen el registro</span>
+                        </v-tooltip>
 
-                        <span @mouseover="upHint10 = true" @mouseleave="upHint10 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint10">Nombres de las personas (nombre y apellido) que aparecen el registro</span>
-                        </span>
                       </p>
                       <p>
                         <span class="font-weight-bold">Descriptor toponímico</span>
                         {{ video.contenidoEstructura.descriptorToponimico }}
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Nombres de las localidades o sitios que aparecen en el registro</span>
+                        </v-tooltip>
 
-                        <span @mouseover="upHint11 = true" @mouseleave="upHint11 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint11">Nombres de las localidades o sitios que aparecen en el registro</span>
-                        </span>
                       </p>
                     </v-card-text>
                   </v-card>
@@ -258,16 +238,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Idioma original</span>
                         {{ video.accesoUso.idiomaOriginal }}
-
-                        <span @mouseover="upHint12 = true" @mouseleave="upHint12 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint12">Idioma o idiomas originales del registro</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Idioma o idiomas originales del registro</span>
+                        </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Soporte original</span>
@@ -300,16 +278,15 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Requisitos técnicos</span>
                         {{ video.accesoUso.requisitosTecnicos }}
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Equipo de reproducción o software que se requiere para visionar el material</span>
+                        </v-tooltip>
 
-                        <span @mouseover="upHint13 = true" @mouseleave="upHint13 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint13">Equipo de reproducción o software que se requiere para visionar el material</span>
-                        </span>
                       </p>
                     </v-card-text>
                   </v-card>
@@ -321,29 +298,27 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Unidades de descripción relacionadas</span>
                         {{ video.documentacionAsociada.unidadesDescripcionRelacionadas }}
-
-                        <span @mouseover="upHint14 = true" @mouseleave="upHint14 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint14">Relación que existe entre dos o más unidades de la misma colección a partir de coincidencias temáticas o conceptuales</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Relación que existe entre dos o más unidades de la misma colección a partir de coincidencias temáticas o conceptuales</span>
+                        </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Documentos asociados</span>
                         {{ video.documentacionAsociada.documentosAsociados }}
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Publicación o documento que tenga relación directa con la producción catalogada. La relación puede ser temática, autoral, etc.</span>
+                        </v-tooltip>
 
-                        <span @mouseover="upHint15 = true" @mouseleave="upHint15 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint15">Publicación o documento que tenga relación directa con la producción catalogada. La relación puede ser temática, autoral, etc.</span>
                         </span>
                       </p>
                     </v-card-text>
@@ -355,15 +330,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Notas</span>
                         {{ video.notas.notas }}
-
-                        <span @mouseover="upHint16 = true" @mouseleave="upHint16 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint16">Información que se considere relevante y que no pudo ser indexada en algún otro campo</span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Información que se considere relevante y que no pudo ser indexada en algún otro campo</span>
+                        </v-tooltip>
                         </span>
                       </p>
                     </v-card-text>
@@ -376,16 +350,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Nombre del archivero</span>
                         {{ video.controlDescripcion.nombreArchivero }}
-
-                        <span @mouseover="upHint17 = true" @mouseleave="upHint17 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint17">Nombre completo de la persona que elaboró la ficha de la unidad</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Nombre completo de la persona que elaboró la ficha de la unidad</span>
+                        </v-tooltip>
                       </p>
                       <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
                       <!-- <p>
@@ -395,29 +367,26 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Fecha de descripción</span>
                         {{ video.controlDescripcion.fechaDescripcion | date}}
-
-                        <span @mouseover="upHint18 = true" @mouseleave="upHint18 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint18">Fecha en que se elaboró la ficha de la unidad</span>
-                        </span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Fecha en que se elaboró la ficha de la unidad</span>
+                        </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Fecha de actualización</span>
                         {{ video.controlDescripcion.fechaActualizacion | date}}
-
-                        <span @mouseover="upHint19 = true" @mouseleave="upHint19 = false">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#5c6cc4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <circle cx="12" cy="12" r="9" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                          <polyline points="11 12 12 12 12 16 13 16" />
-                          </svg>
-                          <span v-show="upHint19">Fecha de la última modificación a la ficha de la unidad</span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                          </template>
+                          <span>Fecha de la última modificación a la ficha de la unidad</span>
+                        </v-tooltip>
                         </span>
                       </p>
                     </v-card-text>
@@ -534,29 +503,7 @@ export default {
     ],
 
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
-    dialog: false,
-
-    // Auxiliares para el control de los hints.
-    upHint0: false,
-    upHint1: false,
-    upHint2: false,
-    upHint3: false,
-    upHint4: false,
-    upHint5: false,
-    upHint6: false,
-    upHint7: false,
-    upHint8: false,
-    upHint9: false,
-    upHint10: false,
-    upHint11: false,
-    upHint12: false,
-    upHint13: false,
-    upHint14: false,
-    upHint15: false,
-    upHint16: false,
-    upHint17: false,
-    upHint18: false,
-    upHint19: false,
+    dialog: false
   }),
 
   // Espacio reservado para métodos que calculen o transformen la información
