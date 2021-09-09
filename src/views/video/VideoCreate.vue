@@ -3,7 +3,7 @@
 <template>
   <v-card class="pa-6">
     <!-- Título -->
-    <v-card-title class="text-h3 justify-center">Registro de unidad simple</v-card-title>
+    <v-card-title class="text-h3 justify-center">Unidad simple</v-card-title>
 
     <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contenido y estructura, etc) -->
     <v-form ref="videoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">

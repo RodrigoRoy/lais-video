@@ -23,14 +23,8 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
               {{ coleccion.identificacion.fecha }}
             </div>
           </v-card-title>
-          <v-card-subtitle class="pb-0 text-center">
-            {{ coleccion.identificacion.codigoReferencia }}
-          </v-card-subtitle>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn icon @click.stop.prevent="goTo()">
-              <v-icon>mdi-folder-open</v-icon>
-            </v-btn>
             <v-btn icon @click.stop.prevent="openDialog(coleccion)">
               <v-icon>mdi-open-in-new</v-icon>
             </v-btn>
@@ -287,8 +281,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-1',
-          titulo: 'Un Pueblo en la Memoria',
-          fecha: '1995'
+          titulo: 'Un pueblo en la memoria',
+          fecha: '1993 - 1994'
         },
         adicional: {
           imagen: 'Un pueblo 1.png',
@@ -298,8 +292,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-2',
-          titulo: 'Tradición o Modernidad: Reto de una Generación. Testimonios del Arquitecto Luis Ortiz Macedo',
-          fecha: '1996'
+          titulo: 'Tradición o modernidad',
+          fecha: '1995 - 1996'
         },
         adicional: {
           imagen: 'Tradición o modernidad 1.png',
@@ -309,7 +303,7 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-3',
-          titulo: 'El Buen Restaurador Ama Lo Antiguo. Testimonios del Arquitecto Ricardo de Robina',
+          titulo: 'El buen restaurador ama lo antiguo',
           fecha: '1996 - 1997'
         },
         adicional: {
@@ -320,19 +314,19 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-4',
-          titulo: 'Cuando la Rumba Nos Conoció...',
+          titulo: 'Cuando la rumba nos conoció',
           fecha: '1998'
         },
         adicional: {
           imagen: 'Cuando la Rumba Nos Conoció 1.png',
-          presentacion: 'Cuando la Rumba nos conoció\n\nEs un proyecto de documental derivado de los registros en video creados por Carlos Hernández y Humberto Galarza durante su participación en un Taller de Cine Documental impartido en la Escuela Internacional de Cine y Televisión de San Antonio de los Baños, Cuba.\nSe incluyen registros hechos con algunas comparsas en la ciudad de La Habana, así como entrevistas hechas en los lugares donde se interpretaban piezas musicales y se bailaba.\nTambién existen registros hechos en distintos centros de entretenimiento donde se puede ver la interpretación musical de varios géneros característicos de la isla.\nDerivado de este trabajo se produjo el documental *Cuando la Rumba Nos Conoció…* (1998)'
+          presentacion: 'Cuando la rumba nos conoció\n\nEs un proyecto de documental derivado de los registros en video creados por Carlos Hernández y Humberto Galarza durante su participación en un Taller de Cine Documental impartido en la Escuela Internacional de Cine y Televisión de San Antonio de los Baños, Cuba.\nSe incluyen registros hechos con algunas comparsas en la ciudad de La Habana, así como entrevistas hechas en los lugares donde se interpretaban piezas musicales y se bailaba.\nTambién existen registros hechos en distintos centros de entretenimiento donde se puede ver la interpretación musical de varios géneros característicos de la isla.\nDerivado de este trabajo se produjo el documental *Cuando la Rumba Nos Conoció…* (1998)'
         }
       },
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-5',
-          titulo: 'Más vale paso que dure...',
-          fecha: '1998'
+          titulo: 'Más vale paso que dure',
+          fecha: '1995 - 1997'
         },
         adicional: {
           imagen: 'Foto_Acervo1.png',
@@ -342,8 +336,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-6',
-          titulo: 'Mi Multi es Mi Multi. Historia del Multifamiliar Miguel Alemán',
-          fecha: '1998 - 2000'
+          titulo: 'Mi Multi es mi Multi',
+          fecha: '1996 - 1999'
         },
         adicional: {
           imagen: 'Mi multi 2.png',
@@ -354,7 +348,7 @@ export default {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-7',
           titulo: 'Km. C-62 Un nómada del riel',
-          fecha: '2000'
+          fecha: '1996 - 2000'
         },
         adicional: {
           imagen: 'Km_1.png',
@@ -364,8 +358,8 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-8',
-          titulo: 'El Arte de Hacer Ciudad. Testimonios del Arquitecto Mario Pani',
-          fecha: '2001'
+          titulo: 'El arte de hacer ciudad',
+          fecha: '1999 - 2001'
         },
         adicional: {
           imagen: 'El arte de hacer_2.png',
@@ -375,7 +369,7 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-9',
-          titulo: 'Revelando el Rollo',
+          titulo: 'Revelando el rollo',
           fecha: '2001 - 2002'
         },
         adicional: {
@@ -386,7 +380,7 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-10',
-          titulo: 'De dolor y esperanza. El asilo un pasado presente',
+          titulo: 'De dolor y esperanza',
           fecha: '2002'
         },
         adicional: {
@@ -397,17 +391,7 @@ export default {
       {
         identificacion: {
           codigoReferencia: 'MXIM-AV-2-11',
-          titulo: 'Proyecto: Rudos vs. Técnicos/imágenes exitosas',
-          fecha: '2005'
-        },
-        adicional: {
-          imagen: 'Foto_Acervo1.png'
-        }
-      },
-      {
-        identificacion: {
-          codigoReferencia: 'MXIM-AV-2-12',
-          titulo: 'El Triángulo de Tacubaya. Historia del Cine Hipódromo Condesa',
+          titulo: 'El triángulo de Tacubaya',
           fecha: '2003 - 2005'
         },
         adicional: {
@@ -417,20 +401,20 @@ export default {
       },
       {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-13',
-          titulo: 'Ciudad Olimpia: El Año que Fuimos Modernos',
+          codigoReferencia: 'MXIM-AV-2-12',
+          titulo: 'Ciudad olimpia',
           fecha: '2003 - 2005'
         },
         adicional: {
           imagen: 'Ciudad Olimpia_2.png',
-          presentacion: '*Ciudad Olimpia, el año que fuimos modernos* (2003-2005)\n\nFue el proyecto de investigación de tesis de licenciatura en historia de Daniel Inclán, becario entonces del LAIS. Los registros fueron realizados por Carlos Hernández y están hechos sobre todo a partir de materiales gráficos y audiovisuales de la época. El documental Ciudad Olimpia (2005) fue producido por el Instituto Mora.'
+          presentacion: '*Ciudad olimpia, el año que fuimos modernos* (2003-2005)\n\nFue el proyecto de investigación de tesis de licenciatura en historia de Daniel Inclán, becario entonces del LAIS. Los registros fueron realizados por Carlos Hernández y están hechos sobre todo a partir de materiales gráficos y audiovisuales de la época. El documental Ciudad Olimpia (2005) fue producido por el Instituto Mora.'
         }
       },
       {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-14',
-          titulo: 'De la Tele a la Boca… Una Reflexión sobre Desarrollo Infantil y Salud',
-          fecha: '2008'
+          codigoReferencia: 'MXIM-AV-2-13',
+          titulo: 'De la tele a la boca',
+          fecha: '2003 - 2008'
         },
         adicional: {
           imagen: 'De la TV_1.png',
@@ -439,8 +423,8 @@ export default {
       },
       {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-15',
-          titulo: 'Más allá del reglamento. Avatares de un embajador mexicano, Vicente Muñiz arroyo 1974-1977',
+          codigoReferencia: 'MXIM-AV-2-14',
+          titulo: 'Más allá del reglamento',
           fecha: '2010'
         },
         adicional: {
@@ -450,9 +434,9 @@ export default {
       },
       {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-16',
-          titulo: 'Trinchera sonora. Voces y miradas de Radio Venceremos',
-          fecha: '2017'
+          codigoReferencia: 'MXIM-AV-2-15',
+          titulo: 'Trinchera sonora',
+          fecha: '2015 - 2017'
         },
         adicional: {
           imagen: 'Trinchera_1.png',
@@ -461,19 +445,19 @@ export default {
       },
       {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-17',
-          titulo: 'Región Transfronteriza México-Guatemala',
+          codigoReferencia: 'MXIM-AV-2-16',
+          titulo: 'Región transfronteriza México-Guatemala',
           fecha: '2019'
         },
         adicional: {
           imagen: 'Region transfronteriza.jpg',
-          presentacion: '*Región Transfronteriza México-Guatemala:Dimensión regional y bases para su desarrollo integral*\n\nLa frontera separa y distingue los territorios de los países, pero no significa que sea abstracta y homogénea. Un primer acercamiento al límite internacional entre México y Guatemala en la región de Soconusco, nos ofrece un panorama que invita a reflexionar sobre su carácter heterogéneo y plural.\n\nLa planeación y el trabajo en equipo son clave y, desde diversas disciplinas, las miradas se enriquecen con un objetivo principal: documentar fotográfica y audiovisualmente los variados itinerarios y la cotidianidad de la frontera. Lo anterior es mucho más que operar equipos, es mirar primero muy bien para potenciar la documentación visual, fuentes de investigación que no hallaremos de otra manera más que construyéndolas.'
+          presentacion: '*Región Transfronteriza México-Guatemala: Dimensión regional y bases para su desarrollo integral*\n\nLa frontera separa y distingue los territorios de los países, pero no significa que sea abstracta y homogénea. Un primer acercamiento al límite internacional entre México y Guatemala en la región de Soconusco, nos ofrece un panorama que invita a reflexionar sobre su carácter heterogéneo y plural.\n\nLa planeación y el trabajo en equipo son clave y, desde diversas disciplinas, las miradas se enriquecen con un objetivo principal: documentar fotográfica y audiovisualmente los variados itinerarios y la cotidianidad de la frontera. Lo anterior es mucho más que operar equipos, es mirar primero muy bien para potenciar la documentación visual, fuentes de investigación que no hallaremos de otra manera más que construyéndolas.'
         }
       },
       {
         identificacion: {
-          codigoReferencia: 'MXIM-AV-2-18',
-          titulo: 'Desaparición forzada y equipos de antropología forense: Diálogos en América Latina',
+          codigoReferencia: 'MXIM-AV-2-17',
+          titulo: 'Desaparición forzada y equipos de antropología forense',
           fecha: '2020'
         },
         adicional: {

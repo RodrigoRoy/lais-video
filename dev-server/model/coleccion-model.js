@@ -7,6 +7,7 @@ const coleccionSchema = new mongoose.Schema({
     proyectoInvestigacion: String, // Sólo para proyectos
     // pais: [String], // INFERIDO
     fecha: Date,
+    fechaFin: Date,
     nivelDescripcion: {type: String, enum: ['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']},
     investigacion: String,
     coordinacionProyecto: String,
@@ -24,8 +25,8 @@ const coleccionSchema = new mongoose.Schema({
     organizacion: String, // No es necesaria??
   },
   accesoUso: {
-    condicionesAcceso: {type: String, enum: ['Usos reservados para consulta in situ', 'Usos no lucrativos', 'Usos lucrativos']},
-    condicionesReproduccion: String,
+    condicionesAcceso: {type: String, enum: ['Usos reservados para consulta in situ']},
+    condicionesUso: {type: String, enum: ['Usos no lucrativos', 'Usos lucrativos']},
   },
   notas: {
     notas: String,

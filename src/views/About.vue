@@ -30,7 +30,12 @@
                     Acerca del sitio
                   </h1>
                   <p class="text-body-1">
-                    El Acervo Audiovisual del Laboratorio Audiovisual de Investigación Social (LAIS) alberga tres colecciones que corresponden a los documentales reunidos de forma continua desde 1994, los registros audiovisuales propios en el marco de diversos proyectos de investigación del LAIS y los materiales audiovisuales recopilados de diferente procedencia institucional y particular.
+                    El Acervo Audiovisual del Laboratorio Audiovisual de Investigación Social (LAIS) alberga tres colecciones que corresponden a:
+                    <ol>
+                      <li>Los documentales reunidos de forma continua desde 1994</li>
+                      <li>Los registros audiovisuales propios en el marco de diversos proyectos de investigación del LAIS</li>
+                      <li>Los materiales audiovisuales recopilados de diferente procedencia institucional y particular</li>
+                    </ol>
                   </p>
                   <p class="text-body-1">
                     Varios de estos títulos, registros y materiales, pueden ser útiles para otras investigaciones y sobre todo impulsar más estudios sobre lo audiovisual, de ahí el propósito central de poner en acceso su documentación y facilitar el camino para indagar con ellos y sobre ellos.
@@ -40,7 +45,7 @@
                     La Colección de Registros en Video
                   </h1>
                   <p class="text-body-1">
-                    Esta colección se integra a partir de los registros audiovisuales en video que las/os integrantes del LAIS han realizado desde 1993 para varios proyectos de investigación. Los registros en video inician en 1993, con la primera producción del Instituto: Un Pueblo en la Memoria (Roca, 1994).
+                    Esta colección se integra a partir de los registros audiovisuales en video que las/os integrantes del LAIS han realizado desde 1993 para varios proyectos de investigación. Los registros en video inician con la primera producción del Instituto: <em>Un Pueblo en la Memoria</em> (Roca, 1994).
                   </p>
                   <p class="text-body-1">
                     Estos proyectos de investigación han sido realizados por diversos equipos de trabajo, siempre con la participación de algún integrante del LAIS. Ya fuera que requerian la realización de un documental o una exposición, o bien la construcción de fuentes visuales y audiovisuales para la investigación, estos proyectos implicaron registros fotográficos y audiovisuales que fueron conformando esta colección con el tiempo, que integra sobre todo registros de entrevistas, registros en campo y también algunas reproducciones digitales de material gráfico.

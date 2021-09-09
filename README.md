@@ -1,6 +1,6 @@
-# Sistema de registros en video del LAIS
+# Sistema de la colección de registros en video del LAIS
 
-Proyecto para registrar, organizar y mostrar la información de los registros audiovisuales de la colección de registros en video del Laboratorio Audiovisual de Investigación Social (LAIS)
+Proyecto para registrar, organizar y mostrar la información de los registros audiovisuales de la colección de registros en video del Laboratorio Audiovisual de Investigación Social (LAIS).
 
 El modelo de sistema presentado puede servir para otras personas o instancias que desean replicar un modelo similar para este tipo de registros.
 
@@ -11,7 +11,7 @@ El modelo de sistema presentado puede servir para otras personas o instancias qu
 
 ## Archivo de configuración
 
-Se debe crear un archivo de configuración `.env` para almacenar los datos importantes del proyecto:
+Se debe crear un archivo de configuración `.env` [(dotenv)](https://www.npmjs.com/package/dotenv) para almacenar los datos importantes del proyecto:
 
 ```sh
 MY_PORT=3000
@@ -21,7 +21,6 @@ MY_DB_NAME_PROD=nombre-base-de-datos-produccion
 MY_TOKEN_DEV=token-desarrollo
 MY_TOKEN_PROD=token-produccion
 ```
-[Sobre archivos .env](https://www.npmjs.com/package/dotenv).
 
 ## Instrucciones para desarrollo
 

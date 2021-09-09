@@ -3,7 +3,7 @@
 <template>
   <v-card class="pa-6">
     <!-- Título -->
-    <v-card-title class="text-h3 justify-center">Registro de conjunto documental</v-card-title>
+    <v-card-title class="text-h3 justify-center">Grupo documental</v-card-title>
 
     <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contexto, etc) -->
     <v-form ref="coleccionForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
@@ -102,9 +102,9 @@
 
         <v-tab-item value="accesoUso" >
           <v-card flat>
-            <v-select v-model="coleccion.accesoUso.condicionesAcceso" :items="['Usos reservados para consulta in situ', 'Usos no lucrativos', 'Usos lucrativos']" label="Condiciones de acceso" hint="Los diversos usos del material que se ofrecen al usuario"></v-select>
+            <v-select v-model="coleccion.accesoUso.condicionesAcceso" :items="['Usos reservados para consulta in situ']" label="Condiciones de acceso" hint="Los diversos usos del material que se ofrecen al usuario"></v-select>
 
-            <v-text-field v-model="coleccion.accesoUso.condicionesReproduccion" label="Condiciones de reproducción" hint="Si el registro original se puede reproducir o no, de acuerdo al tipo de solicitud"></v-text-field>
+            <v-select v-model="coleccion.accesoUso.condicionesUso" :items="['Usos no lucrativos', 'Usos lucrativos']" label="Condiciones de reproducción" hint="Si el registro original se puede reproducir o no, de acuerdo al tipo de solicitud"></v-select>
           </v-card>
         </v-tab-item>
 
@@ -171,7 +171,9 @@ export default {
       contenidoEstructura: {
         organizacion: 'Por proyecto de investigación',
       },
-      accesoUso: {},
+      accesoUso: {
+        condicionesAcceso: 'Usos reservados para consulta in situ',
+      },
       notas: {},
       controlDescripcion: {
         reglasNormas: 'LAIS, Lineamientos para la descripción de Registros de video propios, 2021',
