@@ -24,6 +24,7 @@
     "vue": "^2.6.11",
     "vue-markdown": "^2.1.2",
     "vue-router": "^3.1.6",
+    "vue-snip": "^1.2.0",
     "vue2-leaflet": "^2.7.1",
     "vuetify": "^2.2.21",
     "vuex": "^3.1.3"

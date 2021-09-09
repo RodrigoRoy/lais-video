@@ -13,12 +13,9 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
         <v-card class="ma-4 pa-4" outlined tile @click="goTo()">
           <v-img :src="require('@/assets/Caratulas_Proyectos/' + coleccion.adicional.imagen)" height="150px"></v-img>
           <v-card-title class="text-center justify-center">
-            <div class="d-none d-md-block">
-              {{ coleccion.identificacion.titulo | truncate(35) }}
-            </div>
-            <div class="text-truncate d-md-none">
-              {{ coleccion.identificacion.titulo}}
-            </div>
+            <p v-snip:js=2>
+              {{ coleccion.identificacion.titulo }}
+            </p>
             <div class="font-weight-thin">
               {{ coleccion.identificacion.fecha }}
             </div>

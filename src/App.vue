@@ -11,6 +11,10 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import Vue from 'vue'
+import VueSnip from 'vue-snip'
+
+Vue.use(VueSnip)
 
 export default {
   name: 'App',
