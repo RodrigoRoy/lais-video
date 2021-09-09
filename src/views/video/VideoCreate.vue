@@ -94,7 +94,7 @@
 
             <v-text-field v-model="video.contenidoEstructura.descriptorOnomastico" label="Descriptor onomástico" hint="Nombres de las personas (nombre y apellido) que aparecen el registro"></v-text-field>
 
-            <v-text-field v-model="video.contenidoEstructura.descriptorToponimico" label="Descriptor toponímico" hint="nombres de las localidades o sitios que aparecen en el registro"></v-text-field>
+            <v-text-field v-model="video.contenidoEstructura.descriptorToponimico" label="Descriptor toponímico" hint="Nombres de las localidades o sitios que aparecen en el registro"></v-text-field>
           </v-card>
         </v-tab-item>
 
