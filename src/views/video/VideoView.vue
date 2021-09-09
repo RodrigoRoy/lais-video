@@ -68,16 +68,16 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                     <v-card-text>
                       <p>
                         <span class="font-weight-bold">Código de referencia</span>
-                          {{ video.identificacion.codigoReferencia }}
-                          <v-tooltip right>
+                          <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1-2</span>
                           </v-tooltip>
-                        </span>
+                          {{ video.identificacion.codigoReferencia }}
+                          
                       </p>
                       <p>
                         <span class="font-weight-bold">Título</span>
@@ -86,11 +86,11 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Fecha</span>
                         {{ video.identificacion.fecha | date}}
-                        <v-tooltip right>
+                        <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>Fecha en que se hizo el registro</span>
                           </v-tooltip>
@@ -98,11 +98,11 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">País</span>
                         {{ video.identificacion.pais }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>País o países de producción del registro en video</span>
                           </v-tooltip>
@@ -110,11 +110,11 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Lugar de registro</span>
                         {{ video.identificacion.lugar }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general</span>
                           </v-tooltip>
@@ -122,11 +122,11 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Duración</span>
                         {{ video.identificacion.duracion }} minutos
-                        <v-tooltip right>
+                        <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>Se consigna la duración del registro en minutos</span>
                           </v-tooltip>
@@ -134,11 +134,11 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Persona entrevistada</span>
                         {{ video.identificacion.personasEntrevistadas }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>Persona que entabla un diálogo con la persona que dirige la entrevista</span>
                           </v-tooltip>
@@ -146,11 +146,11 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Persona que entrevista</span>
                         {{ video.identificacion.entrevistador }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                              <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
                             </template>
                             <span>Persona encargada de realizar la entrevista</span>
                           </v-tooltip>
@@ -158,24 +158,24 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Cámara</span>
                         {{ video.identificacion.camara }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Persona encargada de operar la cámara de video</span>
                         </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Asistente</span>
                         {{ video.identificacion.asistente }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Persona o personas encargadas de apoyar en diversas labores técnicas</span>
                         </v-tooltip>
                       </p>
@@ -189,12 +189,12 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Descripción general</span>
                         {{ video.contenidoEstructura.descripcionGeneral }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Contenido del material. Se describen los lugares, personas y/o acciones registradas, según tipos de plano, emplazamientos y movimientos</span>
                         </v-tooltip>
                       </p>
@@ -205,12 +205,12 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Descriptor onomástico</span>
                         {{ video.contenidoEstructura.descriptorOnomastico }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Nombres de las personas (nombre y apellido) que aparecen el registro</span>
                         </v-tooltip>
 
@@ -218,12 +218,12 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Descriptor toponímico</span>
                         {{ video.contenidoEstructura.descriptorToponimico }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Nombres de las localidades o sitios que aparecen en el registro</span>
                         </v-tooltip>
 
@@ -238,12 +238,12 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Idioma original</span>
                         {{ video.accesoUso.idiomaOriginal }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Idioma o idiomas originales del registro</span>
                         </v-tooltip>
                       </p>
@@ -278,12 +278,12 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Requisitos técnicos</span>
                         {{ video.accesoUso.requisitosTecnicos }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Equipo de reproducción o software que se requiere para visionar el material</span>
                         </v-tooltip>
 
@@ -298,28 +298,27 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Unidades de descripción relacionadas</span>
                         {{ video.documentacionAsociada.unidadesDescripcionRelacionadas }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Relación que existe entre dos o más unidades de la misma colección a partir de coincidencias temáticas o conceptuales</span>
                         </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Documentos asociados</span>
                         {{ video.documentacionAsociada.documentosAsociados }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Publicación o documento que tenga relación directa con la producción catalogada. La relación puede ser temática, autoral, etc.</span>
                         </v-tooltip>
 
-                        </span>
                       </p>
                     </v-card-text>
                   </v-card>
@@ -330,15 +329,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Notas</span>
                         {{ video.notas.notas }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Información que se considere relevante y que no pudo ser indexada en algún otro campo</span>
                         </v-tooltip>
-                        </span>
                       </p>
                     </v-card-text>
                   </v-card>
@@ -350,12 +348,12 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Nombre del archivero</span>
                         {{ video.controlDescripcion.nombreArchivero }}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Nombre completo de la persona que elaboró la ficha de la unidad</span>
                         </v-tooltip>
                       </p>
@@ -367,27 +365,26 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
                       <p>
                         <span class="font-weight-bold">Fecha de descripción</span>
                         {{ video.controlDescripcion.fechaDescripcion | date}}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Fecha en que se elaboró la ficha de la unidad</span>
                         </v-tooltip>
                       </p>
                       <p>
                         <span class="font-weight-bold">Fecha de actualización</span>
                         {{ video.controlDescripcion.fechaActualizacion | date}}
-                        <v-tooltip right>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on, attrs }">
-                            <svg v-bind="attrs" v-on="on" style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                            </svg>
-                          </template>
+                              <v-icon small v-bind="attrs" v-on="on">
+                                mdi-information
+                              </v-icon>
+                            </template>
                           <span>Fecha de la última modificación a la ficha de la unidad</span>
                         </v-tooltip>
-                        </span>
                       </p>
                     </v-card-text>
                   </v-card>

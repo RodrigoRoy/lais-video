@@ -7,23 +7,18 @@
       </v-divider>
       <div>
         
-        <div>
-          <p>Poussin #45 Col. Mixcoac C.P. 03730 México CDMX</p>
-          <p>Tel. conmutador 5598-3777</p>
-        </div>
-        
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
           <img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png">
         </a>
         <br>
-        Este sitio está bajo una 
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">licencia de Creative Commons Reconocimiento-NoComercial 4.0 Internacional</a>
+        <p class="small">
+          Este sitio está bajo una 
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">licencia de Creative Commons Reconocimiento-NoComercial 4.0 Internacional</a>
+        </p>
+        
         <br>
         
       </div>
-      <v-card-text class="white--text">
-        {{ new Date() | year }} — <strong>Laboratorio Audiovisual de Investigación Social</strong>
-      </v-card-text>
     </v-card>
   </v-footer>
 </template>
@@ -51,14 +46,8 @@ export default {
 }
 </script>
 
-<style scope>
-ul {
-  list-style: none;
-}
-.redes-sociales {
-  display: flex;
-  justify-content: space-between;
-  width: 25%;
-  margin: 1rem auto;
+<style scoped>
+.small{
+  font-size: 0.8rem;
 }
 </style>
