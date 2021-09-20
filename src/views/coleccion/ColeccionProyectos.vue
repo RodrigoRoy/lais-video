@@ -13,12 +13,12 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
         <v-card class="ma-4 pa-4" outlined tile @click="goTo()">
           <v-img :src="require('@/assets/Caratulas_Proyectos/' + coleccion.adicional.imagen)" height="150px"></v-img>
           <v-card-title class="text-center justify-center">
-            <p v-snip:js=2>
+            <p v-snip="2">
               {{ coleccion.identificacion.titulo }}
             </p>
-            <div class="font-weight-thin">
+            <p class="font-weight-thin my-n2">
               {{ coleccion.identificacion.fecha }}
-            </div>
+            </p>
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
