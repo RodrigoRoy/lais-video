@@ -2,22 +2,17 @@
 
 <template>
   <v-footer>
-    <v-card flat tile width="100%" class="text-center">
-      <v-divider>
-      </v-divider>
+    <!-- uso de color transparente para v-card -->
+    <v-card flat tile width="100%" class="text-center mb-n2" color="rgb(0,0,0,0)">
       <div>
-        
         <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
           <img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png">
         </a>
         <br>
-        <p class="small">
-          Este sitio está bajo una 
+        <p class="text-caption">
+          Este sitio está bajo una
           <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">licencia de Creative Commons Reconocimiento-NoComercial 4.0 Internacional</a>
         </p>
-        
-        <br>
-        
       </div>
     </v-card>
   </v-footer>
@@ -45,9 +40,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.small{
-  font-size: 0.8rem;
-}
-</style>
