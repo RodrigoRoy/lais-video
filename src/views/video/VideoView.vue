@@ -28,7 +28,7 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
       <v-card>
         <v-card-text>
           <!-- Componente para el render de la información del video -->
-          <VideoInfo :video="video"></VideoInfo>
+          <video-info :video="video"></video-info>
         </v-card-text>
 
         <v-card-actions>
