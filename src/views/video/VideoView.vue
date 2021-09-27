@@ -33,7 +33,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">Cerrar</v-btn>
+          <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn>
+          <v-btn @click="dialog = false">Cerrar <v-icon>mdi-close</v-icon></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,6 +45,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
 <script>
 import VideoInfo from '@/components/VideoInfo.vue'
+import jsPDF from 'jspdf' // creación de PDF
+import 'jspdf-autotable' // plugin para crear tablas dentro de PDF
 
 export default {
   name: 'VideoView',
@@ -124,6 +127,30 @@ export default {
 
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false
-  })
+  }),
+  methods: {
+    // Crea la ficha del registro en video en formato PDF
+    printPDF() {
+      const doc = new jsPDF();
+
+      doc.text("Ficha de catalogación de registro audiovisual", 10, 10);
+      doc.autoTable({
+        body: [
+          ['Código de referencia', this.video.identificacion.codigoReferencia],
+          ['Título', this.video.identificacion.titulo],
+          ['Fecha', this.video.identificacion.fecha],
+          ['Lugar', this.video.identificacion.lugar],
+          ['País', this.video.identificacion.pais],
+          ['Duración', this.video.identificacion.duracion],
+          ['Personas entrevistadas', this.video.identificacion.personasEntrevistadas],
+          ['Entrevistador/a', this.video.identificacion.entrevistador],
+          ['Cámara', this.video.identificacion.camara],
+          ['Asistente', this.video.identificacion.asistente]
+        ],
+      })
+      // El nombre del archivo incluye código de referencia
+      doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
+    }
+  }
 }
 </script>
