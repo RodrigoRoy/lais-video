@@ -65,7 +65,7 @@
 
             <l-map style="height: 300px" :zoom="zoom" :center="center" @click="addMarker">
               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-marker draggable="true" :lat-lng="markerLatLng" @click="removeMarker()" :visible="markerVisibility"></l-marker>
+              <l-marker :draggable="true" :lat-lng="markerLatLng" @click="removeMarker()" :visible="markerVisibility"></l-marker>
             </l-map>
 
             <v-combobox v-model="video.identificacion.pais" :items="paises" label="País" hint="País o países de producción del registro en video"></v-combobox>
