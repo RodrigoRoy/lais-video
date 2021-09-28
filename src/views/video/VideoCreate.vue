@@ -63,8 +63,9 @@
 
             <v-text-field v-model="video.identificacion.lugar" label="Lugar de registro" hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></v-text-field>
 
-            <l-map style="height: 300px" :zoom="zoom" :center="center" @click="addMarker">
-              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-map style="height: 300px" :zoom="zoom" :center="center" :options="mapOptions" @click="addMarker">
+              <l-control-layers position="topright"></l-control-layers>
+              <l-tile-layer v-for="tileProvider in tileProviders" :key="tileProvider.name" :name="tileProvider.name" :visible="tileProvider.visible" :url="tileProvider.url" :attribution="tileProvider.attribution" layer-type="base"/>
               <l-marker :draggable="true" :lat-lng="markerLatLng" @click="removeMarker()" :visible="markerVisibility"></l-marker>
             </l-map>
 
@@ -179,7 +180,7 @@
 <script>
 import moment from 'moment' // para formatos de fechas
 import L from 'leaflet';
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'; // elementos principales para mapas
+import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet'; // elementos principales para mapas
 
 // Solución al problema de falta de icono en mapas según documentación oficial: https://vue2-leaflet.netlify.app/quickstart/#marker-icons-are-missing
 import { Icon } from 'leaflet';
@@ -192,6 +193,13 @@ Icon.Default.mergeOptions({
 
 
 export default {
+  name: 'VideoCreate',
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LControlLayers
+  },
   data: () => ({
     // El objeto video representa una unidad documental, es decir, un registro audiovisual organizado por áreas
     // Algunos campos deben inicializarse, por ejemplo fechas
@@ -248,6 +256,32 @@ export default {
     center: L.latLng(19.37651880288312, -99.18512156842415),
     markerLatLng: L.latLng(19.37651880288312, -99.18512156842415),
     markerVisibility: true,
+    mapOptions: {
+      zoomControl: true,
+      attributionControl: true,
+      zoomSnap: true,
+    },
+    // Lista completa de proveedores para mapas: https://leaflet-extras.github.io/leaflet-providers/preview/
+    tileProviders: [
+      {
+        name: 'OpenStreetMap',
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        visible: true,
+        attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      },
+      {
+        name: 'OpenTopoMap',
+        url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+        visible: false,
+        attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+      },
+      {
+        name: 'WorldImagery',
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        visible: false,
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      },
+    ],
   }),
 
   methods: {
@@ -287,12 +321,6 @@ export default {
     computedFechaActualizacion(){
       return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
     }
-  },
-
-  components: {
-    LMap,
-    LTileLayer,
-    LMarker,
-  },
+  }
 }
 </script>
