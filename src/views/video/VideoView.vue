@@ -33,7 +33,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">Cerrar</v-btn>
+          <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn>
+          <v-btn @click="dialog = false">Cerrar <v-icon>mdi-close</v-icon></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,6 +45,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
 <script>
 import VideoInfo from '@/components/VideoInfo.vue'
+import jsPDF from 'jspdf' // creación de PDF
+import 'jspdf-autotable' // plugin para crear tablas dentro de PDF
 
 export default {
   name: 'VideoView',
@@ -124,6 +127,50 @@ export default {
 
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false
-  })
+  }),
+  methods: {
+    // Crea la ficha del registro en video en formato PDF
+    printPDF() {
+      const doc = new jsPDF();
+
+      doc.text("Ficha de catalogación de registro audiovisual", 10, 10);
+      doc.autoTable({
+        body: [
+          ['Código de referencia', this.video.identificacion.codigoReferencia],
+          ['Título', this.video.identificacion.titulo],
+          ['Fecha', this.video.identificacion.fecha],
+          ['Lugar', this.video.identificacion.lugar],
+          ['País', this.video.identificacion.pais],
+          ['Duración', this.video.identificacion.duracion],
+          ['Personas entrevistadas', this.video.identificacion.personasEntrevistadas],
+          ['Entrevistador/a', this.video.identificacion.entrevistador],
+          ['Cámara', this.video.identificacion.camara],
+          ['Asistente', this.video.identificacion.asistente],
+          ['Descripción general', this.video.contenidoEstructura.descripcionGeneral],
+          ['Estructura formal', this.video.contenidoEstructura.estructuraFormal],
+          ['Descriptor onomástico', this.video.contenidoEstructura.descriptorOnomastico],
+          ['Descriptor toponímico', this.video.contenidoEstructura.descriptorToponimico],
+          ['Idioma original', this.video.accesoUso.idiomaOriginal],
+          ['Soporte', this.video.accesoUso.soporte],
+          ['Soporte', this.video.accesoUso.numeroCasetes],
+          ['Color', this.video.accesoUso.color],
+          ['Audio', this.video.accesoUso.audio],
+          ['Sistema de grabación', this.video.accesoUso.sistemaGrabacion],
+          ['Resolución de grabación', this.video.accesoUso.resolucionGrabacion],
+          ['Formato de video digital', this.video.accesoUso.formatoVideoDigital],
+          ['Requisitos técnicos', this.video.accesoUso.requisitosTecnicos],
+          ['Unidades de descripción relacionadas', this.video.documentacionAsociada.unidadesDescripcionRelacionadas],
+          ['Documentos asociados', this.video.documentacionAsociada.documentosAsociados],
+          ['Notas', this.video.notas.notas],
+          ['Archivista', this.video.controlDescripcion.nombreArchivero],
+          ['Notas de archivista', this.video.controlDescripcion.notaArchivero],
+          ['Fecha de descripción', this.video.controlDescripcion.fechaDescripcion],
+          ['Fecha de última actualización', this.video.controlDescripcion.fechaActualizacion],
+        ],
+      })
+      // El nombre del archivo incluye código de referencia
+      doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
+    }
+  }
 }
 </script>
