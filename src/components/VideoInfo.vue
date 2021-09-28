@@ -45,52 +45,52 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Código de referencia</span>
-                    <Hint hint="Código alfanumérico separado por guines. Ejemplo: MXIM-AV-2-3-1"></Hint>
+                    <hint hint="Código alfanumérico separado por guines. Ejemplo: MXIM-AV-2-3-1"></hint>
                     {{ video.identificacion.codigoReferencia }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Título</span>
-                  <Hint hint="Título de la colección"></Hint>
+                  <hint hint="Título de la colección"></hint>
                   {{ video.identificacion.titulo }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Fecha</span>
-                  <Hint hint="Fecha en que se hizo el registro"></Hint>
+                  <hint hint="Fecha en que se hizo el registro"></hint>
                   {{ video.identificacion.fecha | date}}
                 </p>
                 <p>
                   <span class="font-weight-bold">País</span>
-                  <Hint hint="País o países de producción del registro en video"></Hint>
+                  <hint hint="País o países de producción del registro en video"></hint>
                   {{ video.identificacion.pais }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Lugar de registro</span>
-                  <Hint hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></Hint>
+                  <hint hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></hint>
                   {{ video.identificacion.lugar }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Duración</span>
-                  <Hint hint="Se consigna la duración del registro en minutos"></Hint>
+                  <hint hint="Se consigna la duración del registro en minutos"></hint>
                   {{ video.identificacion.duracion }} minutos
                 </p>
                 <p>
                   <span class="font-weight-bold">Persona entrevistada</span>
-                  <Hint hint="Persona que entabla un diálogo con la persona que dirige la entrevista"></Hint>
+                  <hint hint="Persona que entabla un diálogo con la persona que dirige la entrevista"></hint>
                   {{ video.identificacion.personasEntrevistadas }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Persona que entrevista</span>
-                  <Hint hint="Persona encargada de realizar la entrevista"></Hint>
+                  <hint hint="Persona encargada de realizar la entrevista"></hint>
                   {{ video.identificacion.entrevistador }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Cámara</span>
-                  <Hint hint="Persona encargada de operar la cámara de video"></Hint>
+                  <hint hint="Persona encargada de operar la cámara de video"></hint>
                   {{ video.identificacion.camara }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Asistente</span>
-                  <Hint hint="Persona o personas encargadas de apoyar en diversas labores técnicas"></Hint>
+                  <hint hint="Persona o personas encargadas de apoyar en diversas labores técnicas"></hint>
                   {{ video.identificacion.asistente }}
                 </p>
               </v-card-text>
@@ -102,23 +102,23 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Descripción general</span>
-                  <Hint hint="Contenido del material. Se describen los lugares, personas y/o acciones registradas, según tipos de plano, emplazamientos y movimientos"></Hint>
+                  <hint hint="Contenido del material. Se describen los lugares, personas y/o acciones registradas, según tipos de plano, emplazamientos y movimientos"></hint>
                   {{ video.contenidoEstructura.descripcionGeneral }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Estructura formal</span>
-                  <Hint hint="Tipo de registro: grabación en campo, registro con entrevista o registro de materiales"></Hint>
+                  <hint hint="Tipo de registro: grabación en campo, registro con entrevista o registro de materiales"></hint>
                   {{ video.contenidoEstructura.estructuraFormal }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Descriptor onomástico</span>
-                  <Hint hint="Nombres de las personas (nombre y apellido) que aparecen el registro"></Hint>
+                  <hint hint="Nombres de las personas (nombre y apellido) que aparecen el registro"></hint>
                   {{ video.contenidoEstructura.descriptorOnomastico }}
 
                 </p>
                 <p>
                   <span class="font-weight-bold">Descriptor toponímico</span>
-                  <Hint hint="Nombres de las localidades o sitios que aparecen en el registro"></Hint>
+                  <hint hint="Nombres de las localidades o sitios que aparecen en el registro"></hint>
                   {{ video.contenidoEstructura.descriptorToponimico }}
                 </p>
               </v-card-text>
@@ -130,47 +130,47 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Idioma original</span>
-                  <Hint hint="Idioma o idiomas originales del registro"></Hint>
+                  <hint hint="Idioma o idiomas originales del registro"></hint>
                   {{ video.accesoUso.idiomaOriginal }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Soporte original</span>
-                  <Hint hint="Soporte del material: Betacam, Hi8, DVCAM, MiniDV o Archivo digital."></Hint>
+                  <hint hint="Soporte del material: Betacam, Hi8, DVCAM, MiniDV o Archivo digital."></hint>
                   {{ video.accesoUso.soporte }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Sistema de grabación</span>
-                  <Hint hint="Sistema de grabación y reproducción de los registros: NTSC, PAL o SECAM."></Hint>
+                  <hint hint="Sistema de grabación y reproducción de los registros: NTSC, PAL o SECAM."></hint>
                   {{ video.accesoUso.sistemaGrabacion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Resolución de grabación</span>
-                  <Hint hint="Número de píxeles que puede mostrar el registro en video."></Hint>
+                  <hint hint="Número de píxeles que puede mostrar el registro en video."></hint>
                   {{ video.accesoUso.resolucionGrabacion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Formato de video digital</span>
-                  <Hint hint="Formato de archivo que almacena los datos del video digital en una computadora."></Hint>
+                  <hint hint="Formato de archivo que almacena los datos del video digital en una computadora."></hint>
                   {{ video.accesoUso.formatoVideoDigital }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Número de casetes</span>
-                  <Hint hint="Número de casetes que conforman la entrevista."></Hint>
+                  <hint hint="Número de casetes que conforman la entrevista."></hint>
                   {{ video.accesoUso.numeroCasetes }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Color</span>
-                  <Hint hint="Se consigna si el registro es a color o blanco y negro."></Hint>
+                  <hint hint="Se consigna si el registro es a color o blanco y negro."></hint>
                   {{ video.accesoUso.color }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Audio</span>
-                  <Hint hint="Sistema de audio en que se encuentra la producción."></Hint>
+                  <hint hint="Sistema de audio en que se encuentra la producción."></hint>
                   {{ video.accesoUso.audio }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Requisitos técnicos</span>
-                  <Hint hint="Equipo de reproducción o software que se requiere para visionar el material"></Hint>
+                  <hint hint="Equipo de reproducción o software que se requiere para visionar el material"></hint>
                   {{ video.accesoUso.requisitosTecnicos }}
                 </p>
               </v-card-text>
@@ -182,12 +182,12 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Unidades de descripción relacionadas</span>
-                  <Hint hint="Relación que existe entre dos o más unidades de la misma colección a partir de coincidencias temáticas o conceptuales"></Hint>
+                  <hint hint="Relación que existe entre dos o más unidades de la misma colección a partir de coincidencias temáticas o conceptuales"></hint>
                   {{ video.documentacionAsociada.unidadesDescripcionRelacionadas }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Documentos asociados</span>
-                  <Hint hint="Publicación o documento que tenga relación directa con la producción catalogada. La relación puede ser temática, autoral, etc."></Hint>
+                  <hint hint="Publicación o documento que tenga relación directa con la producción catalogada. La relación puede ser temática, autoral, etc."></hint>
                   {{ video.documentacionAsociada.documentosAsociados }}
                 </p>
               </v-card-text>
@@ -198,7 +198,7 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Notas</span>
-                  <Hint hint="Información que se considere relevante y que no pudo ser indexada en algún otro campo"></Hint>
+                  <hint hint="Información que se considere relevante y que no pudo ser indexada en algún otro campo"></hint>
                   {{ video.notas.notas }}
                 </p>
               </v-card-text>
@@ -210,7 +210,7 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Nombre del archivero</span>
-                  <Hint hint="Nombre completo de la persona que elaboró la ficha de la unidad"></Hint>
+                  <hint hint="Nombre completo de la persona que elaboró la ficha de la unidad"></hint>
                   {{ video.controlDescripcion.nombreArchivero }}
                 </p>
                 <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
@@ -220,12 +220,12 @@
                 </p> -->
                 <p>
                   <span class="font-weight-bold">Fecha de descripción</span>
-                  <Hint hint="Fecha en que se elaboró la ficha de la unidad"></Hint>
+                  <hint hint="Fecha en que se elaboró la ficha de la unidad"></hint>
                   {{ video.controlDescripcion.fechaDescripcion | date}}
                 </p>
                 <p>
                   <span class="font-weight-bold">Fecha de actualización</span>
-                  <Hint hint="Fecha de la última modificación a la ficha de la unidad"></Hint>
+                  <hint hint="Fecha de la última modificación a la ficha de la unidad"></hint>
                   {{ video.controlDescripcion.fechaActualizacion | date}}
                 </p>
               </v-card-text>
