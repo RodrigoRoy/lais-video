@@ -13,10 +13,10 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
         <v-card class="ma-4 pa-4" outlined tile @click="dialog = true">
           <v-img :src="require('@/assets/videopreview.png')" height="150px"></v-img>
           <v-card-title class="justify-center">
-            {{ video.identificacion.titulo }}
+            {{ video.identificacion.codigoReferencia }}-{{n}}
           </v-card-title>
           <v-card-subtitle class="pb-0 text-center">
-            {{ video.identificacion.codigoReferencia }}-{{n}}
+            {{ video.identificacion.fecha | date}}
           </v-card-subtitle>
         </v-card>
       </v-col>
@@ -59,7 +59,6 @@ export default {
     video: {
       identificacion: {
         codigoReferencia: 'MXIM-AV-2-3-4',
-        titulo: 'Lorem ipsum',
         fecha: new Date().toISOString().substr(0, 10),
         lugar: 'Nullam ipsum urna, dapibus scelerisque neque quis',
         pais: 'México',
@@ -137,7 +136,6 @@ export default {
       doc.autoTable({
         body: [
           ['Código de referencia', this.video.identificacion.codigoReferencia],
-          ['Título', this.video.identificacion.titulo],
           ['Fecha', this.video.identificacion.fecha],
           ['Lugar', this.video.identificacion.lugar],
           ['País', this.video.identificacion.pais],
@@ -152,7 +150,7 @@ export default {
           ['Descriptor toponímico', this.video.contenidoEstructura.descriptorToponimico],
           ['Idioma original', this.video.accesoUso.idiomaOriginal],
           ['Soporte', this.video.accesoUso.soporte],
-          ['Soporte', this.video.accesoUso.numeroCasetes],
+          ['Número de casetes', this.video.accesoUso.numeroCasetes],
           ['Color', this.video.accesoUso.color],
           ['Audio', this.video.accesoUso.audio],
           ['Sistema de grabación', this.video.accesoUso.sistemaGrabacion],

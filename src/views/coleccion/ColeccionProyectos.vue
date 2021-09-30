@@ -16,7 +16,7 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
             <p v-snip="2">
               {{ coleccion.identificacion.titulo }}
             </p>
-            <p class="font-weight-thin my-n2">
+            <p class="font-weight-light my-n2">
               {{ coleccion.identificacion.fecha }}
             </p>
           </v-card-title>

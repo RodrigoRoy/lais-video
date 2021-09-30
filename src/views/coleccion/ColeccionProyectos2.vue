@@ -25,9 +25,9 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
             <v-btn icon @click.stop.prevent="goTo()">
               <v-icon>mdi-folder-open</v-icon>
             </v-btn>
-            <v-btn icon @click.stop.prevent="openDialog(coleccion)">
+            <!-- <v-btn icon @click.stop.prevent="openDialog(coleccion)">
               <v-icon>mdi-open-in-new</v-icon>
-            </v-btn>
+            </v-btn> -->
           </v-card-actions>
         </v-card>
       </v-col>
@@ -307,7 +307,7 @@ export default {
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false,
   }),
-  
+
   methods: {
     // Permite de manera programática ir a una ubicación definida en el archivo router.js
     goTo: function(){

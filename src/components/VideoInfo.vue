@@ -3,7 +3,7 @@
   <div>
     <!-- Título -->
     <v-toolbar flat color="primary" dark>
-      <v-toolbar-title>{{ video.identificacion.titulo }}</v-toolbar-title>
+      <v-toolbar-title>{{ video.identificacion.codigoReferencia }}</v-toolbar-title>
     </v-toolbar>
 
     <!-- Uso de filas y columnas para dividir la información en áreas, campos e información adicional (imagen, video, documentos) -->
@@ -47,11 +47,6 @@
                   <span class="font-weight-bold">Código de referencia</span>
                     <Hint hint="Código alfanumérico separado por guines. Ejemplo: MXIM-AV-2-3-1"></Hint>
                     {{ video.identificacion.codigoReferencia }}
-                </p>
-                <p>
-                  <span class="font-weight-bold">Título</span>
-                  <Hint hint="Título de la colección"></Hint>
-                  {{ video.identificacion.titulo }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Fecha</span>
@@ -252,7 +247,7 @@
           </video>
         </p>
         <p>
-          <a href="Calificacion_preview.pdf" target="_blank"><v-icon left>mdi-file-document</v-icon>Documento de calificación</a>
+          <a href="Calificacion_preview.pdf" target="_blank" class="font-weight-bold"><v-icon left>mdi-file-document</v-icon>Calificación</a>
         </p>
       </v-col>
     </v-row>
@@ -280,5 +275,9 @@ export default {
 .align-left-tab{
   justify-content: left;
   text-align: left
+}
+/* Enlaces de color gris (blanco con transparencia) */
+a {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 </style>

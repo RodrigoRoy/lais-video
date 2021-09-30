@@ -40,7 +40,8 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">Cerrar</v-btn>
+          <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn>
+          <v-btn @click="dialog = false">Cerrar <v-icon>mdi-close</v-icon></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -48,8 +49,9 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
 </template>
 
 <script>
-// import VueMarkdown from 'vue-markdown' // permite usar y renderizar lenguaje de marcado markdown
 import ColeccionInfo from '@/components/ColeccionInfo.vue'
+import jsPDF from 'jspdf' // creación de PDF
+import 'jspdf-autotable' // plugin para crear tablas dentro de PDF
 
 export default {
   name: 'ColeccionView',
@@ -314,11 +316,40 @@ export default {
       console.log('colection: ', colection);
       this.dialog = true;
       this.currentColection = colection;
-    }
-  },
+    },
 
-  // components: {
-  //   VueMarkdown // uso del paquete/componente vue-markdown
-  // }
+    // Crea la ficha del registro en video en formato PDF
+    printPDF() {
+      const doc = new jsPDF();
+
+      doc.text("Ficha de catalogación de grupo documental", 10, 10);
+      doc.autoTable({
+        body: [
+          ['Código de referencia', this.coleccion.identificacion.codigoReferencia],
+          ['Título', this.coleccion.identificacion.titulo],
+          ['País', this.coleccion.identificacion.pais],
+          ['Fecha', this.coleccion.identificacion.fecha],
+          ['Proyecto de investigación', this.coleccion.identificacion.proyectoInvestigacion],
+          ['Investigación', this.coleccion.identificacion.investigacion],
+          ['Coordinación del proyecto', this.coleccion.identificacion.coordinacionProyecto],
+          ['Historia institucional', this.coleccion.contexto.historiaInstitucional],
+          ['Semblanza biográfica', this.coleccion.contexto.semblanzaBiografica],
+          ['Alcance y contenido', this.coleccion.contenidoEstructura.alcanceContenido],
+          ['Valoración, selección y eliminación', this.coleccion.contenidoEstructura.valoracionSeleccionEliminacion],
+          ['Nuevos ingresos', this.coleccion.contenidoEstructura.nuevosIngresos],
+          ['Organización', this.coleccion.contenidoEstructura.organizacion],
+          ['Condiciones de acceso', this.coleccion.accesoUso.condicionesAcceso],
+          ['Condiciones de reproducción', this.coleccion.accesoUso.condicionesReproduccion],
+          ['Notas', this.coleccion.notas.notas],
+          ['Documentalistas', this.coleccion.controlDescripcion.documentalistas],
+          ['Fecha de descripción', this.coleccion.controlDescripcion.fechaDescripcion],
+          ['Fecha de última actualización', this.coleccion.controlDescripcion.fechaActualizacion],
+        ],
+      })
+      // El nombre del archivo incluye código de referencia
+      doc.save(`Ficha_catalogacion_${this.coleccion.identificacion.codigoReferencia}.pdf`);
+    }
+  }
+
 }
 </script>

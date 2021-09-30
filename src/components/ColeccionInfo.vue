@@ -184,7 +184,7 @@
           <v-img :src="coleccion && coleccion.adicional && coleccion.adicional.imagen ? require('@/assets/Caratulas_Proyectos/' + coleccion.adicional.imagen) : require('@/assets/Foto_Acervo1.png')" height="220px" contain></v-img>
         </p>
         <!-- Presentación -->
-        <vue-markdown breaks linkify :source="coleccion && coleccion.adicional && coleccion.adicional.presentacion ? coleccion.adicional.presentacion : dummy.adicional.presentacion"></vue-markdown>
+        <vue-markdown breaks linkify :source="coleccion && coleccion.adicional && coleccion.adicional.presentacion ? coleccion.adicional.presentacion : dummy.adicional.presentacion" class="text-justify"></vue-markdown>
       </v-col>
     </v-row>
   </div>
