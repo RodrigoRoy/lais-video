@@ -53,6 +53,15 @@
           <v-card flat>
             <v-text-field v-model="video.identificacion.codigoReferencia" label="Código de referencia" hint="Código alfanumérico separado por guiones. Ejemplo: MXIM-AV-2-3-1-2" :rules="rules.codigoReferencia" required></v-text-field>
 
+            <v-text-field v-model="video.identificacion.lugar" label="Lugar de registro" hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></v-text-field>
+
+            <l-map style="height: 300px" :zoom="zoom" :center="center" :options="mapOptions" @click="addMarker">
+              <l-control-layers position="topright"></l-control-layers>
+              <l-tile-layer v-for="tileProvider in tileProviders" :key="tileProvider.name" :name="tileProvider.name" :visible="tileProvider.visible" :url="tileProvider.url" :attribution="tileProvider.attribution" layer-type="base"/>
+              <v-geosearch :options="geosearchOptions"></v-geosearch>
+              <l-marker :draggable="true" :lat-lng="markerLatLng" @click="removeMarker()" :visible="markerVisibility"></l-marker>
+            </l-map>
+
             <!-- Los calendarios requiere parámetros adicionales que se indican en la documentación de Vuetify -->
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on, attrs }">
@@ -60,14 +69,6 @@
               </template>
               <v-date-picker v-model="video.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months></v-date-picker>
             </v-menu>
-
-            <v-text-field v-model="video.identificacion.lugar" label="Lugar de registro" hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></v-text-field>
-
-            <l-map style="height: 300px" :zoom="zoom" :center="center" :options="mapOptions" @click="addMarker">
-              <l-control-layers position="topright"></l-control-layers>
-              <l-tile-layer v-for="tileProvider in tileProviders" :key="tileProvider.name" :name="tileProvider.name" :visible="tileProvider.visible" :url="tileProvider.url" :attribution="tileProvider.attribution" layer-type="base"/>
-              <l-marker :draggable="true" :lat-lng="markerLatLng" @click="removeMarker()" :visible="markerVisibility"></l-marker>
-            </l-map>
 
             <v-combobox v-model="video.identificacion.pais" :items="paises" label="País" hint="País o países de producción del registro en video"></v-combobox>
 
@@ -178,9 +179,11 @@
 
 
 <script>
-import moment from 'moment' // para formatos de fechas
-import L from 'leaflet';
-import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet'; // elementos principales para mapas
+import moment from 'moment' // formatos de fechas
+import L from 'leaflet' // elementos principales para mapas
+import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet' // elementos principales para mapas
+import { OpenStreetMapProvider } from 'leaflet-geosearch' // proveedores de búsqueda para mapas
+import VGeosearch from 'vue2-leaflet-geosearch' // búsqueda en mapas
 
 // Solución al problema de falta de icono en mapas según documentación oficial: https://vue2-leaflet.netlify.app/quickstart/#marker-icons-are-missing
 import { Icon } from 'leaflet';
@@ -198,7 +201,8 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    LControlLayers
+    LControlLayers,
+    VGeosearch
   },
   data: () => ({
     // El objeto video representa una unidad documental, es decir, un registro audiovisual organizado por áreas
@@ -291,6 +295,13 @@ export default {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
       },
     ],
+    // Opciones de barra de búsqueda en mapa (https://github.com/smeijer/leaflet-geosearch)
+    geosearchOptions: {
+      provider: new OpenStreetMapProvider({params: {'accept-language': 'es'}}), // resultados en español indicado en params
+      showMarker: true,
+      showPopup: false,
+      searchLabel: 'Escribe una dirección'
+    }
   }),
 
   methods: {
@@ -333,3 +344,11 @@ export default {
   }
 }
 </script>
+
+
+<style>
+/* Resultados de búqueda en mapa. Si no se cambia, puede quedar texto blanco en fondo blanco debido a la definición de .theme (por lo tanto, no ocupar "scoped" en etiqueta <style>)*/
+.leaflet-control-geosearch .results {
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+</style>
