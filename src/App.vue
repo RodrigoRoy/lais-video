@@ -42,4 +42,17 @@ export default {
     url('./assets/background2.jpg') no-repeat center center fixed;
   
 }
+.v-application *  {
+  /* Calibri */
+  /* font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif; */
+
+  /* Montserrat */
+  /* font-family: 'Montserrat', sans-serif; */
+
+  /* Gandhi */
+  /* font-family: 'Gandhi Sans', arial; */
+  
+  /* Candara */
+  /* font-family: Candara,Calibri,Segoe,Segoe UI,Optima,Arial,sans-serif;  */
+}
 </style>
