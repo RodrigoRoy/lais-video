@@ -44,36 +44,43 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Código de referencia</span>
+                  <hint hint="Código alfanumérico separado por guines. Ejemplo: MXIM-AV-2-3-1"></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.codigoReferencia : dummy.identificacion.codigoReferencia }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Título</span>
+                  <hint hint="Título de la colección"></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.titulo : dummy.identificacion.titulo }}
                 </p>
                 <p>
                   <span class="font-weight-bold">País</span>
+                  <hint hint="País o países de producción del registro en video"></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.pais : dummy.identificacion.pais }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Fecha</span>
+                  <hint hint="Fecha en que se hizo el registro"></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.fecha : dummy.identificacion.fecha }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Proyecto de investigación</span>
+                  <!-- <hint hint=""></hint> -->
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.proyectoInvestigacion : dummy.identificacion.proyectoInvestigacion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Investigación</span>
+                  <!-- <hint hint=""></hint> -->
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.investigacion : dummy.identificacion.investigacion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Coordinación del proyecto</span>
+                  <hint hint="Se consigna a la persona coordinadora del proyecto de investigación para el que se realizaron los registros a documentar."></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.coordinacionProyecto : dummy.identificacion.coordinacionProyecto }}
                 </p>
@@ -86,11 +93,13 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Historia institucional</span>
+                  <hint hint="Datos sobre el origen, evolución y desarrollo de la entidad productora de la colección"></hint>
                   <br>
                   {{ coleccion && coleccion.contexto ? coleccion.contexto.historiaInstitucional : dummy.contexto.historiaInstitucional }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Semblanza biográfica</span>
+                  <hint hint="Los básicos curriculares de las personas encargadas de la investigación y de la coordinación de la colección"></hint>
                   <br>
                   {{ coleccion && coleccion.contexto ? coleccion.contexto.semblanzaBiografica : dummy.contexto.semblanzaBiografica }}
                 </p>
@@ -103,21 +112,25 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Alcance y contenido</span>
+                  <hint hint="Se describe el valor potencial del proyecto y se señala para quiénes puede ser útil"></hint>
                   <br>
                   {{ coleccion && coleccion.contenidoEstructura ? coleccion.contenidoEstructura.alcanceContenido : dummy.contenidoEstructura.alcanceContenido }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Valoración, selección y eliminación</span>
+                  <hint hint="Se señala el criterio de selección y depuración de los materiales."></hint>
                   <br>
                   {{ coleccion && coleccion.contenidoEstructura ? coleccion.contenidoEstructura.valoracionSeleccionEliminacion : dummy.contenidoEstructura.valoracionSeleccionEliminacion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Nuevos ingresos</span>
+                  <hint hint="Se señala si es una colección abierta a nuevos ingresos o si se encuentra cerrada a su contenido actual."></hint>
                   <br>
                   {{ coleccion && coleccion.contenidoEstructura ? coleccion.contenidoEstructura.nuevosIngresos : dummy.contenidoEstructura.nuevosIngresos }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Organización</span>
+                  <hint hint="Se establece la forma en que se organiza la colección."></hint>
                   <br>
                   {{ coleccion && coleccion.contenidoEstructura ? coleccion.contenidoEstructura.organizacion : dummy.contenidoEstructura.organizacion }}
                 </p>
@@ -130,11 +143,13 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Condiciones de acceso</span>
+                  <hint hint="Posibles usos del material que pueden hacer las personas usuarias: Usos reservados para consulta in situ, Usos no lucrativos, Usos lucrativos."></hint>
                   <br>
                   {{ coleccion && coleccion.accesoUso ? coleccion.accesoUso.condicionesAcceso : dummy.accesoUso.condicionesAcceso }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Condiciones de reproducción</span>
+                  <hint hint="Se consigna si el registro original se puede reproducir o no, de acuerdo al tipo de solicitud."></hint>
                   <br>
                   {{ coleccion && coleccion.accesoUso ? coleccion.accesoUso.condicionesReproduccion : dummy.accesoUso.condicionesReproduccion }}
                 </p>
@@ -147,6 +162,7 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Notas</span>
+                  <hint hint="Información que se considere relevante y que no pudo ser indexada en algún otro campo"></hint>
                   <br>
                   {{ coleccion && coleccion.notas ? coleccion.notas.notas : dummy.notas.notas }}
                 </p>
@@ -159,16 +175,19 @@
               <v-card-text>
                 <p>
                   <span class="font-weight-bold">Documentalistas</span>
+                  <hint hint="Se consignan los nombres de las personas que realizaron la descripción."></hint>
                   <br>
                   {{ coleccion && coleccion.controlDescripcion ? coleccion.controlDescripcion.documentalistas : dummy.controlDescripcion.documentalistas }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Fecha de descripción</span>
+                  <hint hint="Fecha en que se elaboró la ficha de la unidad"></hint>
                   <br>
                   {{ coleccion && coleccion.controlDescripcion ? coleccion.controlDescripcion.fechaDescripcion : dummy.controlDescripcion.fechaDescripcion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Fecha de actualización</span>
+                  <hint hint="Fecha de la última modificación a la ficha de la unidad"></hint>
                   <br>
                   {{ coleccion && coleccion.controlDescripcion ? coleccion.controlDescripcion.fechaActualizacion : dummy.controlDescripcion.fechaActualizacion }}
                 </p>
@@ -193,11 +212,13 @@
 
 <script>
 import VueMarkdown from 'vue-markdown' // rendeer para sintaxis en markdown
+import Hint from '@/components/Hint.vue' // Componente para hints
 
 export default {
   name: 'ColeccionInfo',
   components: {
-    VueMarkdown
+    VueMarkdown,
+    Hint
   },
   props: {
     // El objeto coleccion representa un conjunto documental, es decir, un grupo jerarquico dentro de la organización del acervo
