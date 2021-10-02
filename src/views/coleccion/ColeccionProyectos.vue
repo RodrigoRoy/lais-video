@@ -10,7 +10,7 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
     <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
     <v-row no-gutters align="start" justify="start">
       <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
-        <v-card class="ma-4 pa-4" outlined tile @click="goTo('coleccion-projects1')">
+        <v-card class="ma-4 pa-4" outlined tile @click="goTo('coleccion-projects1')" height="22rem">
           <v-img :src="require('@/assets/Caratulas_Proyectos/' + coleccion.adicional.imagen)" height="150px"></v-img>
           <v-card-title class="text-center justify-center">
             <p v-snip="2">
