@@ -68,13 +68,13 @@
                 </p>
                 <p>
                   <span class="font-weight-bold">Proyecto de investigación</span>
-                  <!-- <hint hint=""></hint> -->
+                  <hint hint="Se refiere al proyecto de investigación para el cual fueron realizados los registros a documentar."></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.proyectoInvestigacion : dummy.identificacion.proyectoInvestigacion }}
                 </p>
                 <p>
                   <span class="font-weight-bold">Investigación</span>
-                  <!-- <hint hint=""></hint> -->
+                  <hint hint="Se consigna el nombre completo de la persona responsable de la investigación para la que se realizaron los registros a documentar."></hint>
                   <br>
                   {{ coleccion && coleccion.identificacion ? coleccion.identificacion.investigacion : dummy.identificacion.investigacion }}
                 </p>
