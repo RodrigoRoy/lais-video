@@ -132,7 +132,30 @@ export default {
     printPDF() {
       const doc = new jsPDF();
 
-      doc.text("Ficha de catalogación de registro audiovisual", 10, 10);
+      // Carga de logos
+      const logo_mora = require('../../assets/Logo_Mora.jpg');
+      var img_mora = new Image();
+      img_mora.src = logo_mora;
+      const logo_lais = require('../../assets/Logo_LAIS.jpg');
+      var img_lais = new Image();
+      img_lais.src = logo_lais;
+
+      var height = 0;
+
+      height += 10;
+
+      // Logos
+      doc.addImage(img_mora, 'JPG', 150, height, 25, 20);
+      doc.addImage(img_lais, 'JPG', 180, height, 15, 20);
+
+      height += 30;
+
+      doc.text("Ficha de catalogación de registro audiovisual", 10, height,null,null,"left");
+      height += 10;
+
+      doc.text("Identificación", 10, height);
+      height += 10;
+
       doc.autoTable({
         body: [
           ['Código de referencia', this.video.identificacion.codigoReferencia],
@@ -144,10 +167,32 @@ export default {
           ['Entrevistador/a', this.video.identificacion.entrevistador],
           ['Cámara', this.video.identificacion.camara],
           ['Asistente', this.video.identificacion.asistente],
+        ],
+        startY: height,
+      })
+
+      height = doc.internal.pageSize.height / 2;
+      doc.text("Contenido y Estructura", 10, height);
+      height += 10;
+
+      doc.autoTable({
+        body: [
           ['Descripción general', this.video.contenidoEstructura.descripcionGeneral],
           ['Estructura formal', this.video.contenidoEstructura.estructuraFormal],
           ['Descriptor onomástico', this.video.contenidoEstructura.descriptorOnomastico],
           ['Descriptor toponímico', this.video.contenidoEstructura.descriptorToponimico],
+        ],
+        startY: height,
+      })
+
+      doc.addPage();
+
+      height = 20;
+      doc.text("Acceso y uso", 10, height);
+      height += 10;
+      
+      doc.autoTable({
+        body: [
           ['Idioma original', this.video.accesoUso.idiomaOriginal],
           ['Soporte', this.video.accesoUso.soporte],
           ['Número de casetes', this.video.accesoUso.numeroCasetes],
@@ -157,18 +202,61 @@ export default {
           ['Resolución de grabación', this.video.accesoUso.resolucionGrabacion],
           ['Formato de video digital', this.video.accesoUso.formatoVideoDigital],
           ['Requisitos técnicos', this.video.accesoUso.requisitosTecnicos],
+        ],
+        startY: height,
+      })
+
+      height = doc.internal.pageSize.height / 2;
+      doc.text("Documentación asociada", 10, height);
+      height += 10;
+
+      doc.autoTable({
+        body: [
           ['Unidades de descripción relacionadas', this.video.documentacionAsociada.unidadesDescripcionRelacionadas],
           ['Documentos asociados', this.video.documentacionAsociada.documentosAsociados],
+        ],
+        startY: height,
+      })
+
+      doc.addPage();
+
+      height = 20;
+      doc.text("Notas", 10, height);
+      height += 10;
+      
+      doc.autoTable({
+        body: [
           ['Notas', this.video.notas.notas],
+        ],
+        startY: height,
+      })
+
+      height = doc.internal.pageSize.height / 2;
+      doc.text("Control de la descripción", 10, height);
+      height += 10;
+
+      doc.autoTable({
+        body: [
           ['Archivista', this.video.controlDescripcion.nombreArchivero],
           ['Notas de archivista', this.video.controlDescripcion.notaArchivero],
           ['Fecha de descripción', this.video.controlDescripcion.fechaDescripcion],
           ['Fecha de última actualización', this.video.controlDescripcion.fechaActualizacion],
         ],
+        startY: height,
       })
+
+      // Enumeración de páginas
+      const pageCount = doc.internal.getNumberOfPages();
+      for(var i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.text(String(i) + ' de ' + String(pageCount),180,280);
+      }
+
       // El nombre del archivo incluye código de referencia
       doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
     }
+
+    
   }
 }
 </script>
