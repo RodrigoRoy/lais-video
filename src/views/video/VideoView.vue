@@ -45,8 +45,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
 <script>
 import VideoInfo from '@/components/VideoInfo.vue'
-import jsPDF from 'jspdf' // creación de PDF
-import 'jspdf-autotable' // plugin para crear tablas dentro de PDF
+import { PdfMakeWrapper, Table, Txt, Img } from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 
 export default {
   name: 'VideoView',
@@ -130,34 +130,27 @@ export default {
   methods: {
     // Crea la ficha del registro en video en formato PDF
     printPDF() {
-      const doc = new jsPDF();
+      PdfMakeWrapper.setFonts(pdfFonts);
 
-      // Carga de logos
-      const logo_mora = require('../../assets/Logo_Mora.jpg');
-      var img_mora = new Image();
-      img_mora.src = logo_mora;
-      const logo_lais = require('../../assets/Logo_LAIS.jpg');
-      var img_lais = new Image();
-      img_lais.src = logo_lais;
+      const pdf = new PdfMakeWrapper();
 
-      var height = 0;
-
-      height += 10;
+      var fontTitleSize = 20;
 
       // Logos
-      doc.addImage(img_mora, 'JPG', 150, height, 25, 20);
-      doc.addImage(img_lais, 'JPG', 180, height, 15, 20);
+      // pdf.add( await new Img('https://picsum.photos/seed/picsum/200/300').build());
 
-      height += 30;
+      new Img('https://picsum.photos/seed/picsum/200/300').build().then( img => {
+          pdf.add( img );
 
-      doc.text("Ficha de catalogación de registro audiovisual", 10, height,null,null,"left");
-      height += 10;
+          pdf.create().download();
+      });
 
-      doc.text("Identificación", 10, height);
-      height += 10;
+      // var logo = await new Img('https://picsum.photos/seed/picsum/200/300').build();
 
-      doc.autoTable({
-        body: [
+      // pdf.add(logo);
+
+      pdf.add(new Txt('Identificación').bold().fontSize(fontTitleSize).end);
+      var identificacionTable = new Table([
           ['Código de referencia', this.video.identificacion.codigoReferencia],
           ['Fecha', this.video.identificacion.fecha],
           ['Lugar', this.video.identificacion.lugar],
@@ -166,33 +159,21 @@ export default {
           ['Personas entrevistadas', this.video.identificacion.personasEntrevistadas],
           ['Entrevistador/a', this.video.identificacion.entrevistador],
           ['Cámara', this.video.identificacion.camara],
-          ['Asistente', this.video.identificacion.asistente],
-        ],
-        startY: height,
-      })
+          ['Asistente', this.video.identificacion.asistente]
+      ]).widths([ 150, '*' ]).end;
+      pdf.add(identificacionTable);
 
-      height = doc.internal.pageSize.height / 2;
-      doc.text("Contenido y Estructura", 10, height);
-      height += 10;
-
-      doc.autoTable({
-        body: [
+      pdf.add(new Txt('Contenido y estructura').bold().fontSize(fontTitleSize).end);
+      var contenidoEstructuraTable = new Table([
           ['Descripción general', this.video.contenidoEstructura.descripcionGeneral],
           ['Estructura formal', this.video.contenidoEstructura.estructuraFormal],
           ['Descriptor onomástico', this.video.contenidoEstructura.descriptorOnomastico],
-          ['Descriptor toponímico', this.video.contenidoEstructura.descriptorToponimico],
-        ],
-        startY: height,
-      })
+          ['Descriptor toponímico', this.video.contenidoEstructura.descriptorToponimico]
+      ]).widths([ 150, '*' ]).end;
+      pdf.add(contenidoEstructuraTable);
 
-      doc.addPage();
-
-      height = 20;
-      doc.text("Acceso y uso", 10, height);
-      height += 10;
-      
-      doc.autoTable({
-        body: [
+      pdf.add(new Txt('Acceso y uso').bold().fontSize(fontTitleSize).end);
+      var accesoUsoTable = new Table([
           ['Idioma original', this.video.accesoUso.idiomaOriginal],
           ['Soporte', this.video.accesoUso.soporte],
           ['Número de casetes', this.video.accesoUso.numeroCasetes],
@@ -201,59 +182,55 @@ export default {
           ['Sistema de grabación', this.video.accesoUso.sistemaGrabacion],
           ['Resolución de grabación', this.video.accesoUso.resolucionGrabacion],
           ['Formato de video digital', this.video.accesoUso.formatoVideoDigital],
-          ['Requisitos técnicos', this.video.accesoUso.requisitosTecnicos],
-        ],
-        startY: height,
-      })
+          ['Requisitos técnicos', this.video.accesoUso.requisitosTecnicos]
+      ]).widths([ 150, '*' ]).end;
+      pdf.add(accesoUsoTable);
 
-      height = doc.internal.pageSize.height / 2;
-      doc.text("Documentación asociada", 10, height);
-      height += 10;
-
-      doc.autoTable({
-        body: [
+      pdf.add(new Txt('Documentación asociada').bold().fontSize(fontTitleSize).end);
+      var documentacionAsociadaTable = new Table([
           ['Unidades de descripción relacionadas', this.video.documentacionAsociada.unidadesDescripcionRelacionadas],
-          ['Documentos asociados', this.video.documentacionAsociada.documentosAsociados],
-        ],
-        startY: height,
-      })
+          ['Documentos asociados', this.video.documentacionAsociada.documentosAsociados]
+      ]).widths([ 150, '*' ]).end;
+      pdf.add(documentacionAsociadaTable);
 
-      doc.addPage();
+      pdf.add(new Txt('Notas').bold().fontSize(fontTitleSize).end);
+      var notasTable = new Table([
+          ['Notas', this.video.notas.notas]
+      ]).widths([ 150, '*' ]).end;
+      pdf.add(notasTable);
 
-      height = 20;
-      doc.text("Notas", 10, height);
-      height += 10;
-      
-      doc.autoTable({
-        body: [
-          ['Notas', this.video.notas.notas],
-        ],
-        startY: height,
-      })
-
-      height = doc.internal.pageSize.height / 2;
-      doc.text("Control de la descripción", 10, height);
-      height += 10;
-
-      doc.autoTable({
-        body: [
+      pdf.add(new Txt('Control de descripción').bold().fontSize(fontTitleSize).end);
+      var controlDescripcionTable = new Table([
           ['Archivista', this.video.controlDescripcion.nombreArchivero],
           ['Notas de archivista', this.video.controlDescripcion.notaArchivero],
           ['Fecha de descripción', this.video.controlDescripcion.fechaDescripcion],
-          ['Fecha de última actualización', this.video.controlDescripcion.fechaActualizacion],
-        ],
-        startY: height,
-      })
+          ['Fecha de última actualización', this.video.controlDescripcion.fechaActualizacion]
+      ]).widths([ 150, '*' ]).end;
+      pdf.add(controlDescripcionTable);
 
-      // Enumeración de páginas
-      const pageCount = doc.internal.getNumberOfPages();
-      for(var i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.text(String(i) + ' de ' + String(pageCount),180,280);
-      }
+      // Pie de página con numeración de página
+      pdf.footer((currentPage, pageCount) => {
+        var t = {
+          layout: "noBorders",
+          fontSize: 8,
+          margin: [25, 0, 25, 0],
+          table: {
+            widths: [400, "*"], 
+            body: [
+              [
+                { text: "" },
+                { text: "Página " + currentPage.toString() + " de " + pageCount }
+              ]
+            ]
+          }
+        };
+        return t;
+      });
 
-      // El nombre del archivo incluye código de referencia
-      doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
+      pdf.create().download();
+
+    //   // El nombre del archivo incluye código de referencia
+    //   doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
     }
 
     
