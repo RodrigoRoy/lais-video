@@ -211,6 +211,7 @@
                 <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
                 <!-- <p>
                   <span class="font-weight-bold">Nota del archivero</span>
+                  <hint hint=""></hint>
                   {{ video.controlDescripcion.notaArchivero }}
                 </p> -->
                 <p>
