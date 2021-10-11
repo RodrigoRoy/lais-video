@@ -210,6 +210,12 @@ export default {
       var img = require('@/assets/videopreview2.png');
       pdf.add(await new Img( img ).width(250).height(200).build())
 
+      // Fecha de consulta
+      const tiempoTranscurrido = Date.now();
+      const hoy = new Date(tiempoTranscurrido);
+
+      pdf.add('Fecha de consulta: ' + hoy.toLocaleDateString());
+
       // Pie de página con numeración de página
       pdf.footer((currentPage, pageCount) => {
         var t = {
@@ -229,7 +235,7 @@ export default {
         return t;
       });
 
-      pdf.create().download();
+      pdf.create().download(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
 
     //   // El nombre del archivo incluye código de referencia
     //   doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
