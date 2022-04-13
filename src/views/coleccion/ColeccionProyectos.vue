@@ -20,6 +20,9 @@ Nota: Eventualmente los archivos "ColeccionProyectos.vue", "ColeccionProyectos1.
               <p class="font-weight-light my-n2">
                 {{ coleccion.identificacion.fecha }}
               </p>
+              <p class="font-weight-light my-n2">
+                {{ coleccion.identificacion.codigoReferencia }}
+              </p>
             </div>
           </v-card-text>
           <v-card-actions>

@@ -49,12 +49,12 @@
           </v-list-item>
           <v-list-item v-if="!$store.state.isLoggedIn">
             <v-list-item-title>
-              <router-link to="/login" class="nav-link" exact>Entrar</router-link>
+              <router-link to="/login" class="nav-link" exact>Iniciar sesión</router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item v-if="$store.state.isLoggedIn">
             <v-list-item-title>
-              <a v-on:click.prevent="logout()" class="nav-link" href="#">Salir</a>
+              <a v-on:click.prevent="logout()" class="nav-link" href="#">Cerrar sesión</a>
             </v-list-item-title>
           </v-list-item>
         </v-list>

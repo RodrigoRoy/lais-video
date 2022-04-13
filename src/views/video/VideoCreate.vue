@@ -101,6 +101,7 @@
         </v-tab-item>
 
         <v-tab-item value="accesoUso" >
+          <!-- TODO Permitir borrar selección (seleccionar cadena de texto vacia) en v-select -->
           <v-card flat>
             <v-text-field v-model="video.accesoUso.idiomaOriginal" label="Idioma original" hint="Idioma o idiomas originales del registro"></v-text-field>
 
@@ -114,7 +115,10 @@
 
             <v-select v-model="video.accesoUso.sistemaGrabacion" :items="['NTSC', 'PAL', 'SECAM']" label="Sistema de grabación"></v-select>
 
-            <v-select v-model="video.accesoUso.resolucionGrabacion" :items="['480i (NTSC)', '576i (PAL)', '480p (720x480)', '720p (1280x720)', '1080i (1920x1080)', '1080p (1920x1080)', '4K (3840x2160)']" label="Resolución de grabación"></v-select>
+            <!-- <v-select v-model="video.accesoUso.resolucionGrabacion" :items="['480i (NTSC)', '576i (PAL)', '480p (720x480)', '720p (1280x720)', '1080i (1920x1080)', '1080p (1920x1080)', '4K (3840x2160)']" label="Resolución de grabación"></v-select> -->
+            <v-select v-model="video.accesoUso.resolucionGrabacion" :items="['480i', '480p', '576i', '480p', '720i', '720p', '1080i', '1080p', '4K']" label="Resolución de grabación"></v-select>
+            <!-- TODO: Cómo mantener consistente el valor para el objeto "video" -->
+            <!-- <v-select v-model="selectResolucionGrabacion" :items="itemsResolucionGrabacion" item-text="descripcion" item-value="resolucion" label="Resolución de grabación"></v-select> -->
 
             <v-select v-model="video.accesoUso.formatoVideoDigital" :items="['MOV', 'AVCHD', 'MTS', 'MP4']" label="Formato de video digital"></v-select>
 
@@ -169,16 +173,17 @@
       </v-tabs-items>
 
       <!-- Botón para finalizar el llenado del formulario -->
-      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large @click="validate">Registrar</v-btn>
+      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>Registrar</v-btn>
     </v-form>
 
     <!-- Visualización textual del objeto video (solo para efectos de prueba) -->
-    <!-- <pre>{{ video }}</pre> -->
+    <pre>{{ video }}</pre>
   </v-card>
 </template>
 
 
 <script>
+import * as videoService from '../../services/VideoService'
 import moment from 'moment' // formatos de fechas
 import L from 'leaflet' // elementos principales para mapas
 import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet' // elementos principales para mapas
@@ -212,7 +217,9 @@ export default {
         fecha: new Date().toISOString().substr(0, 10),
       },
       contenidoEstructura: {},
-      accesoUso: {},
+      accesoUso: {
+        // resolucionGrabacion: this.selectResolucionGrabacion.resolucion, // TODO: Copiar valor, quizá usar método watch de Vue
+      },
       documentacionAsociada: {},
       notas: {},
       controlDescripcion: {
@@ -227,6 +234,19 @@ export default {
     // Auxiliar para mostrar paises como un referente opcional
     paises: ['Afganistán', 'Akrotiri', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Anguila', 'Antártida', 'Antigua y Barbuda', 'Arabia Saudí', 'Arctic Ocean', 'Argelia', 'Argentina', 'Armenia', 'Aruba', 'Ashmore and Cartier Islands', 'Atlantic Ocean', 'Australia', 'Austria', 'Azerbaiyán', 'Bahamas', 'Bahráin', 'Bangladesh', 'Barbados', 'Bélgica', 'Belice', 'Benín', 'Bermudas', 'Bielorrusia', 'Birmania; Myanmar', 'Bolivia', 'Bosnia y Hercegovina', 'Botsuana', 'Brasil', 'Brunéi', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Bután', 'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Chad', 'Chile', 'China', 'Chipre', 'Clipperton Island', 'Colombia', 'Comoras', 'Congo', 'Coral Sea Islands', 'Corea del Norte', 'Corea del Sur', 'Costa de Marfil', 'Costa Rica', 'Croacia', 'Cuba', 'Curacao', 'Dhekelia', 'Dinamarca', 'Dominica', 'Ecuador', 'Egipto', 'El Salvador', 'El Vaticano', 'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 'Estados Unidos', 'Estonia', 'Etiopía', 'Filipinas', 'Finlandia', 'Fiyi', 'Francia', 'Gabón', 'Gambia', 'Gaza Strip', 'Georgia', 'Ghana', 'Gibraltar', 'Granada', 'Grecia', 'Groenlandia', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea Ecuatorial', 'Guinea-Bissau', 'Guyana', 'Haití', 'Honduras', 'Hong Kong', 'Hungría', 'India', 'Indian Ocean', 'Indonesia', 'Irán', 'Iraq', 'Irlanda', 'Isla Bouvet', 'Isla Christmas', 'Isla Norfolk', 'Islandia', 'Islas Caimán', 'Islas Cocos', 'Islas Cook', 'Islas Feroe', 'Islas Georgia del Sur y Sandwich del Sur', 'Islas Heard y McDonald', 'Islas Malvinas', 'Islas Marianas del Norte', 'Islas Marshall', 'Islas Pitcairn', 'Islas Salomón', 'Islas Turcas y Caicos', 'Islas Vírgenes Americanas', 'Islas Vírgenes Británicas', 'Israel', 'Italia', 'Jamaica', 'Jan Mayen', 'Japón', 'Jersey', 'Jordania', 'Kazajistán', 'Kenia', 'Kirguizistán', 'Kiribati', 'Kosovo', 'Kuwait', 'Laos', 'Lesoto', 'Letonia', 'Líbano', 'Liberia', 'Libia', 'Liechtenstein', 'Lituania', 'Luxemburgo', 'Macao', 'Macedonia', 'Madagascar', 'Malasia', 'Malaui', 'Maldivas', 'Malí', 'Malta', 'Man, Isle of', 'Marruecos', 'Mauricio', 'Mauritania', 'México', 'Micronesia', 'Moldavia', 'Mónaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Mozambique', 'Mundo', 'Namibia', 'Nauru', 'Navassa Island', 'Nepal', 'Nicaragua', 'Níger', 'Nigeria', 'Niue', 'Noruega', 'Nueva Caledonia', 'Nueva Zelanda', 'Omán', 'Pacific Ocean', 'Países Bajos', 'Pakistán', 'Palaos', 'Panamá', 'Papúa-Nueva Guinea', 'Paracel Islands', 'Paraguay', 'Perú', 'Polinesia Francesa', 'Polonia', 'Portugal', 'Puerto Rico', 'Qatar', 'Reino Unido', 'República Centroafricana', 'República Democrática del Congo', 'República Dominicana', 'Ruanda', 'Rumania', 'Rusia', 'Sáhara Occidental', 'Samoa', 'Samoa Americana', 'San Bartolomé', 'San Cristóbal y Nieves', 'San Marino', 'San Martín', 'San Pedro y Miquelón', 'San Vicente y las Granadinas', 'Santa Helena', 'Santa Lucía', 'Santo Tomé y Príncipe', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leona', 'Singapur', 'Sint Maarten', 'Siria', 'Somalia', 'Southern Ocean', 'Spratly Islands', 'Sri Lanka', 'Suazilandia', 'Sudáfrica', 'Sudán', 'Sudán del Sur', 'Suecia', 'Suiza', 'Surinam', 'Svalbard y Jan Mayen', 'Tailandia', 'Taiwán', 'Tanzania', 'Tayikistán', 'Territorio Británico del Océano Indico', 'Territorios Australes Franceses', 'Timor Oriental', 'Togo', 'Tokelau', 'Tonga', 'Trinidad y Tobago', 'Túnez', 'Turkmenistán', 'Turquía', 'Tuvalu', 'Ucrania', 'Uganda', 'Unión Europea', 'Uruguay', 'Uzbekistán', 'Vanuatu', 'Venezuela', 'Vietnam', 'Wake Island', 'Wallis y Futuna', 'West Bank', 'Yemen', 'Yibuti', 'Zambia', 'Zimbabue'],
 
+    // Auxiliares para textos descriptivos en v-select de video.accesoUso.resolucionGrabacion
+    selectResolucionGrabacion: {descripcion: '', resolucion: ''},
+    itemsResolucionGrabacion: [
+      { descripcion: '480i (NTSC)', resolucion: '480i'},
+      { descripcion: '576i (PAL)', resolucion: '576i'},
+      { descripcion: '480p (720x480)', resolucion: '480p'},
+      { descripcion: '720i (1280x720)', resolucion: '720i'},
+      { descripcion: '720p (1280x720)', resolucion: '720p'},
+      { descripcion: '1080i (1920x1080)', resolucion: '1080i'},
+      { descripcion: '1080p (1920x1080)', resolucion: '1080p'},
+      { descripcion: '4K (3840x2160)', resolucion: '4K'}
+    ],
+
     // Auxiliar que representa numéricamente cuál pestaña (tab) está activa
     tab: null,
 
@@ -236,7 +256,7 @@ export default {
     menuCalendar3: false,
 
     // Auxiliar para indicar si todos los campos del formulario son válidos
-    validForm: true,
+    validForm: false,
 
     // Reglas adicionales para validaciones personalizadas de ciertos campos
     rules: {
@@ -310,12 +330,15 @@ export default {
       this.$refs.videoForm.validate()
     },
     // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
-    onSubmit: function(){
+    onSubmit: async function(){
       if(!this.$refs.videoForm.validate()) // Se activa validación del formulario
         return;
-      // console.log("Enviar formulario...");
-      // console.log(this.video);
-      // TODO: Usar api para envio de información
+      const request = {
+        video: this.video,
+      };
+      await videoService.createVideo(request);
+      console.log("Enviar formulario...");
+      this.$router.push({name: 'home'}); // TODO: Redireccionamiento al registro
     },
     // Agregar marcador al dar clic en mapa
     addMarker(event) {
