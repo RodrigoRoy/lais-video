@@ -325,10 +325,6 @@ export default {
   }),
 
   methods: {
-    // Validación constante de los campos del formulario
-    validate () {
-      this.$refs.videoForm.validate()
-    },
     // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
     onSubmit: async function(){
       if(!this.$refs.videoForm.validate()) // Se activa validación del formulario
@@ -337,7 +333,6 @@ export default {
         video: this.video,
       };
       await videoService.createVideo(request);
-      console.log("Enviar formulario...");
       this.$router.push({name: 'home'}); // TODO: Redireccionamiento al registro
     },
     // Agregar marcador al dar clic en mapa

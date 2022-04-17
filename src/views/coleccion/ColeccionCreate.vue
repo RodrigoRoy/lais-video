@@ -3,7 +3,7 @@
 <template>
   <v-card class="pa-6">
     <!-- Título -->
-    <v-card-title class="text-h3 justify-center">Grupo documental</v-card-title>
+    <v-card-title class="text-h3 justify-center">Colección documental</v-card-title>
 
     <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contexto, etc) -->
     <v-form ref="coleccionForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
@@ -58,7 +58,7 @@
 
             <v-text-field v-model="coleccion.identificacion.titulo" label="Título" hint="Título de la unidad de descripción"></v-text-field>
 
-            <v-text-field v-model="coleccion.identificacion.proyectoInvestigacion" label="Proyecto de investigación" hint="Proyecto de investigación para el cual fueron realizados los registros a documentar"></v-text-field>
+            <!-- <v-text-field v-model="coleccion.identificacion.proyectoInvestigacion" label="Proyecto de investigación" hint="Proyecto de investigación para el cual fueron realizados los registros a documentar"></v-text-field> -->
 
             <!-- Los calendarios requiere parámetros adicionales que se indican en la documentación de Vuetify -->
             <v-menu v-model="menuCalendar1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
@@ -70,11 +70,12 @@
 
             <v-select v-model="coleccion.identificacion.nivelDescripcion" :items="['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']" label="Nivel de descripción"></v-select>
 
-            <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Personas responsables de la investigación para la cual se realizaron los registros a documentar"></v-text-field>
+            <!-- <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Personas responsables de la investigación para la cual se realizaron los registros a documentar"></v-text-field> -->
 
-            <v-text-field v-model="coleccion.identificacion.coordinacionProyecto" label="Coordinación del proyecto" hint="Personas coordinadoras del proyecto de investigación en el marco del cual se realizaron los registros a documentar"></v-text-field>
+            <!-- <v-text-field v-model="coleccion.identificacion.coordinacionProyecto" label="Coordinación del proyecto" hint="Personas coordinadoras del proyecto de investigación en el marco del cual se realizaron los registros a documentar"></v-text-field> -->
 
-            <v-text-field v-model="coleccion.identificacion.coordinacionAudiovisual" label="Coordinación de producción audiovisual" hint="Personas coordinadoras de la documentación audiovisual durante el proceso de investigación"></v-text-field>
+            <!-- <v-text-field v-model="coleccion.identificacion.coordinacionAudiovisual" label="Coordinación de producción audiovisual" hint="Personas coordinadoras de la documentación audiovisual durante el proceso de investigación"></v-text-field> -->
+            <v-text-field v-model="coleccion.identificacion.coordinacion" label="Coordinación" hint="Persona coordinadora del proyecto de investigación para el que se realizaron los registros a documentar"></v-text-field>
           </v-card>
         </v-tab-item>
 
@@ -125,14 +126,14 @@
               <template v-slot:activator="{ on }">
                 <v-text-field :value="computedFechaDescripcion" label="Fecha de descripción" hint="Fecha en que se elaboró la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
-              <v-date-picker v-model="coleccion.controlDescripcion.fechaDescripcion" @input="menuCalendar2 = false"></v-date-picker>
+              <v-date-picker v-model="coleccion.controlDescripcion.fechaDescripcion" @input="menuCalendar2 = false" readonly></v-date-picker>
             </v-menu>
 
             <v-menu v-model="menuCalendar3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
               <template v-slot:activator="{ on }">
                 <v-text-field :value="computedFechaActualizacion" label="Fecha de actualización" hint="Fecha de la última modificación a la ficha de la unidad" prepend-icon="mdi-calendar" readonly v-on="on" ></v-text-field>
               </template>
-              <v-date-picker v-model="coleccion.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false"></v-date-picker>
+              <v-date-picker v-model="coleccion.controlDescripcion.fechaActualizacion" @input="menuCalendar3 = false" readonly></v-date-picker>
             </v-menu>
           </v-card>
         </v-tab-item>
@@ -150,12 +151,12 @@
     </v-form>
 
     <!-- Visualización textual del objeto coleccion (solo para efectos de prueba) -->
-    <!-- <pre>{{ coleccion }}</pre> -->
+    <pre>{{ coleccion }}</pre>
   </v-card>
 </template>
 
 <script>
-// import * as coleccionService from '../../services/ColeccionService' // servicio para usar api
+import * as coleccionService from '../../services/ColeccionService'
 import moment from 'moment' // para formatos de fechas
 
 export default {
@@ -165,7 +166,6 @@ export default {
     coleccion: {
       identificacion: {
         fecha: new Date().toISOString().substr(0, 10),
-        nivelDescripcion: 'Grupo'
       },
       contexto: {},
       contenidoEstructura: {
@@ -228,16 +228,15 @@ export default {
     },
 
     // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
-    onSubmit: function(){
+    onSubmit: async function(){
       if(!this.$refs.coleccionForm.validate()) // Se activa validación del formulario
         return;
-      // const request = {
-      //   coleccion: this.coleccion
-      // };
-      // console.log(request);
-      // const newColeccion = await coleccionService.createColection(request);
-      // console.log("Colección creadad en base de datos");
-      // console.log(newColeccion.data.id);
+      const request = {
+        coleccion: this.coleccion,
+      };
+      const newColeccion = await coleccionService.createColection(request);
+      console.log('newColeccion: ', newColeccion);
+      this.$router.push({name: 'home'}); // TODO: Redireccionamiento a la colección (usando newColeccion.data.id)
     },
   },
 
