@@ -166,8 +166,12 @@
         <v-tab-item value="adicional" >
           <v-card flat>
             <v-file-input v-model="video.adicional.imagen" show-size counter chips accept="video/*" prepend-icon="mdi-camera" label="Fragmento de registro audiovisual"></v-file-input>
+            
             <v-file-input v-model="video.adicional.video" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Imagen"></v-file-input>
+            
             <v-file-input v-model="video.adicional.calificacion" show-size counter chips accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación del registro"></v-file-input>
+
+            <v-checkbox v-model="video.adicional.isPublic" label="Registro público"></v-checkbox>
           </v-card>
         </v-tab-item>
       </v-tabs-items>

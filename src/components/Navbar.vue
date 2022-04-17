@@ -135,7 +135,19 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+      
+        <v-list-item link >
+          <v-list-item-icon>
+            <v-icon>mdi-folder-multiple-plus</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/grupo/nuevo" exact>Formulario grupo documental</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
+
     </v-navigation-drawer>
   </header>
 </template>

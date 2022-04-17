@@ -14,6 +14,7 @@ import ColeccionView from './views/coleccion/ColeccionView.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
+import GrupoCreate from './views/grupo/GrupoCreate.vue'
 import Busqueda from './views/Busqueda.vue'
 import About from './views/About.vue'
 import * as auth from './services/AuthService'
@@ -134,6 +135,11 @@ const routes = new Router({
       path: '/coleccion',
       name: 'coleccion-view',
       component: ColeccionView
+    },
+    {
+      path: '/grupo/nuevo',
+      name: 'grupo-create',
+      component: GrupoCreate
     },
     {
       path: '/search',

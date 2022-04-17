@@ -105,7 +105,7 @@
           <v-card flat>
             <v-select v-model="coleccion.accesoUso.condicionesAcceso" :items="['Usos reservados para consulta in situ']" label="Condiciones de acceso" hint="Los diversos usos del material que se ofrecen al usuario"></v-select>
 
-            <v-select v-model="coleccion.accesoUso.condicionesUso" :items="['Usos no lucrativos', 'Usos lucrativos']" label="Condiciones de reproducción" hint="Si el registro original se puede reproducir o no, de acuerdo al tipo de solicitud"></v-select>
+            <v-select v-model="coleccion.accesoUso.condicionesReproduccion" :items="['Usos no lucrativos', 'Usos lucrativos']" label="Condiciones de reproducción" hint="Si el registro original se puede reproducir o no, de acuerdo al tipo de solicitud"></v-select>
           </v-card>
         </v-tab-item>
 
@@ -141,13 +141,16 @@
         <v-tab-item value="adicional" >
           <v-card flat>
             <v-file-input v-model="coleccion.adicional.imagen" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
+
             <v-textarea v-model="coleccion.adicional.presentacion" label="Presentación" hint="" auto-grow rows="5" row-height="25" ></v-textarea>
+
+            <v-checkbox v-model="coleccion.adicional.isPublic" label="Registro público"></v-checkbox>
           </v-card>
         </v-tab-item>
       </v-tabs-items>
 
       <!-- Botón para finalizar el llenado del formulario -->
-      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large @click="validate">Registrar</v-btn>
+      <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>Registrar</v-btn>
     </v-form>
 
     <!-- Visualización textual del objeto coleccion (solo para efectos de prueba) -->
@@ -180,7 +183,9 @@ export default {
         fechaDescripcion: new Date().toISOString().substr(0, 10),
         fechaActualizacion: new Date().toISOString().substr(0, 10),
       },
-      adicional: {},
+      adicional: {
+        isPublic: true,
+      },
     },
 
     // Auxiliar que representa numéricamente cuál pestaña (tab) está activa
@@ -192,7 +197,7 @@ export default {
     menuCalendar3: false,
 
     // Auxiliar para indicar si todos los campos del formulario son válidos
-    validForm: true,
+    validForm: false,
 
     // Reglas adicionales para validaciones personalizadas de ciertos campos
     rules: {
@@ -221,11 +226,6 @@ export default {
     //   const person = this.people.find(o => o.nombre === this.coleccion.identificacion.investigacion);
     //   this.coleccion.contexto.semblanzaBiografica = person.semblanza;
     // },
-
-    // Validación constante de los campos del formulario
-    validate () {
-      this.$refs.coleccionForm.validate()
-    },
 
     // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
     onSubmit: async function(){
