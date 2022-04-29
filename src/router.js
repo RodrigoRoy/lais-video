@@ -76,6 +76,7 @@ const routes = new Router({
       component: About
     },
     {
+      // TODO @EmmanuelCruz habilitar comprobación de loggin de formularios
       path: '/video/nuevo',
       name: 'video-create',
       component: VideoCreate,
