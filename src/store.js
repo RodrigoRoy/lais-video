@@ -12,7 +12,16 @@ export default new Vuex.Store({
     apiUrl: `${window.location.protocol}//${window.location.hostname}:8081/api`,
     username: null,
     userId: null,
-    // TODO @EmmanuelCruz Incluir campos operation, admin, active (@ref user-model en db)
+    operation: {
+      create: true,
+      read: true,
+      update: true,
+      delete: false,
+      _id: false
+    },
+    admin: false,
+    active: true
+    // TODO-DONE @EmmanuelCruz Incluir campos operation, admin, active (@ref user-model en db)
   },
   mutations: {
     authenticate(state){

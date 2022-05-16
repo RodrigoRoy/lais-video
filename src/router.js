@@ -76,18 +76,18 @@ const routes = new Router({
       component: About
     },
     {
-      // TODO @EmmanuelCruz habilitar comprobación de loggin de formularios
+      // TODO-DONE: @EmmanuelCruz habilitar comprobación de loggin de formularios
       path: '/video/nuevo',
       name: 'video-create',
       component: VideoCreate,
-      // beforeEnter: (to, from, next) => {
-      //   if(auth.isLoggedIn()){
-      //     next();
-      //   }
-      //   else {
-      //     next('/login');
-      //   }
-      // }
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
     },
     {
       path: '/video',
@@ -98,14 +98,14 @@ const routes = new Router({
       path: '/coleccion/nuevo',
       name: 'coleccion-create',
       component: ColeccionCreate,
-      // beforeEnter: (to, from, next) => {
-      //   if(auth.isLoggedIn()){
-      //     next();
-      //   }
-      //   else {
-      //     next('/login');
-      //   }
-      // }
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
     },
     // {
     //   path: '/coleccion/prueba',
@@ -140,7 +140,15 @@ const routes = new Router({
     {
       path: '/grupo/nuevo',
       name: 'grupo-create',
-      component: GrupoCreate
+      component: GrupoCreate,
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
     },
     {
       path: '/search',
