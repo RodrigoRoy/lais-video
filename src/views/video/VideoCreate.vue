@@ -7,7 +7,6 @@
 
     <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contenido y estructura, etc) -->
     <v-form ref="videoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
-      <!-- TODO-DONE @EmmanuelCruz : Incluir "flechas" de navegación (para tamaños de pantalla reducidos) -->
       <v-tabs v-model="tab" centered icons-and-text show-arrows>
         <v-tabs-slider></v-tabs-slider>
 

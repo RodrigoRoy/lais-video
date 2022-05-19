@@ -8,6 +8,7 @@ import TasksCreate from './views/tasks/TasksCreate.vue'
 import TasksEdit from './views/tasks/TasksEdit.vue'
 import VideoCreate from './views/video/VideoCreate.vue'
 import VideoView from './views/video/VideoView.vue'
+import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
 import ColeccionCreate from './views/coleccion/ColeccionCreate.vue'
 import ColeccionView from './views/coleccion/ColeccionView.vue'
 // import ColeccionPrueba from './views/coleccion/ColeccionPrueba.vue'
@@ -76,7 +77,6 @@ const routes = new Router({
       component: About
     },
     {
-      // TODO-DONE: @EmmanuelCruz habilitar comprobación de loggin de formularios
       path: '/video/nuevo',
       name: 'video-create',
       component: VideoCreate,
@@ -90,7 +90,12 @@ const routes = new Router({
       }
     },
     {
-      path: '/video',
+      path: '/video/',
+      name: 'video-view-template',
+      component: VideoViewTemplate
+    },
+    {
+      path: '/video/:id',
       name: 'video-view',
       component: VideoView
     },
