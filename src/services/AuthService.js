@@ -48,6 +48,30 @@ export function getUserId(){
   return token.user.id;
 }
 
+export function getOperation(){
+  const token = decodeToken();
+  if(!token){
+    return null;
+  }
+  return token.user.operation;
+}
+
+export function getAdmin(){
+  const token = decodeToken();
+  if(!token){
+    return null;
+  }
+  return token.user.admin;
+}
+
+export function getActive(){
+  const token = decodeToken();
+  if(!token){
+    return null;
+  }
+  return token.user.active;
+}
+
 export function registerUser(user){
   return http().post('/register', user);
 }

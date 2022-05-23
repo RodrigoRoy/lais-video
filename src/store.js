@@ -29,10 +29,16 @@ export default new Vuex.Store({
       if(state.isLoggedIn){
         state.username = auth.getUsername();
         state.userId = auth.getUserId();
+        state.operation = auth.getOperation();
+        state.admin = auth.getAdmin();
+        state.active = auth.getActive();
       }
       else{
         state.username = null;
         state.userId = null;
+        state.operation = null;
+        state.admin = null;
+        state.active = null;
       }
     }
   },
