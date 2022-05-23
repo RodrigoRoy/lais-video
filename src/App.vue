@@ -1,4 +1,5 @@
 <template>
+  <!-- Vista principal: barra de navegación superior, contenido dinámico y pie de página -->
   <v-app>
     <Navbar />
     <v-main id="app-container">
@@ -12,7 +13,7 @@
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import Vue from 'vue'
-import VueSnip from 'vue-snip'
+import VueSnip from 'vue-snip' // Biblioteca para recortar textos
 
 Vue.use(VueSnip)
 
@@ -30,29 +31,17 @@ export default {
 
 <style scope>
 #app-container{
-  background-size: cover;
-
+  /* Tipografía */
   font-family: 'Roboto', 'Open Sans', serif;
   font-size: 22px !important;
   
+  /* Fondo con imagen */
+  background-size: cover;
   background: linear-gradient(
       rgba(0, 0, 0, 0.7),
       rgba(0, 0, 0, 0.7)
     ),
     url('./assets/background2.jpg') no-repeat center center fixed;
   
-}
-.v-application *  {
-  /* Calibri */
-  /* font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif; */
-
-  /* Montserrat */
-  /* font-family: 'Montserrat', sans-serif; */
-
-  /* Gandhi */
-  /* font-family: 'Gandhi Sans', arial; */
-  
-  /* Candara */
-  /* font-family: Candara,Calibri,Segoe,Segoe UI,Optima,Arial,sans-serif;  */
 }
 </style>

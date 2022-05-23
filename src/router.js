@@ -1,82 +1,48 @@
+/**
+ * Router que define el contenido de la etiqueta <router-view/> en App.vue
+ */
+
 import Vue from 'vue'
 import Router from 'vue-router'
+import * as auth from './services/AuthService' // servicio de autentificación (evita accesos sin permisos)
+
+// Componentes (vistas):
 import Home from './views/Home.vue'
 import Login from './views/authentication/Login.vue'
 import Register from './views/authentication/Register.vue'
-import TasksAll from './views/tasks/TasksAll.vue'
-import TasksCreate from './views/tasks/TasksCreate.vue'
-import TasksEdit from './views/tasks/TasksEdit.vue'
 import VideoCreate from './views/video/VideoCreate.vue'
 import VideoView from './views/video/VideoView.vue'
 import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
 import ColeccionCreate from './views/coleccion/ColeccionCreate.vue'
 import ColeccionView from './views/coleccion/ColeccionView.vue'
-// import ColeccionPrueba from './views/coleccion/ColeccionPrueba.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
 import GrupoCreate from './views/grupo/GrupoCreate.vue'
 import Busqueda from './views/Busqueda.vue'
 import About from './views/About.vue'
-import * as auth from './services/AuthService'
 
 Vue.use(Router)
 
-// export default new Router({
+// Objeto Router con todas las definiciones de rutas, componentes y nombres
 const routes = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
+      // Inicio
       path: '/',
       name: 'home',
       component: Home
     },
     {
-      path: '/tasks',
-      name: 'tasks-all',
-      component: TasksAll,
-      beforeEnter: (to, from, next) => {
-        if(auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/login');
-        }
-      }
-    },
-    {
-      path: '/tasks/new',
-      name: 'tasks-create',
-      component: TasksCreate,
-      beforeEnter: (to, from, next) => {
-        if(auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/login');
-        }
-      }
-    },
-    {
-      path: '/tasks/:id',
-      name: 'tasks-edit',
-      component: TasksEdit,
-      beforeEnter: (to, from, next) => {
-        if(auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/login');
-        }
-      }
-    },
-    {
+      // Sobre el proyecto
       path: '/acerca',
       name: 'acerca-de',
       component: About
     },
     {
+      // Crear nuevo registro de video (requiere autentificación)
       path: '/video/nuevo',
       name: 'video-create',
       component: VideoCreate,
@@ -90,16 +56,13 @@ const routes = new Router({
       }
     },
     {
-      path: '/video/',
-      name: 'video-view-template',
-      component: VideoViewTemplate
-    },
-    {
+      // Visualizar registro de video
       path: '/video/:id',
       name: 'video-view',
       component: VideoView
     },
     {
+      // Crear nueva colección (requiere autentificación)
       path: '/coleccion/nuevo',
       name: 'coleccion-create',
       component: ColeccionCreate,
@@ -112,11 +75,61 @@ const routes = new Router({
         }
       }
     },
-    // {
-    //   path: '/coleccion/prueba',
-    //   name: 'coleccion-test',
-    //   component: ColeccionPrueba
-    // },
+    {
+      // Crear nuevo grupo (requiere autentificación)
+      path: '/grupo/nuevo',
+      name: 'grupo-create',
+      component: GrupoCreate,
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
+    {
+      // Busqueda textual de información
+      path: '/search',
+      name: 'search',
+      component: Busqueda
+    },
+    {
+      // Registrar nuevo usuario (requiere que no haya autentificación previa)
+      path: '/registrar',
+      name: 'register',
+      component: Register,
+      beforeEnter: (to, from, next) => {
+        if(!auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/');
+        }
+      }
+    },
+    {
+      // Inicio de sesión (requiere que no haya autentificación previa)
+      path: '/login',
+      name: 'login',
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        if(!auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/');
+        }
+      }
+    },
+
+    // Templates / prototipos (eliminar o actualizar en el futuro)
+    {
+      path: '/video/',
+      name: 'video-view-template',
+      component: VideoViewTemplate
+    },
     {
       path: '/coleccion/proyectos/1',
       name: 'coleccion-projects1',
@@ -143,65 +156,15 @@ const routes = new Router({
       component: ColeccionView
     },
     {
-      path: '/grupo/nuevo',
-      name: 'grupo-create',
-      component: GrupoCreate,
-      beforeEnter: (to, from, next) => {
-        if(auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/login');
-        }
-      }
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: Busqueda
-    },
-    {
-      path: '/registrar',
-      name: 'register',
-      component: Register,
-      beforeEnter: (to, from, next) => {
-        if(!auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/');
-        }
-      }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
-      beforeEnter: (to, from, next) => {
-        if(!auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/');
-        }
-      }
-    },
-    {
+      // Cualquier otra ruta, enviar a inicio
       path: '*',
       redirect: '/'
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    // }
   ],
   linkActiveClass: 'active'
 })
 
+// Aplicar comprobaciones en todas las rutas:
 // routes.beforeEach((to, from, next) => {
 //   // Evaluate condition
 //   // next('/home');

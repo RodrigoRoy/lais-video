@@ -14,19 +14,15 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
     <p v-else>
       Error al obtener información
     </p>
-
-    <!-- Visualización textual del objeto video (solo para efectos de prueba) -->
-    <!-- <pre>{{ video }}</pre> -->
-
   </v-container>
 </template>
 
 
 <script>
-import * as videoService from '../../services/VideoService'
 import { PdfMakeWrapper, Table, Txt, Img } from 'pdfmake-wrapper'
-import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
-import VideoInfo from '@/components/VideoInfo.vue'
+import * as pdfFonts from "pdfmake/build/vfs_fonts" // fonts provided for pdfmake
+import * as videoService from '../../services/VideoService' // servicio para llamadas al API
+import VideoInfo from '../../components/VideoInfo.vue' // Componente que renderiza datos del video
 
 export default {
   name: 'VideoView',
@@ -40,55 +36,17 @@ export default {
     video: {},
   }),
 
+  // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
-    videoService.getVideoById(to.params.id).then(res => {
-      next(vm => {
-        console.log('res', res);
+    videoService.getVideoById(to.params.id).then(res => { // :id en URL es to.params.id
+      next(vm => { // vm es necesario para asignaciones, this no existe en este contexto
         let video = res.data.video;
         vm.video = video;
-        console.log("vm.video", vm.video);
       });
     });
   },
 
-  // Alternativa para obtener datos sin re-renderizar vue-app
-  // async beforeRouteUpdate(to /*, from*/){
-  //   this.video = null;
-  //   try{
-  //     let response = await videoService.getVideoById(to.params.id);
-  //     this.video = response.data.video;
-  //   }
-  //   catch(error){
-  //     console.error('fetch data error:', error);
-  //   }
-  // },
-
-  // Alternativa para obtener datos sin usar beforeRouteEnter()
-  // created(){
-  //   // watch the params of the route to fetch the data again
-  //   this.$watch(
-  //     () => this.$route.params,
-  //     () => {
-  //       this.fetchData()
-  //     },
-  //     // fetch the data when the view is created and the data is
-  //     // already being observed
-  //     { immediate: true }
-  //   )
-  // },
-
   methods: {
-    // Auxiliar para obtener datos con created()
-    // fetchData() {
-    //   this.video = null;
-    //   this.loading = true;
-    //   videoService.getVideoById(this.$route.params.id).then(res => {
-    //     this.loading = false;
-    //     let video = res.data.video;
-    //     this.video = video;
-    //   });
-    // },
-
     // Crea la ficha del registro en video en formato PDF
     async printPDF() {
       PdfMakeWrapper.setFonts(pdfFonts);
@@ -201,8 +159,6 @@ export default {
     //   // El nombre del archivo incluye código de referencia
     //   doc.save(`Ficha_catalogacion_${this.video.identificacion.codigoReferencia}.pdf`);
     }
-
-    
   }
 }
 </script>
