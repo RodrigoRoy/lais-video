@@ -10,7 +10,7 @@ import * as auth from './services/AuthService' // servicio de autentificación (
 import Home from './views/Home.vue'
 import Login from './views/authentication/Login.vue'
 import Register from './views/authentication/Register.vue'
-import VideoCreate from './views/video/VideoCreate.vue'
+import VideoForm from './views/video/VideoForm.vue'
 import VideoView from './views/video/VideoView.vue'
 import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
 import ColeccionCreate from './views/coleccion/ColeccionCreate.vue'
@@ -44,8 +44,22 @@ const routes = new Router({
     {
       // Crear nuevo registro de video (requiere autentificación)
       path: '/video/nuevo',
-      name: 'video-create',
-      component: VideoCreate,
+      name: 'video-form',
+      component: VideoForm,
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
+    {
+      // Visualizar registro de video (requiere autentificación)
+      path: '/video/:id/edit',
+      name: 'video-edit',
+      component: VideoForm,
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();
