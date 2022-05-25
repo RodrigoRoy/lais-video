@@ -15,6 +15,7 @@ import VideoView from './views/video/VideoView.vue'
 import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
 import ColeccionCreate from './views/coleccion/ColeccionCreate.vue'
 import ColeccionView from './views/coleccion/ColeccionView.vue'
+import ColeccionViewTemplate from './views/coleccion/ColeccionViewTemplate.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
@@ -88,6 +89,12 @@ const routes = new Router({
           next('/login');
         }
       }
+    },
+    {
+      // Visualizar registro de coleccion
+      path: '/coleccion/:id',
+      name: 'coleccion-view',
+      component: ColeccionView
     },
     {
       // Crear nuevo grupo (requiere autentificación)
@@ -167,7 +174,7 @@ const routes = new Router({
     {
       path: '/coleccion',
       name: 'coleccion-view',
-      component: ColeccionView
+      component: ColeccionViewTemplate
     },
     {
       // Cualquier otra ruta, enviar a inicio
