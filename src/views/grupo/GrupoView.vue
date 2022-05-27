@@ -7,7 +7,7 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
     <v-card v-if="grupo">
       <v-card-text>
         <!-- Componente para el render de la información del grupo -->
-        <coleccion-info :coleccion="grupo"></coleccion-info>
+        <grupo-info :grupo="grupo"></grupo-info>
       </v-card-text>
     </v-card>
     <!-- @TODO v-else podrías ser más explícito o mejor representado -->
@@ -22,13 +22,13 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 import { PdfMakeWrapper, Table, Txt, Img } from 'pdfmake-wrapper'
 import * as pdfFonts from "pdfmake/build/vfs_fonts" // fonts provided for pdfmake
 import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API
-import ColeccionInfo from '../../components/ColeccionInfo.vue'// Componente que renderiza datos de la coleccion
+import GrupoInfo from '../../components/GrupoInfo.vue'// Componente que renderiza datos de la coleccion
 
 export default {
   name: 'GrupoView',
 
   components: {
-    ColeccionInfo,
+    GrupoInfo,
   },
 
   data: () => ({
