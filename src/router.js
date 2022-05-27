@@ -14,12 +14,12 @@ import VideoForm from './views/video/VideoForm.vue'
 import VideoView from './views/video/VideoView.vue'
 import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
 import ColeccionBrowse from './views/coleccion/ColeccionBrowse.vue'
-import ColeccionCreate from './views/coleccion/ColeccionCreate.vue'
+import ColeccionForm from './views/coleccion/ColeccionForm'
 import ColeccionView from './views/coleccion/ColeccionView.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
-import GrupoCreate from './views/grupo/GrupoCreate.vue'
+import GrupoForm from './views/grupo/GrupoForm.vue'
 import GrupoView from './views/grupo/GrupoView.vue'
 import Busqueda from './views/Busqueda.vue'
 import About from './views/About.vue'
@@ -81,7 +81,21 @@ const routes = new Router({
       // Crear nueva colección (requiere autentificación)
       path: '/coleccion/nuevo',
       name: 'coleccion-create',
-      component: ColeccionCreate,
+      component: ColeccionForm,
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
+    {
+      // Visualizar registro de coleccion (requiere autentificación)
+      path: '/coleccion/:id/edit',
+      name: 'coleccion-edit',
+      component: ColeccionForm,
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();
@@ -107,7 +121,21 @@ const routes = new Router({
       // Crear nuevo grupo (requiere autentificación)
       path: '/grupo/nuevo',
       name: 'grupo-create',
-      component: GrupoCreate,
+      component: GrupoForm,
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
+    {
+      // Visualizar registro de grupo (requiere autentificación)
+      path: '/grupo/:id/edit',
+      name: 'grupo-edit',
+      component: GrupoForm,
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();
