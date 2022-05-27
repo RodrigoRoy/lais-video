@@ -13,9 +13,9 @@ import Register from './views/authentication/Register.vue'
 import VideoForm from './views/video/VideoForm.vue'
 import VideoView from './views/video/VideoView.vue'
 import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
+import ColeccionBrowse from './views/coleccion/ColeccionBrowse.vue'
 import ColeccionCreate from './views/coleccion/ColeccionCreate.vue'
 import ColeccionView from './views/coleccion/ColeccionView.vue'
-import ColeccionViewTemplate from './views/coleccion/ColeccionViewTemplate.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
@@ -98,6 +98,12 @@ const routes = new Router({
       component: ColeccionView
     },
     {
+      // Visualizar colecciones
+      path: '/coleccion',
+      name: 'coleccion-browse',
+      component: ColeccionBrowse
+    },
+    {
       // Crear nuevo grupo (requiere autentificación)
       path: '/grupo/nuevo',
       name: 'grupo-create',
@@ -177,11 +183,6 @@ const routes = new Router({
       path: '/proyectos',
       name: 'projects',
       component: ColeccionProyectos
-    },
-    {
-      path: '/coleccion',
-      name: 'coleccion-view',
-      component: ColeccionViewTemplate
     },
     {
       // Cualquier otra ruta, enviar a inicio
