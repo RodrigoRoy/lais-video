@@ -2,7 +2,20 @@
 Se reutiliza la misma vista para cualquier conjunto con unidades documentales -->
 
 <template>
-  <v-container>
+  <div>
+    <!-- En caso de error en petición al API -->
+    <v-alert prominent type="error" v-if="error">
+      <v-row align="center">
+        <v-col class="grow">
+          {{ error }}
+        </v-col>
+        <v-col class="shrink">
+          <v-btn href="/home">Ir a inicio</v-btn>
+        </v-col>
+      </v-row>
+    </v-alert>
+
+    <v-container v-else>
     <!-- Usar v-if/v-else evita advertencias/errores en consola al renderizar -->
     <v-card v-if="video">
       <v-card-text>
@@ -10,11 +23,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
         <video-info :video="video"></video-info>
       </v-card-text>
     </v-card>
-    <!-- @TODO v-else podrías ser más explícito o mejor representado -->
-    <p v-else>
-      Error al obtener información
-    </p>
   </v-container>
+  </div>
 </template>
 
 
@@ -43,6 +53,13 @@ export default {
         let video = res.data.video;
         vm.video = video;
       });
+    })
+    // En caso de error (400 HTTP status code)
+    .catch(error => {
+      next(vm => {
+        vm.error = error.message;
+        vm.video = null;
+      })
     });
   },
 
