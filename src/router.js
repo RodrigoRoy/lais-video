@@ -19,6 +19,7 @@ import ColeccionView from './views/coleccion/ColeccionView.vue'
 import ColeccionProyectos from './views/coleccion/ColeccionProyectos.vue'
 import ColeccionProyectos1 from './views/coleccion/ColeccionProyectos1.vue'
 import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
+import GrupoBrowse from './views/grupo/GrupoBrowse.vue'
 import GrupoForm from './views/grupo/GrupoForm.vue'
 import GrupoView from './views/grupo/GrupoView.vue'
 import Busqueda from './views/Busqueda.vue'
@@ -150,6 +151,12 @@ const routes = new Router({
       path: '/grupo/:id',
       name: 'grupo-view',
       component: GrupoView
+    },
+    {
+      // Visualizar grupos
+      path: '/grupo',
+      name: 'grupo-browse',
+      component: GrupoBrowse
     },
     {
       // Busqueda textual de información
