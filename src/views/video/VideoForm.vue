@@ -195,6 +195,42 @@
           <span v-if="!editMode">Crear</span>
           <span v-else>Actualizar</span>
         </v-btn>
+
+
+        <div>
+          <div v-if="currentFile" class="progress">
+            <div
+              class="progress-bar progress-bar-info progress-bar-striped"
+              role="progressbar"
+              :aria-valuenow="progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              :style="{ width: progress + '%' }"
+            >
+              {{ progress }}%
+            </div>
+          </div>
+          <label class="btn btn-default">
+            <input type="file" ref="file" @change="selectFile" />
+          </label>
+          <button @click="upload">
+            Upload
+          </button>
+          <div class="alert alert-light" role="alert">{{ message }}</div>
+          <div class="card">
+            <div class="card-header">List of Files</div>
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item"
+                v-for="(file, index) in fileInfos"
+                :key="index"
+              >
+                <a :href="file.url">{{ file.name }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
       </v-form>
     </v-card>
   </div>
@@ -208,6 +244,7 @@ import L from 'leaflet' // elementos principales para mapas
 import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet' // elementos principales para mapas
 import { OpenStreetMapProvider } from 'leaflet-geosearch' // proveedores de búsqueda para mapas
 import VGeosearch from 'vue2-leaflet-geosearch' // búsqueda en mapas
+import UploadService from "../../services/UploadFilesService"; // Servicio para subir archivos
 
 // Solución al problema de falta de icono en mapas según documentación oficial: https://vue2-leaflet.netlify.app/quickstart/#marker-icons-are-missing
 import { Icon } from 'leaflet';
@@ -345,6 +382,14 @@ export default {
       showMarker: true,
       showPopup: false,
       searchLabel: 'Escribe una dirección'
+    },
+    // Opciones para la barra de carga de archivos (Clasificación PDF File)
+    pdfFile: {
+      selectedFiles: undefined,
+      currentFile: undefined,
+      progress: 0,
+      message: "",
+      fileInfos: []
     }
   }),
 
@@ -400,6 +445,29 @@ export default {
       await videoService.createVideo(request);
       this.$router.push({name: 'home'}); // TODO: Redireccionamiento al registro
     },
+    // Selecciona el archivo desde el seleccionador de archivos PDF
+    selectFile() {
+      this.selectedFiles = this.$refs.file.files;
+    },
+    // Sube un archivo PDF al servidor
+    upload() {
+      this.progress = 0;
+      this.currentFile = this.selectedFiles.item(0);
+      UploadService.upload(this.currentFile).then(response => {
+        console.log("Entra al caso 1");
+        this.message = response.data.message;
+        return UploadService.getFiles();
+      }).then(files => {
+        console.log("Entra al segundo caso");
+        this.fileInfos = files.data;
+      }).catch(error => {
+        console.log("Error", error);
+        this.progress = 0;
+        this.message = "Could not upload the file!";
+        this.currentFile = undefined;
+      });
+      this.selectedFiles = undefined;
+    }
     // Agregar marcador al dar clic en mapa
     // addMarker(event) {
     //   this.markerLatLng = event.latlng;
@@ -424,6 +492,11 @@ export default {
     computedFechaActualizacion(){
       return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
     }
+  },
+  mounted() {
+    UploadService.getFiles().then(response => {
+      this.fileInfos = response.data;
+    });
   }
 }
 </script>
