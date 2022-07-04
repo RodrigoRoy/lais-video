@@ -216,19 +216,6 @@
           <button @click="upload">
             Upload
           </button>
-          <div class="alert alert-light" role="alert">{{ message }}</div>
-          <div class="card">
-            <div class="card-header">List of Files</div>
-            <ul class="list-group list-group-flush">
-              <li
-                class="list-group-item"
-                v-for="(file, index) in fileInfos"
-                :key="index"
-              >
-                <a :href="file.url">{{ file.name }}</a>
-              </li>
-            </ul>
-          </div>
         </div>
 
       </v-form>
@@ -450,22 +437,27 @@ export default {
       this.selectedFiles = this.$refs.file.files;
     },
     // Sube un archivo PDF al servidor
-    upload() {
+    async upload() {
       this.progress = 0;
-      this.currentFile = this.selectedFiles.item(0);
-      UploadService.upload(this.currentFile).then(response => {
-        console.log("Entra al caso 1");
-        this.message = response.data.message;
-        return UploadService.getFiles();
-      }).then(files => {
-        console.log("Entra al segundo caso");
-        this.fileInfos = files.data;
-      }).catch(error => {
-        console.log("Error", error);
-        this.progress = 0;
-        this.message = "Could not upload the file!";
-        this.currentFile = undefined;
-      });
+      this.currentFile = await this.selectedFiles.item(0);
+      let filereader = new FileReader();
+      filereader.readAsDataURL(this.currentFile);
+      filereader.onload=function() {
+        let base64 = filereader.result;
+        UploadService.upload(base64).then(response => {
+          console.log("Entra al caso 1");
+          this.message = response.data.message;
+          return UploadService.getFiles();
+        }).then(files => {
+          console.log("Entra al segundo caso");
+          this.fileInfos = files.data;
+        }).catch(error => {
+          console.log("Error", error);
+          this.progress = 0;
+          this.message = "Could not upload the file!";
+          this.currentFile = undefined;
+        });
+      }
       this.selectedFiles = undefined;
     }
     // Agregar marcador al dar clic en mapa
