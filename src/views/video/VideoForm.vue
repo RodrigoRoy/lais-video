@@ -20,7 +20,7 @@
       <v-card-title class="text-h3 justify-center">Unidad simple</v-card-title>
 
       <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contenido y estructura, etc) -->
-      <v-form ref="videoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
+      <v-form ref="videoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
         <v-tabs v-model="tab" centered icons-and-text show-arrows>
           <v-tabs-slider></v-tabs-slider>
 
@@ -179,11 +179,11 @@
 
           <v-tab-item value="adicional" >
             <v-card flat>
-              <v-file-input v-model="video.adicional.imagen" show-size counter chips accept="video/*" prepend-icon="mdi-camera" label="Fragmento de registro audiovisual"></v-file-input>
+              <v-file-input v-model="video.adicional.video" show-size accept="video/*" prepend-icon="mdi-camera" label="Fragmento de registro audiovisual"></v-file-input>
               
-              <v-file-input v-model="video.adicional.video" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Imagen"></v-file-input>
+              <v-file-input v-model="video.adicional.imagen" show-size accept="image/*" prepend-icon="mdi-image" label="Imagen"></v-file-input>
               
-              <v-file-input v-model="video.adicional.calificacion" show-size counter chips accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación del registro"></v-file-input>
+              <v-file-input v-model="video.adicional.calificacion" show-size accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación del registro"></v-file-input>
 
               <v-checkbox v-model="video.adicional.isPublic" label="Registro público"></v-checkbox>
             </v-card>
@@ -195,6 +195,8 @@
           <span v-if="!editMode">Crear</span>
           <span v-else>Actualizar</span>
         </v-btn>
+        <!-- Botón temporal para pruebas al subir archivos desde API -->
+        <v-btn color="primary" elevation="6" @click="uploadFileImage"> Upload file image </v-btn>
       </v-form>
     </v-card>
   </div>
@@ -204,6 +206,7 @@
 <script>
 import moment from 'moment' // formatos de fechas
 import * as videoService from '../../services/VideoService' // servicio para llamadas al API
+import * as fileService from '../../services/FileService' // servicio para subir archivos al servidor desde API
 import L from 'leaflet' // elementos principales para mapas
 import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet' // elementos principales para mapas
 import { OpenStreetMapProvider } from 'leaflet-geosearch' // proveedores de búsqueda para mapas
@@ -247,6 +250,7 @@ export default {
       },
       adicional: {
         isPublic: true,
+        imagen: null,
       }
     },
 
@@ -410,6 +414,19 @@ export default {
     //   this.markerLatLng = undefined;
     //   this.markerVisibility = false;
     // }
+
+    // Subir un archivo de imagen desde API
+    uploadFileImage: async function(){
+      const formData = new FormData();
+      formData.append('file', this.video.adicional.imagen);
+      try{
+        await fileService.uploadImage(formData);
+        console.log('Image uploaded');
+      }
+      catch(err){
+        console.log(err);
+      }
+    },
   },
 
   // Métodos específicos para variables y valores calculados
