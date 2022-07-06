@@ -196,7 +196,9 @@
           <span v-else>Actualizar</span>
         </v-btn>
         <!-- Botón temporal para pruebas al subir archivos desde API -->
-        <v-btn color="primary" elevation="6" @click="uploadFileImage"> Upload file image </v-btn>
+        <v-btn @click="uploadVideoFile"> Upload video file </v-btn>
+        <v-btn @click="uploadImageFile"> Upload image file </v-btn>
+        <v-btn @click="uploadDocumentFile"> Upload document file </v-btn>
       </v-form>
     </v-card>
   </div>
@@ -250,7 +252,9 @@ export default {
       },
       adicional: {
         isPublic: true,
+        video: null,
         imagen: null,
+        calificacion: null,
       }
     },
 
@@ -415,13 +419,40 @@ export default {
     //   this.markerVisibility = false;
     // }
 
-    // Subir un archivo de imagen desde API
-    uploadFileImage: async function(){
+    // Subir un archivo de video desde API
+    uploadVideoFile: async function(){
       const formData = new FormData();
-      formData.append('file', this.video.adicional.imagen);
+      formData.append('video', this.video.adicional.video);
       try{
-        await fileService.uploadImage(formData);
-        console.log('Image uploaded');
+        const response = await fileService.uploadVideo(formData);
+        console.log(response.data.message);
+        console.log('response.data.file: ', response.data.file);
+      }
+      catch(err){
+        console.log(err);
+      }
+    },
+    // Subir un archivo de imagen desde API
+    uploadImageFile: async function(){
+      const formData = new FormData();
+      formData.append('image', this.video.adicional.imagen);
+      try{
+        const response = await fileService.uploadImage(formData);
+        console.log(response.data.message);
+        console.log('response.data.file: ', response.data.file);
+      }
+      catch(err){
+        console.log(err);
+      }
+    },
+    // Subir un documento de texto (PDF) desde API
+    uploadDocumentFile: async function(){
+      const formData = new FormData();
+      formData.append('document', this.video.adicional.calificacion);
+      try{
+        const response = await fileService.uploadDocument(formData);
+        console.log(response.data.message);
+        console.log('response.data.file: ', response.data.file);
       }
       catch(err){
         console.log(err);
