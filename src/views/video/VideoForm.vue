@@ -258,6 +258,13 @@ export default {
       }
     },
 
+    // Auxiliar para almacenar información de archivos a subir
+    files: {
+      video: null,
+      image: null,
+      document: null,
+    },
+
     // Bandera para determinar si se está editando o creando un registro
     editMode: false,
     // Texto de error, en caso de haber
@@ -294,7 +301,7 @@ export default {
     rules: {
       codigoReferencia: [
         value => !!value || 'El código de referencia es necesario. Ejemplo: MXIM-AV-2-3-1-2',
-        value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1-2',
+        value => /^MXIM-AV-2(-\d+)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1-2',
       ],
       duracion: [
         value => /^\d+$/.test(value) || 'La duración debe ser el número de minutos'
@@ -423,6 +430,7 @@ export default {
     uploadVideoFile: async function(){
       const formData = new FormData();
       formData.append('video', this.video.adicional.video);
+      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
       try{
         const response = await fileService.uploadVideo(formData);
         console.log(response.data.message);
@@ -458,6 +466,35 @@ export default {
         console.log(err);
       }
     },
+    // Unificación de subida de archivos desde API
+    uploadFile: async function(filetype){
+      const formData = new FormData();
+      let response = null;
+      try{
+        switch(filetype){
+          case 'video':
+            formData.append('video', this.files.video);
+            response = await fileService.uploadVideo(formData);
+            console.log(response.data.message);
+            break;
+          case 'image':
+            formData.append('image', this.files.image);
+            response = await fileService.uploadImage(formData);
+            console.log(response.data.message);
+            break;
+          case 'document':
+            formData.append('document', this.files.document);
+            response = await fileService.uploadDocument(formData);
+            console.log(response.data.message);
+            break;
+          default:
+            break;
+        }
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
   },
 
   // Métodos específicos para variables y valores calculados
