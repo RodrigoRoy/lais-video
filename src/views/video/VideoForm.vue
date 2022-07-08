@@ -179,11 +179,11 @@
 
           <v-tab-item value="adicional" >
             <v-card flat>
-              <v-file-input v-model="video.adicional.video" show-size accept="video/*" prepend-icon="mdi-camera" label="Fragmento de registro audiovisual"></v-file-input>
+              <v-file-input v-model="files.video" show-size accept="video/*" prepend-icon="mdi-camera" label="Fragmento de registro audiovisual"></v-file-input>
               
-              <v-file-input v-model="video.adicional.imagen" show-size accept="image/*" prepend-icon="mdi-image" label="Imagen"></v-file-input>
+              <v-file-input v-model="files.image" show-size accept="image/*" prepend-icon="mdi-image" label="Imagen"></v-file-input>
               
-              <v-file-input v-model="video.adicional.calificacion" show-size accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación del registro"></v-file-input>
+              <v-file-input v-model="files.document" show-size accept=".pdf" prepend-icon="mdi-file-document-outline" label="Calificación del registro"></v-file-input>
 
               <v-checkbox v-model="video.adicional.isPublic" label="Registro público"></v-checkbox>
             </v-card>
@@ -251,10 +251,7 @@ export default {
         fechaActualizacion: new Date().toISOString().substr(0, 10),
       },
       adicional: {
-        isPublic: true,
-        video: null,
-        imagen: null,
-        calificacion: null,
+        isPublic: true
       }
     },
 
@@ -429,12 +426,13 @@ export default {
     // Subir un archivo de video desde API
     uploadVideoFile: async function(){
       const formData = new FormData();
-      formData.append('video', this.video.adicional.video);
+      formData.append('video', this.files.video);
       formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
       try{
         const response = await fileService.uploadVideo(formData);
         console.log(response.data.message);
         console.log('response.data.file: ', response.data.file);
+        this.video.adicional.video = response.data.file.filename;
       }
       catch(err){
         console.log(err);
@@ -443,11 +441,13 @@ export default {
     // Subir un archivo de imagen desde API
     uploadImageFile: async function(){
       const formData = new FormData();
-      formData.append('image', this.video.adicional.imagen);
+      formData.append('image', this.files.image);
+      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
       try{
         const response = await fileService.uploadImage(formData);
         console.log(response.data.message);
         console.log('response.data.file: ', response.data.file);
+        this.video.adicional.imagen = response.data.file.filename;
       }
       catch(err){
         console.log(err);
@@ -456,11 +456,13 @@ export default {
     // Subir un documento de texto (PDF) desde API
     uploadDocumentFile: async function(){
       const formData = new FormData();
-      formData.append('document', this.video.adicional.calificacion);
+      formData.append('document', this.files.document);
+      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
       try{
         const response = await fileService.uploadDocument(formData);
         console.log(response.data.message);
         console.log('response.data.file: ', response.data.file);
+        this.video.adicional.calificacion = response.data.file.filename;
       }
       catch(err){
         console.log(err);

@@ -3,7 +3,9 @@
   "version": "0.2.0",
   "description": "Registros en video LAIS",
   "author": "Rodrigo Colín <rcolin@mora.edu.mx>",
-  "contributors": ["Emmanuel Cruz <emmanuel_cruzh@ciencias.unam.mx>"],
+  "contributors": [
+    "Emmanuel Cruz <emmanuel_cruzh@ciencias.unam.mx>"
+  ],
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
@@ -13,10 +15,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "dev": "concurrently \"export NODE_ENV=development\" \"nodemon dev-server/index.mjs\" \"vue-cli-service serve\"",
-    "build": "export NODE_ENV=production && babel dev-server -d prod-server && vue-cli-service build",
-    "comp": "concurrently \"export NODE_ENV=development\" \"babel dev-server -d prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\"",
-    "start": "export NODE_ENV=production && node prod-server/index.js"
+    "build": "vue-cli-service build",
+    "dev": "cross-env NODE_ENV=development concurrently \"nodemon dev-server/index.mjs\" \"vue-cli-service serve\"",
+    "prod": "cross-env NODE_ENV=production concurrently \"nodemon dev-server/index.mjs\" \"vue-cli-service serve\"",
+    "build2": "cross-env NODE_ENV=production babel dev-server -d prod-server && vue-cli-service build",
+    "compile": "cross-env NODE_ENV=development concurrently \"babel dev-server -d prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\"",
+    "start": "cross-env NODE_ENV=production node prod-server/index.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -55,6 +59,7 @@
     "babel-eslint": "^10.1.0",
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "morgan": "^1.10.0",
