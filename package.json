@@ -1,12 +1,21 @@
 {
-  "name": "mevn-template",
-  "version": "0.1.0",
+  "name": "lais-video",
+  "version": "0.2.0",
+  "description": "Registros en video LAIS",
+  "author": "Rodrigo Colín <rcolin@mora.edu.mx>",
+  "contributors": ["Emmanuel Cruz <emmanuel_cruzh@ciencias.unam.mx>"],
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RodrigoRoy/lais-video"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "export NODE_ENV=production && babel dev-server -d prod-server && vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev": "concurrently \"export NODE_ENV=development\" \"babel dev-server -d prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\"",
+    "dev": "concurrently \"export NODE_ENV=development\" \"nodemon dev-server/index.mjs\" \"vue-cli-service serve\"",
+    "build": "export NODE_ENV=production && babel dev-server -d prod-server && vue-cli-service build",
+    "comp": "concurrently \"export NODE_ENV=development\" \"babel dev-server -d prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\"",
     "start": "export NODE_ENV=production && node prod-server/index.js"
   },
   "dependencies": {
@@ -24,6 +33,7 @@
     "leaflet-geosearch": "^3.5.0",
     "moment": "^2.24.0",
     "mongoose": "^5.12.7",
+    "multer": "^1.4.5-lts.1",
     "pdfmake": "^0.2.2",
     "pdfmake-wrapper": "^2.1.2",
     "vue": "^2.6.11",

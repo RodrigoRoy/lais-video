@@ -1,8 +1,10 @@
 .DS_Store
+.env
 node_modules
 /dist
 /prod-server
 /src/files
+/public/files
 
 # local env files
 *.env
