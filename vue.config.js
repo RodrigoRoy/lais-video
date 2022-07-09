@@ -3,4 +3,11 @@ module.exports = {
     "vuetify"
   ],
   publicPath: '/lais-video/',
+  configureWebpack:{
+    devServer: {
+      watchOptions: {
+        ignored: /public/,
+      },
+    },
+  },
 }

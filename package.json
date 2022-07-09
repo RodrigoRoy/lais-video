@@ -18,6 +18,7 @@
     "build": "vue-cli-service build",
     "dev": "cross-env NODE_ENV=development concurrently \"nodemon dev-server/index.mjs\" \"vue-cli-service serve\"",
     "prod": "cross-env NODE_ENV=production concurrently \"nodemon dev-server/index.mjs\" \"vue-cli-service serve\"",
+    "db": "cross-env NODE_ENV=development nodemon dev-server/index.mjs",
     "build2": "cross-env NODE_ENV=production babel dev-server -d prod-server && vue-cli-service build",
     "compile": "cross-env NODE_ENV=development concurrently \"babel dev-server -d prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\"",
     "start": "cross-env NODE_ENV=production node prod-server/index.js"
