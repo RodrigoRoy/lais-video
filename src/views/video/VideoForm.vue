@@ -2,6 +2,18 @@
 
 <template>
   <div>
+    <!-- TODO Esta forma de representar caso de éxito al subir archivo debe modificarse -->
+    <v-alert v-model="success" dismissible type="success">
+      <v-row align="center">
+        <v-col class="grow">
+          Información subida correctamente con ID: {{ videoId }}
+        </v-col>
+        <v-col class="shrink">
+          <v-btn href="/home">Ir a inicio</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
+        </v-col>
+      </v-row>
+    </v-alert>
+
     <!-- En caso de error en petición al API -->
     <v-alert prominent type="error" v-if="error">
       <v-row align="center">
@@ -9,7 +21,7 @@
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn>
+          <v-btn href="/home">Ir a inicio</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
         </v-col>
       </v-row>
     </v-alert>
@@ -195,10 +207,6 @@
           <span v-if="!editMode">Crear</span>
           <span v-else>Actualizar</span>
         </v-btn>
-        <!-- Botón temporal para pruebas al subir archivos desde API -->
-        <v-btn @click="uploadVideoFile"> Upload video file </v-btn>
-        <v-btn @click="uploadImageFile"> Upload image file </v-btn>
-        <v-btn @click="uploadDocumentFile"> Upload document file </v-btn>
       </v-form>
     </v-card>
   </div>
@@ -262,9 +270,13 @@ export default {
       document: null,
     },
 
-    // Bandera para determinar si se está editando o creando un registro
+    // Determina si se está editando o creando un registro
     editMode: false,
-    // Texto de error, en caso de haber
+    // Determina si se está realizando subida de archivos (video, imagen, documentos) 
+    isUploading: false,
+    // Determina si hubo éxito al subir un registro (paso final del formulario)
+    success: false,
+    // Determina si hay algún mensaje de error. Deshabilita completamente el uso del formulario cuando está asignado
     error: null,
 
     // Auxiliar para mostrar paises como un referente opcional
@@ -404,14 +416,76 @@ export default {
   methods: {
     // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
     onSubmit: async function(){
-      if(!this.$refs.videoForm.validate()) // Se activa validación del formulario
+      // Validación del formulario
+      if(!this.$refs.videoForm.validate()) 
         return;
-      const request = {
-        video: this.video,
-      };
-      await videoService.createVideo(request);
-      this.$router.push({name: 'home'}); // TODO: Redireccionamiento al registro
+      
+      this.isUploading = true; // inicia subida de archivos e información
+
+      try {
+        if(this.files.video) // archivo de video
+          await this.uploadVideoFile();
+        if(this.files.image) // archivo de imagen
+          await this.uploadImageFile();
+        if(this.files.document)
+          await this.uploadDocumentFile(); // documento de texto (pdf)
+        
+        // Enviar datos textuales a base de datos
+        const request = {
+          video: this.video,
+        };
+        const myResponse = await videoService.createVideo(request);
+        
+        // Notificaciones:
+        this.isUploading = false; // termina subida de archivos e información
+        this.success = true; // subida de registro completada exitosamente
+        this.videoId = myResponse.data.id; // identificador en base de datos
+        // this.$router.push({name: 'home'}); // TODO: Redireccionamiento a página del registro
+      } catch (err) {
+        this.error = err;
+      }
     },
+    
+    // Subir un archivo de video desde API
+    uploadVideoFile: async function(){
+      const formData = new FormData(); // creación de formulario en blanco
+      formData.append('video', this.files.video); // adjuntar campo con objeto tipo File
+      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar campo con información extra
+      try{
+        const response = await fileService.uploadVideo(formData); // petición desde API
+        this.video.adicional.video = response.data.file.filename; // asignación del nombre de archivo guardado
+      }
+      catch(err){
+        this.error = err;
+      }
+    },
+    // Subir un archivo de imagen desde API
+    uploadImageFile: async function(){
+      const formData = new FormData(); // creación de formulario en blanco
+      formData.append('image', this.files.image); // adjuntar campo con objeto tipo File
+      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar campo con información extra
+      try{
+        const response = await fileService.uploadImage(formData); // petición desde API
+        this.video.adicional.imagen = response.data.file.filename; // asignación del nombre de archivo guardado
+      }
+      catch(err){
+        this.error = err;
+      }
+    },
+    // Subir un documento de texto (PDF) desde API
+    uploadDocumentFile: async function(){
+      const formData = new FormData(); // creación de formulario en blanco
+      formData.append('document', this.files.document); // adjuntar campo con objeto tipo File
+      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar campo con información extra
+      try{
+        const response = await fileService.uploadDocument(formData); // petición desde API
+        this.video.adicional.calificacion = response.data.file.filename; // asignación del nombre de archivo guardado
+      }
+      catch(err){
+        this.error = err;
+      }
+    },
+
     // Agregar marcador al dar clic en mapa
     // addMarker(event) {
     //   this.markerLatLng = event.latlng;
@@ -422,81 +496,6 @@ export default {
     //   this.markerLatLng = undefined;
     //   this.markerVisibility = false;
     // }
-
-    // Subir un archivo de video desde API
-    uploadVideoFile: async function(){
-      const formData = new FormData();
-      formData.append('video', this.files.video);
-      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
-      try{
-        const response = await fileService.uploadVideo(formData);
-        console.log(response.data.message);
-        console.log('response.data.file: ', response.data.file);
-        this.video.adicional.video = response.data.file.filename;
-      }
-      catch(err){
-        console.log(err);
-      }
-    },
-    // Subir un archivo de imagen desde API
-    uploadImageFile: async function(){
-      const formData = new FormData();
-      formData.append('image', this.files.image);
-      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
-      try{
-        const response = await fileService.uploadImage(formData);
-        console.log(response.data.message);
-        console.log('response.data.file: ', response.data.file);
-        this.video.adicional.imagen = response.data.file.filename;
-      }
-      catch(err){
-        console.log(err);
-      }
-    },
-    // Subir un documento de texto (PDF) desde API
-    uploadDocumentFile: async function(){
-      const formData = new FormData();
-      formData.append('document', this.files.document);
-      formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar información extra
-      try{
-        const response = await fileService.uploadDocument(formData);
-        console.log(response.data.message);
-        console.log('response.data.file: ', response.data.file);
-        this.video.adicional.calificacion = response.data.file.filename;
-      }
-      catch(err){
-        console.log(err);
-      }
-    },
-    // Unificación de subida de archivos desde API
-    uploadFile: async function(filetype){
-      const formData = new FormData();
-      let response = null;
-      try{
-        switch(filetype){
-          case 'video':
-            formData.append('video', this.files.video);
-            response = await fileService.uploadVideo(formData);
-            console.log(response.data.message);
-            break;
-          case 'image':
-            formData.append('image', this.files.image);
-            response = await fileService.uploadImage(formData);
-            console.log(response.data.message);
-            break;
-          case 'document':
-            formData.append('document', this.files.document);
-            response = await fileService.uploadDocument(formData);
-            console.log(response.data.message);
-            break;
-          default:
-            break;
-        }
-      }
-      catch(err){
-        console.log(err);
-      }
-    }
   },
 
   // Métodos específicos para variables y valores calculados
