@@ -15,6 +15,7 @@ export default new Vuex.Store({
     isLoggedIn: false, // sesión iniciada?
     apiUrl: `${window.location.protocol}//${window.location.hostname}:8081/api`, // URL base del API, usualmente http://localhost:8081/api
     username: null, // nombre de usuario
+    fullname: null, // nombre completo de usuario
     userId: null, // id de usuario
     operation: {      // permisos del usuario
       create: true,   // crear registros
@@ -35,6 +36,7 @@ export default new Vuex.Store({
       state.isLoggedIn = auth.isLoggedIn();
       if(state.isLoggedIn){
         state.username = auth.getUsername();
+        state.fullname = auth.getFullname();
         state.userId = auth.getUserId();
         state.operation = auth.getOperation();
         state.admin = auth.getAdmin();
@@ -42,6 +44,7 @@ export default new Vuex.Store({
       }
       else{
         state.username = null;
+        state.fullname = null;
         state.userId = null;
         state.operation = null;
         state.admin = null;

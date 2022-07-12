@@ -434,7 +434,12 @@ export default {
         const request = {
           video: this.video,
         };
-        const myResponse = await videoService.createVideo(request);
+        let myResponse; // objeto res después de creación o edición del registro
+        if (this.editMode) {
+          myResponse = await videoService.updateVideo(request);
+        } else {
+          myResponse = await videoService.createVideo(request);
+        }
         
         // Notificaciones:
         this.isUploading = false; // termina subida de archivos e información
@@ -509,7 +514,20 @@ export default {
     },
     computedFechaActualizacion(){
       return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
-    }
+    },
+    computedUserId(){
+      return this.$store.state.userId;
+    },
+    computedUserFullname(){
+      return this.$store.state.fullname;
+    },
+  },
+
+  // Asignaciones cuando han terminado de procesarse opciones relacionadas con estados
+  created() {
+    // Asignar nombre y id de usuario:
+    this.video.controlDescripcion.nombreArchivero = this.computedUserFullname;
+    this.video.adicional.user = this.computedUserId;
   }
 }
 </script>

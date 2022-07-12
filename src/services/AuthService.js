@@ -70,6 +70,18 @@ export function getUsername(){
 }
 
 /**
+ * Obtiene el nombre completo de usuario al decodificar información del token almacenado en local storage
+ * @returns cadena de texto con el nombre completo de usuario
+ */
+ export function getFullname(){
+  const token = decodeToken();
+  if(!token){
+    return null;
+  }
+  return token.user.fullname;
+}
+
+/**
  * Obtiene el id de usuario al decodificar información del token almacenado en local storage
  * @returns cadena de texto con el id de usuario
  */
