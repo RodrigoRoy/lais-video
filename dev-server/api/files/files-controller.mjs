@@ -63,6 +63,14 @@ import * as fs from 'fs' // biblioteca para manejo de archivos en sistema (files
         
         // @TODO EmmanuelCruz Renombrar archivo de video. Ejemplo: Foo.mp4 -> MXIM-AV-2-67.mp4
         // Recordar que req.file y req.body contienen información del archivo y campos de texto adicionales
+        // Información necesaria para renombrar. Nombre con el que se almacena y nuevo nombre (codigo de referencia)
+        const bodyObject = JSON.parse(JSON.stringify(req.body))
+        const destination = `${req.file.destination}/${req.file.filename}`
+        const extension = req.file.mimetype // Extension del archivo
+        const newName = `${req.file.destination}/${bodyObject.codigoReferencia}.${extension.substring(extension.length-3)}`
+
+        // Renombre de archivos
+        renameFile(destination, newName)
 
         return res.status(200).json({ file: req.file, message: 'Video subido correctamente'});
     });
@@ -128,6 +136,14 @@ export function uploadImage(req, res){
         // código cuando no hay error:
         // @TODO EmmanuelCruz Renombrar archivo de imagen. Ejemplo: Foo.jpg -> MXIM-AV-2-67.jpg
         // Recordar que req.file y req.body contienen información del archivo y campos de texto adicionales
+        // Información necesaria para renombrar. Nombre con el que se almacena y nuevo nombre (codigo de referencia)
+        const bodyObject = JSON.parse(JSON.stringify(req.body))
+        const destination = `${req.file.destination}/${req.file.filename}`
+        const extension = req.file.mimetype // Extension del archivo
+        const newName = `${req.file.destination}/${bodyObject.codigoReferencia}.${extension.substring(extension.length-3)}`
+
+        // Renombre de archivos
+        renameFile(destination, newName)
 
         return res.status(200).json({ file: req.file, message: 'Imagen subida correctamente'});
     });
@@ -193,7 +209,25 @@ export function uploadImage(req, res){
         // código cuando no hay error:
         // @TODO EmmanuelCruz Renombrar documento de texto. Ejemplo: Foo.pdf -> MXIM-AV-2-67.pdf
         // Recordar que req.file y req.body contienen información del archivo y campos de texto adicionales
+        // Información necesaria para renombrar. Nombre con el que se almacena y nuevo nombre (codigo de referencia)
+        const bodyObject = JSON.parse(JSON.stringify(req.body))
+        const destination = `${req.file.destination}/${req.file.filename}`
+        const extension = req.file.mimetype // Extension del archivo
+        const newName = `${req.file.destination}/${bodyObject.codigoReferencia}.${extension.substring(extension.length-3)}`
 
+        // Renombre de archivos
+        renameFile(destination, newName)
         return res.status(200).json({ file: req.file, message: 'Documento subido correctamente'});
     });
+}
+
+/**
+ * Renombra un archivo.
+ * @param {string} oldName path que hace referencia al archivo almacenado
+ * @param {string} newName path con el nuevo nombre con el que se va a reeamplazar (renombrar) el archivo
+ */
+function renameFile(oldName, newName) {
+    fs.rename(oldName, newName, err => {
+        if(err) throw err;
+    })
 }
