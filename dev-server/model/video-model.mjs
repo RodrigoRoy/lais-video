@@ -9,7 +9,7 @@ const videoSchema = new mongoose.Schema({
     pais: {type: String, trim: true},
     duracion: Number, // representado en total de segundos
     duracionString: {type: String, trim: true}, // representado textual
-    personasEntrevistadas: {type: [String], trim: true},
+    personasEntrevistadas: [{type: String, trim: true}],
     entrevistador: {type: String, trim: true},
     camara: {type: String, trim: true},
     iluminacion: {type: String, trim: true},
@@ -42,7 +42,7 @@ const videoSchema = new mongoose.Schema({
     notas: {type: String, trim: true},
   },
   controlDescripcion: {
-    nombreArchivero: {type: String, trim: true}, //[{type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}]
+    nombreArchivero: {type: String, trim: true}, //[{type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}] // TODO Convert to array
     // fechaDescripcion: new Date().toISOString().substring(0, 10),
     // fechaActualizacion: new Date().toISOString().substring(0, 10),
   },
@@ -51,7 +51,7 @@ const videoSchema = new mongoose.Schema({
     video: {type: String, trim: true},
     calificacion: {type: String, trim: true}, // documento (PDF) de calificación
     isPublic: {type: Boolean, default: true},
-    user: [{type: ObjectId, ref: 'user'}],
+    user: {type: ObjectId, ref: 'user'}, // TODO Convert to array
     grupo: {type: ObjectId, ref: 'grupoVideo'},
     lugarDescrito: {
       location: {
