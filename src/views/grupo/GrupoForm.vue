@@ -216,6 +216,13 @@ export default {
     // ]
   }),
 
+  beforeRouteLeave(to, from, next){
+    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del grupo")
+    if(respuesta){
+      next()
+    }
+  },
+
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     // En caso de crear nuevo registro:
@@ -276,6 +283,11 @@ export default {
       console.log('newGrupo: ', newGrupo);
       this.$router.push({name: 'home'}); // TODO: Redireccionamiento al grupo (usando newGroup.data.id)
     },
+    
+    preventNav(event) {
+      event.preventDefault()
+      event.returnValue = ""
+    }
   },
 
   // Métodos específicos para variables y valores calculados
@@ -290,6 +302,14 @@ export default {
     computedFechaActualizacion(){
       return this.grupo.controlDescripcion.fechaActualizacion ? moment(this.grupo.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
     }
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("beforeunload", this.preventNav);
+  },
+
+  mounted: function () {
+    window.addEventListener("beforeunload", this.preventNav);
   }
 }
 </script>

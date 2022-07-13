@@ -241,6 +241,13 @@ export default {
     // ]
   }),
 
+  beforeRouteLeave(to, from, next){
+    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos de la colección")
+    if(respuesta){
+      next()
+    }
+  },
+
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     // En caso de crear nuevo registro:
@@ -301,6 +308,11 @@ export default {
       console.log('newColeccion: ', newColeccion);
       this.$router.push({name: 'home'}); // TODO: Redireccionamiento a la colección (usando newColeccion.data.id)
     },
+        
+    preventNav(event) {
+      event.preventDefault()
+      event.returnValue = ""
+    }
   },
 
   // Métodos específicos para variables y valores calculados
@@ -315,6 +327,14 @@ export default {
     computedFechaActualizacion(){
       return this.coleccion.controlDescripcion.fechaActualizacion ? moment(this.coleccion.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
     }
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("beforeunload", this.preventNav);
+  },
+
+  mounted: function () {
+    window.addEventListener("beforeunload", this.preventNav);
   }
 }
 </script>

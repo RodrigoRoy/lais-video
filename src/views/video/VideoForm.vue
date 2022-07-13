@@ -372,6 +372,13 @@ export default {
     }
   }),
 
+  beforeRouteLeave(to, from, next){
+    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del video")
+    if(respuesta){
+      next()
+    }
+  },
+
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     // En caso de crear nuevo registro:
@@ -486,6 +493,11 @@ export default {
       }
     },
 
+    preventNav(event) {
+      event.preventDefault()
+      event.returnValue = ""
+    }
+
     // Agregar marcador al dar clic en mapa
     // addMarker(event) {
     //   this.markerLatLng = event.latlng;
@@ -510,6 +522,14 @@ export default {
     computedFechaActualizacion(){
       return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
     }
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("beforeunload", this.preventNav);
+  },
+
+  mounted: function () {
+    window.addEventListener("beforeunload", this.preventNav);
   }
 }
 </script>
