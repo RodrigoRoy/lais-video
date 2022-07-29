@@ -284,11 +284,16 @@ export default {
       const request = {
         grupo: this.grupo,
       };
-      const newGrupo = await grupoService.createGroup(request);
-      console.log('newGrupo: ', newGrupo);
-      this.success = true
-      window.removeEventListener("beforeunload", this.preventNav);
-      this.$router.push({name: 'home'}); // TODO: Redireccionamiento al grupo (usando newGroup.data.id)
+      try {
+        // const newGrupo = await grupoService.createGroup(request); // TODO: Asignación en redirrecionamiento al grupo recien creado
+        await grupoService.createGroup(request);
+        this.success = true
+        window.removeEventListener("beforeunload", this.preventNav);
+        this.$router.push({name: 'home'}); // TODO: Redireccionamiento al grupo (usando newGroup.data.id)
+      } catch (error) {
+        this.success = false;
+        this.error = error;
+      }
     },
     
     preventNav(event) {

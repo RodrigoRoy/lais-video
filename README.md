@@ -14,12 +14,14 @@ El modelo de sistema presentado puede servir para otras personas o instancias qu
 Se debe crear un archivo de configuración `.env` [(dotenv)](https://www.npmjs.com/package/dotenv) para almacenar los datos importantes del proyecto:
 
 ```sh
-MY_PORT=3000
-MY_DB_HOST=mongodb://localhost:27017/
-MY_DB_NAME_DEV=nombre-base-de-datos-desarrollo
-MY_DB_NAME_PROD=nombre-base-de-datos-produccion
-MY_TOKEN_DEV=token-desarrollo
-MY_TOKEN_PROD=token-produccion
+MY_PORT=8081
+
+MY_HOST=localhost
+MY_DB_HOST=mongodb://localhost:27017
+MY_TOKEN=mi-token-secreto
+
+MY_DB_NAME_DEV=lais-video-dev
+MY_DB_NAME_PROD=lais-video
 ```
 
 ## Instrucciones para desarrollo
