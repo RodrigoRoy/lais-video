@@ -376,9 +376,11 @@ export default {
   }),
 
   beforeRouteLeave(to, from, next){
-    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del video")
-    if(respuesta){
-      next()
+    if(!this.success){
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del video")
+      if(respuesta){
+        next()
+      }
     }
   },
 
@@ -486,6 +488,9 @@ export default {
         this.success = true; // subida de registro completada exitosamente
         this.videoId = myResponse.data.id; // identificador en base de datos
         // this.$router.push({name: 'home'}); // TODO: Redireccionamiento a página del registro
+
+        // Se elimina el escucha para prevención de salida de página
+        window.removeEventListener("beforeunload", this.preventNav);
       } catch (err) {
         this.error = err;
       }

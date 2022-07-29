@@ -229,6 +229,9 @@ export default {
       ]
     },
 
+    // Identificador para saber si la coleccion se subió correctamente
+    success: false
+
     // Nota: Propuesta de representación de personas para el campo de investigación y sus semblanzas
     // people: [
     //   {
@@ -242,9 +245,11 @@ export default {
   }),
 
   beforeRouteLeave(to, from, next){
-    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos de la colección")
-    if(respuesta){
-      next()
+    if(!this.success){
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos de la colección")
+      if(respuesta){
+        next()
+      }
     }
   },
 
@@ -306,6 +311,8 @@ export default {
       };
       const newColeccion = await coleccionService.createColection(request);
       console.log('newColeccion: ', newColeccion);
+      this.success = true
+      window.removeEventListener("beforeunload", this.preventNav);
       this.$router.push({name: 'home'}); // TODO: Redireccionamiento a la colección (usando newColeccion.data.id)
     },
         
