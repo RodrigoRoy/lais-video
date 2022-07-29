@@ -263,6 +263,9 @@ export default {
       }
     },
 
+    // Nombre de los archiveros
+    participantes: [],
+
     // Auxiliar para almacenar información de archivos a subir
     files: {
       video: null,
@@ -373,9 +376,11 @@ export default {
   }),
 
   beforeRouteLeave(to, from, next){
-    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del video")
-    if(respuesta){
-      next()
+    if(!this.success){
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del video")
+      if(respuesta){
+        next()
+      }
     }
   },
 
@@ -389,6 +394,7 @@ export default {
     videoService.getVideoById(to.params.id).then(res => {
       next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
         let video = res.data.video;
+        let participantes;
         
         // Verificar inicializar áreas en caso de que alguna esté vacía:
         if(!video.identificacion)
@@ -401,14 +407,18 @@ export default {
           video.documentacionAsociada = {};
         if(!video.notas)
           video.notas = {};
-        if(!video.controlDescripcion)
+        if(!video.controlDescripcion){
           video.controlDescripcion = { fechaDescripcion: new Date().toISOString().substr(0, 10), fechaActualizacion: new Date().toISOString().substr(0, 10) };
+        } else {
+          participantes = video.controlDescripcion.nombreArchivero.split(",")
+        }
         if(!video.adicional)
           video.adicional = {isPublic: true};
 
         // Asignación final
         vm.video = video;
         vm.editMode = true;
+        vm.participantes = participantes
       });
     })
     // En caso de error (400 HTTP status code)
@@ -438,8 +448,33 @@ export default {
           await this.uploadDocumentFile(); // documento de texto (pdf)
         
         // Enviar datos textuales a base de datos
+
+        // Se obtienen los archivistas actuales
+        let archivistasActuales = this.video.controlDescripcion.nombreArchivero.split(",")
+
+        // Se actualiza la lista de archivistas
+        archivistasActuales.forEach(name => {
+          if(!this.participantes.includes(name.trim())){
+            this.participantes = [...this.participantes, name.trim()]
+          }
+        });
+
+        // Convertir arreglo en String
+        let archiveros = ''
+        this.participantes.forEach(element => {
+          archiveros+=`${element},`
+        });
+
+        archiveros = archiveros.substring(0, archiveros.length-1)
+
+        // Copia de video a almacenar
+        const videoFinal = {...this.video}
+
+        // Asignacion de nombre de archiveros
+        videoFinal.controlDescripcion.nombreArchivero = archiveros
+
         const request = {
-          video: this.video,
+          video: videoFinal,
         };
         let myResponse; // objeto res después de creación o edición del registro
         if (this.editMode) {
@@ -453,6 +488,9 @@ export default {
         this.success = true; // subida de registro completada exitosamente
         this.videoId = myResponse.data.id; // identificador en base de datos
         // this.$router.push({name: 'home'}); // TODO: Redireccionamiento a página del registro
+
+        // Se elimina el escucha para prevención de salida de página
+        window.removeEventListener("beforeunload", this.preventNav);
       } catch (err) {
         this.error = err;
       }

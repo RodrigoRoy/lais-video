@@ -204,6 +204,9 @@ export default {
       ]
     },
 
+    // Identificador para saber si el grupo se subió correctamente
+    success: false
+
     // Nota: Propuesta de representación de personas para el campo de investigación y sus semblanzas
     // people: [
     //   {
@@ -217,9 +220,11 @@ export default {
   }),
 
   beforeRouteLeave(to, from, next){
-    const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del grupo")
-    if(respuesta){
-      next()
+    if(!this.success){
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del grupo")
+      if(respuesta){
+        next()
+      }
     }
   },
 
@@ -281,6 +286,8 @@ export default {
       };
       const newGrupo = await grupoService.createGroup(request);
       console.log('newGrupo: ', newGrupo);
+      this.success = true
+      window.removeEventListener("beforeunload", this.preventNav);
       this.$router.push({name: 'home'}); // TODO: Redireccionamiento al grupo (usando newGroup.data.id)
     },
     
