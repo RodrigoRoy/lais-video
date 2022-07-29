@@ -233,32 +233,29 @@
 
       <!-- Última columna con la información adicional de documentos -->
       <v-col xs="12" sm="12" md="4">
-        <!-- Imagen @TODO cambiar por video.adicional.imagen -->
-        <div :v-if="true">
+        <div :v-if="video.adicional.imagen">
           <p class="font-weight-bold">
             <v-icon left>mdi-image</v-icon>Imagen
           </p>
           <p>
-            <v-img :src="require('@/assets/videopreview2.png')" height="220px"  contain></v-img>
+            <v-img :src="`${publicPath}files/image/${video.adicional.imagen}`" height="220px"  contain></v-img>
           </p>
         </div>
 
-        <!-- Video @TODO cambiar por video.adicional.video -->
-        <div :v-if="true">
+        <div :v-if="video.adicional.video">
           <p class="font-weight-bold">
             <v-icon left>mdi-video</v-icon>Fragmento del registro
           </p>
           <p>
             <video width="100%" height="240px" controls>
-              <source :src="require('@/assets/videoplayback2.mp4')" type="video/mp4">
+              <source :src="`${publicPath}files/video/${video.adicional.video}`" type="video/mp4">
               Tu navegador web no soporta la reproducción de video
             </video>
           </p>
         </div>
 
-        <!-- Calificación @TODO cambiar por video.adicional.calificacion -->
-        <p :v-if="true">
-          <a href="Calificacion_preview.pdf" target="_blank" class="font-weight-bold"><v-icon left>mdi-file-document</v-icon>Calificación</a>
+        <p :v-if="video.adicional.calificacion">
+          <a :href="`${publicPath}files/docs/${video.adicional.calificacion}`" target="_blank" class="font-weight-bold"><v-icon left>mdi-file-document</v-icon>Calificación</a>
         </p>
       </v-col>
     </v-row>
@@ -274,6 +271,10 @@ export default {
   components: {
     Hint
   },
+  data: () => ({
+    // Ruta del directorio "public"
+    publicPath: process.env.BASE_URL,
+  }),
   props: { // Propiedades (sólo lectura) o argumentos para el componente
     video: { type: Object } // archivo audiovisual organizado por áreas
   }
