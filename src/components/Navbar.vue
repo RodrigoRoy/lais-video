@@ -5,7 +5,7 @@
   <header>
     <v-app-bar app absolute dark scroll-target="#app-container" color="#5c6bc088" :hide-on-scroll="true"> <!-- color="primary" -->
       <!-- Iconos del lado izquierdo -->
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="false"></v-app-bar-nav-icon>
       <a href="https://www.institutomora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/moraEscalado.png')" height="40"/></a>
       <a href="http://lais.mora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/lais_logo.png')" height="40"/></a>
       <!-- <v-toolbar-title class="headline">
@@ -23,7 +23,7 @@
       </v-btn>
 
       <v-btn rounded color="transparent">
-        <router-link to="/proyectos" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
+        <router-link to="/video/all" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
       </v-btn>
 
       <!-- Barra de búsqueda -->
@@ -50,6 +50,11 @@
           <v-list-item v-if="!$store.state.isLoggedIn">
             <v-list-item-title>
               <router-link to="/login" class="nav-link" exact>Iniciar sesión</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="$store.state.isLoggedIn">
+            <v-list-item-title>
+              <router-link to="/video/nuevo" class="nav-link">Nuevo registro</router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item v-if="$store.state.isLoggedIn">

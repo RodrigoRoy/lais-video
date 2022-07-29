@@ -29,7 +29,7 @@
 
           <!-- Acceso directo a los proyectos -->
           <p class="mt-3">
-            <v-btn color="primary" elevation="6" large to="/proyectos">Ver colección</v-btn>
+            <v-btn color="primary" elevation="6" large to="/video/all">Ver colección</v-btn>
           </p>
         </v-col>
       </v-row>
