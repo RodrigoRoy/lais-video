@@ -464,6 +464,8 @@ export default {
           }
         });
 
+        this.video.adicional.user = this.computedUserId
+
         // Copia de video a almacenar
         const videoFinal = {...this.video}
 
