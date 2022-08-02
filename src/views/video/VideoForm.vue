@@ -171,7 +171,7 @@
               <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
               <!-- <v-textarea v-model="video.controlDescripcion.notaArchivero" label="Nota del archivero" hint="Fuentes usadas para complementar la información de la ficha (producción original, sitios web, publicaciones, etc.)" auto-grow rows="3" row-height="25" ></v-textarea> -->
 
-              <v-text-field v-model="video.controlDescripcion.nombreArchivero" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad"></v-text-field>
+              <v-text-field v-model="participantes" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad"></v-text-field>
 
               <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
                 <template v-slot:activator="{ on }">
@@ -264,7 +264,7 @@ export default {
     },
 
     // Nombre de los archiveros
-    participantes: [],
+    participantes: '',
 
     // Auxiliar para almacenar información de archivos a subir
     files: {
@@ -394,7 +394,7 @@ export default {
     videoService.getVideoById(to.params.id).then(res => {
       next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
         let video = res.data.video;
-        let participantes;
+        let participantes = '';
         
         // Verificar inicializar áreas en caso de que alguna esté vacía:
         if(!video.identificacion)
@@ -410,7 +410,12 @@ export default {
         if(!video.controlDescripcion){
           video.controlDescripcion = { fechaDescripcion: new Date().toISOString().substr(0, 10), fechaActualizacion: new Date().toISOString().substr(0, 10) };
         } else {
-          participantes = video.controlDescripcion.nombreArchivero.split(",")
+          if(video.controlDescripcion.nombreArchivero){
+            video.controlDescripcion.nombreArchivero.map(archivero => {
+              participantes += `${archivero},`
+            })
+            participantes = participantes.substring(0, participantes.length-1)
+          }
         }
         if(!video.adicional)
           video.adicional = {isPublic: true};
@@ -450,28 +455,20 @@ export default {
         // Enviar datos textuales a base de datos
 
         // Se obtienen los archivistas actuales
-        let archivistasActuales = this.video.controlDescripcion.nombreArchivero.split(",")
-
+        let archivistasActuales = this.participantes.split(",")
+        let nombreArchivistas = []
         // Se actualiza la lista de archivistas
         archivistasActuales.forEach(name => {
-          if(!this.participantes.includes(name.trim())){
-            this.participantes = [...this.participantes, name.trim()]
+          if(!nombreArchivistas.includes(name.trim())){
+            nombreArchivistas.push(name.trim())
           }
         });
-
-        // Convertir arreglo en String
-        let archiveros = ''
-        this.participantes.forEach(element => {
-          archiveros+=`${element},`
-        });
-
-        archiveros = archiveros.substring(0, archiveros.length-1)
 
         // Copia de video a almacenar
         const videoFinal = {...this.video}
 
         // Asignacion de nombre de archiveros
-        videoFinal.controlDescripcion.nombreArchivero = archiveros
+        videoFinal.controlDescripcion.nombreArchivero = nombreArchivistas
 
         const request = {
           video: videoFinal,
