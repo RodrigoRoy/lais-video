@@ -5,7 +5,7 @@
   <header>
     <v-app-bar app absolute dark scroll-target="#app-container" color="#5c6bc088" :hide-on-scroll="true"> <!-- color="primary" -->
       <!-- Iconos del lado izquierdo -->
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="false"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <a href="https://www.institutomora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/moraEscalado.png')" height="40"/></a>
       <a href="http://lais.mora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/lais_logo.png')" height="40"/></a>
       <!-- <v-toolbar-title class="headline">
@@ -23,7 +23,7 @@
       </v-btn>
 
       <v-btn rounded color="transparent">
-        <router-link to="/video/all" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
+        <router-link to="/video" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
       </v-btn>
 
       <!-- Barra de búsqueda -->
@@ -77,7 +77,7 @@
           </v-list-item-title>
           <!-- Nombre de usuario -->
           <v-list-item-subtitle>
-            {{this.$store.state.username ? this.$store.state.username : ''}}
+            {{this.$store.state.fullname ? this.$store.state.fullname : ''}}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -108,7 +108,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link >
+        <!-- <v-list-item link >
           <v-list-item-icon>
             <v-icon>mdi-folder</v-icon>
           </v-list-item-icon>
@@ -117,18 +117,7 @@
               <router-link to="/proyectos" exact>Proyectos</router-link>
             </v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item link >
-          <v-list-item-icon>
-            <v-icon>mdi-video-plus</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>
-              <router-link to="/video/nuevo" exact>Formulario unidad documental</router-link>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
         <v-list-item link >
           <v-list-item-icon>
@@ -136,7 +125,7 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link to="/coleccion/nuevo" exact>Formulario conjunto documental</router-link>
+              <router-link to="/coleccion/nuevo" exact>Formulario colección</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -151,6 +140,73 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item link >
+          <v-list-item-icon>
+            <v-icon>mdi-video-plus</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/video/nuevo" exact>Formulario unidad simple</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        
+        <v-divider></v-divider>
+
+        <v-list-item>
+          <v-list-item-content>
+            <!-- Título -->
+            <v-list-item-title class="subtitle-1">
+              Demos
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link >
+          <v-list-item-icon>
+            <v-icon>mdi-folder</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/proyectos" exact>Lista de proyectos</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link >
+          <v-list-item-icon>
+            <v-icon>mdi-folder</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/proyectos/1" exact>Proyecto</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link >
+          <v-list-item-icon>
+            <v-icon>mdi-folder</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/proyectos/2" exact>Entrevista</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link >
+          <v-list-item-icon>
+            <v-icon>mdi-folder</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/videos" exact>Entrevista controlada</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
 
     </v-navigation-drawer>

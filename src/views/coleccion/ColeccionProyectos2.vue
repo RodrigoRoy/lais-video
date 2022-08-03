@@ -311,7 +311,7 @@ export default {
   methods: {
     // Permite de manera programática ir a una ubicación definida en el archivo router.js
     goTo: function(){
-      this.$router.push({name: 'video-view'});
+      this.$router.push({name: 'video-view-template'});
     },
   }
 }

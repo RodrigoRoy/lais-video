@@ -1,13 +1,10 @@
 <template>
   <div>
     <!-- En caso de contraseña incorrecta -->
-    <v-alert v-model="incorrectPassword" dismissible type="error">
+    <v-alert dismissible type="error" v-if="error">
       <v-row align-item="center">
         <v-col class="grow">
-          Contraseña incorrecta
-        </v-col>
-        <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
+          {{ error }}
         </v-col>
       </v-row>
     </v-alert>
@@ -43,7 +40,7 @@ export default{
         ],
       },
       // Determina si la contraseña es incorrecta
-      incorrectPassword: false,
+      error: false,
     };
   },
   methods: {
@@ -56,7 +53,7 @@ export default{
         await auth.login(user);
         this.$router.push({name: 'home'});
       } catch (error) {
-        this.incorrectPassword = true
+        this.error = 'Usuario y/o contraseña incorrecta'
       }
     }
   }

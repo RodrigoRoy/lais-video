@@ -97,7 +97,8 @@ export default {
         notaArchivero: 'Ut vel mi in justo commodo euismod sed non felis. Donec a libero lobortis, hendrerit est ut, porta enim. Duis dictum leo sit amet enim hendrerit semper',
         fechaDescripcion: new Date().toISOString().substr(0, 10),
         fechaActualizacion: new Date().toISOString().substr(0, 10),
-      }
+      },
+      adicional: {}
     },
 
     // Representación jerárquica de los conjuntos a los que pertenecen las unidades documentales

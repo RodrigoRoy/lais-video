@@ -1,17 +1,28 @@
 <template>
-  <v-container>
-    <v-form ref="formulario" v-model="valid" lazy-validation v-on:submit.prevent="onSubmit">
-      <v-text-field v-model="usuario.username" :rules="rules.username" :counter="16" label="Nombre de usuario" hint="Nombre corto y fácil de recordar para iniciar sesión" required ></v-text-field>
-      <v-text-field v-model="usuario.fullname" :rules="rules.fullname" label="Nombre completo" hint="Nombre completo que aparecerá en los registros" required ></v-text-field>
-      <v-text-field v-model="usuario.email" :rules="rules.email" label="Correo electrónico" required ></v-text-field>
-      <v-text-field v-model="usuario.password" :rules="rules.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" label="Contraseña" counter @click:append="show1 = !show1"></v-text-field>
-      <v-text-field :rules="rules.passwordVerification" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :type="show2 ? 'text' : 'password'" label="Confirmar contraseña" class="input-group--focused" counter @click:append="show2 = !show2"></v-text-field>
-      <!-- TODO @RodrigoRoy Opciones extendidas solo con sesión iniciada y permisos de admin -->
-      <!-- <v-checkbox v-model="admin" label="Registrar como administrador"></v-checkbox> -->
+  <div>
+    <!-- En caso de contraseña incorrecta -->
+    <v-alert v-model="error" dismissible type="error" v-if="error">
+      <v-row align-item="center">
+        <v-col class="grow">
+          {{ error}}
+        </v-col>
+      </v-row>
+    </v-alert>
 
-      <v-btn type="submit" :disabled="!valid" color="primary" class="mr-4"> Registrar </v-btn>
-    </v-form>
-  </v-container>
+    <v-container>
+      <v-form ref="formulario" v-model="valid" lazy-validation v-on:submit.prevent="onSubmit">
+        <v-text-field v-model="usuario.username" :rules="rules.username" :counter="16" label="Nombre de usuario" hint="Nombre corto y fácil de recordar para iniciar sesión" required ></v-text-field>
+        <v-text-field v-model="usuario.fullname" :rules="rules.fullname" label="Nombre completo" hint="Nombre completo que aparecerá en los registros" required ></v-text-field>
+        <v-text-field v-model="usuario.email" :rules="rules.email" label="Correo electrónico" required ></v-text-field>
+        <v-text-field v-model="usuario.password" :rules="rules.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" label="Contraseña" counter @click:append="show1 = !show1"></v-text-field>
+        <v-text-field :rules="rules.passwordVerification" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :type="show2 ? 'text' : 'password'" label="Confirmar contraseña" class="input-group--focused" counter @click:append="show2 = !show2"></v-text-field>
+        <!-- TODO @RodrigoRoy Opciones extendidas solo con sesión iniciada y permisos de admin -->
+        <!-- <v-checkbox v-model="admin" label="Registrar como administrador"></v-checkbox> -->
+
+        <v-btn type="submit" :disabled="!valid" color="primary" class="mr-4"> Registrar </v-btn>
+      </v-form>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -64,8 +75,12 @@ export default{
 
       const registerPromise = auth.registerUser(user);
       const loginPromise = auth.login(user);
-      await Promise.all([registerPromise, loginPromise]);
-      this.$router.push({name: 'home'});
+      try {
+        await Promise.all([registerPromise, loginPromise]);
+        this.$router.push({name: 'home'});
+      } catch (error) {
+        this.error = error;
+      }
     }
   }
 }

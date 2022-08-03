@@ -4,7 +4,7 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 <template>
   <v-container>
     <!-- Encabezado con título del conjunto y el camino dentro de la colección (breadcrumbs) -->
-    <h2 class="text-h3 text-center">Registros</h2>
+    <h2 class="text-h3 text-center">Unidades simples</h2>
     <!-- <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs> -->
 
     <!-- En caso de error en petición al API -->
@@ -64,7 +64,7 @@ import { PdfMakeWrapper, Table, Txt, Img } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 
 export default {
-  name: 'VideoViewTemplate',
+  name: 'VideoViewAll',
   components: {
     VideoInfo // Información dentro de v-dialog
   },
