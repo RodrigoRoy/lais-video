@@ -42,7 +42,7 @@ const videoSchema = new mongoose.Schema({
     notas: {type: String, trim: true},
   },
   controlDescripcion: {
-    nombreArchivero: {type: String, trim: true}, //[{type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}] // TODO Convert to array
+    nombreArchivero: [ {type: String, trim: true} ], //[{type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}] // TODO Convert to array
     // fechaDescripcion: new Date().toISOString().substring(0, 10),
     // fechaActualizacion: new Date().toISOString().substring(0, 10),
   },
