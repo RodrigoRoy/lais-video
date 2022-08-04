@@ -54,9 +54,9 @@ export function update(req, res){
       return res.status(400).json({message: 'Registro de video vacio. Verificar propiedades \'video\', \'video._id\', \'video.identificacion.codigoReferencia\''});
     }
     if(!document){
-      return res.status(400).json({message: `El registro con id ${grupo._id} no existe`});
+      return res.status(400).json({message: `El registro con id ${video._id} no existe`});
     }
-    return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} actualizado`})
+    return res.status(200).json({id: video._id, message: `Registro ${video.identificacion.codigoReferencia} actualizado`})
   });
 }
 

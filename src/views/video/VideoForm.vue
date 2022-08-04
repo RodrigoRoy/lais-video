@@ -171,7 +171,7 @@
               <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
               <!-- <v-textarea v-model="video.controlDescripcion.notaArchivero" label="Nota del archivero" hint="Fuentes usadas para complementar la información de la ficha (producción original, sitios web, publicaciones, etc.)" auto-grow rows="3" row-height="25" ></v-textarea> -->
 
-              <v-text-field v-model="participantes" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad"></v-text-field>
+              <v-text-field v-model="participantes" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad" readonly></v-text-field>
 
               <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
                 <template v-slot:activator="{ on }">
@@ -559,11 +559,12 @@ export default {
       return this.video.identificacion.fecha ? moment(this.video.identificacion.fecha).format('DD/MM/YYYY') : '';
     },
     computedFechaDescripcion(){
-      return this.video.controlDescripcion.fechaDescripcion ? moment(this.video.controlDescripcion.fechaDescripcion).format('DD/MM/YYYY') : '';
+      return this.video.createdAt ? moment(this.video.createdAt).format('DD/MM/YYYY') : '';
     },
     computedFechaActualizacion(){
-      return this.video.controlDescripcion.fechaActualizacion ? moment(this.video.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
+      return this.video.updatedAt ? moment(this.video.updatedAt).format('DD/MM/YYYY') : '';
     },
+    // Manera estandar para usar variables globales (state) como variables locales
     computedUserId(){
       return this.$store.state.userId;
     },
