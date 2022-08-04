@@ -1,5 +1,4 @@
 import Video from '../../model/video-model.mjs';
-// import * as auth from '../../services/auth-service';
 
 /**
  * Regresa un listado de todos los videos.
@@ -24,7 +23,6 @@ export function index(req, res){
  * @returns JSON con el id del nuevo video creado.
  */
 export function create(req, res){
-  // TODO @RodrigoRoy Incluir ID de usuario a video
   const video = new Video(req.body.video);
 
   video.save(error => {
@@ -42,7 +40,6 @@ export function create(req, res){
  * @returns JSON con un mensaje de error éxito.
  */
 export function update(req, res){
-  // TODO @RodrigoRoy Verificación de usuario al borrar
   const video = new Video(req.body.video);
   // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
   // Video.findOneAndReplace({_id: video._id}, video, error => {
@@ -67,7 +64,6 @@ export function update(req, res){
  * @returns JSON con un mensaje de error o éxito de eliminación.
  */
 export function remove(req, res){
-  // @TODO RodrigoRoy Verificar autoria y/o permisos
   Video.findByIdAndDelete({_id: req.params.id}, (error, video) => {
     if(error){
       return res.status(500).json({message: error});

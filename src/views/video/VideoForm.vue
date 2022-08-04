@@ -9,7 +9,7 @@
           Información subida correctamente con ID: {{ videoId }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
+          <v-btn :href="`/video/${videoId}`">Ver registro</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
         </v-col>
       </v-row>
     </v-alert>
@@ -171,7 +171,7 @@
               <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
               <!-- <v-textarea v-model="video.controlDescripcion.notaArchivero" label="Nota del archivero" hint="Fuentes usadas para complementar la información de la ficha (producción original, sitios web, publicaciones, etc.)" auto-grow rows="3" row-height="25" ></v-textarea> -->
 
-              <v-text-field v-model="participantes" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad" readonly></v-text-field>
+              <v-text-field v-model="computedArchivista" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad" readonly></v-text-field>
 
               <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
                 <template v-slot:activator="{ on }">
@@ -245,9 +245,7 @@ export default {
     // El objeto video representa una unidad documental, es decir, un registro audiovisual organizado por áreas
     // Algunos campos deben inicializarse, por ejemplo fechas
     video: {
-      identificacion: {
-        fecha: new Date().toISOString().substr(0, 10),
-      },
+      identificacion: {},
       contenidoEstructura: {},
       accesoUso: {
         // resolucionGrabacion: this.selectResolucionGrabacion.resolucion, // TODO: Copiar valor, quizá usar método watch de Vue
@@ -255,16 +253,15 @@ export default {
       documentacionAsociada: {},
       notas: {},
       controlDescripcion: {
-        fechaDescripcion: new Date().toISOString().substr(0, 10),
-        fechaActualizacion: new Date().toISOString().substr(0, 10),
+        nombreArchivero: [],
       },
       adicional: {
-        isPublic: true
-      }
+        isPublic: true,
+        user: [],
+      },
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
-
-    // Nombre de los archiveros
-    participantes: '',
 
     // Auxiliar para almacenar información de archivos a subir
     files: {
@@ -273,6 +270,8 @@ export default {
       document: null,
     },
 
+    // Id del registro después de ser creado en base de datos
+    videoId: '',
     // Determina si se está editando o creando un registro
     editMode: false,
     // Determina si se está realizando subida de archivos (video, imagen, documentos) 
@@ -280,7 +279,7 @@ export default {
     // Determina si hubo éxito al subir un registro (paso final del formulario)
     success: false,
     // Determina si hay algún mensaje de error. Deshabilita completamente el uso del formulario cuando está asignado
-    error: null,
+    error: false,
 
     // Auxiliar para mostrar paises como un referente opcional
     paises: ['Afganistán', 'Akrotiri', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Anguila', 'Antártida', 'Antigua y Barbuda', 'Arabia Saudí', 'Arctic Ocean', 'Argelia', 'Argentina', 'Armenia', 'Aruba', 'Ashmore and Cartier Islands', 'Atlantic Ocean', 'Australia', 'Austria', 'Azerbaiyán', 'Bahamas', 'Bahráin', 'Bangladesh', 'Barbados', 'Bélgica', 'Belice', 'Benín', 'Bermudas', 'Bielorrusia', 'Birmania; Myanmar', 'Bolivia', 'Bosnia y Hercegovina', 'Botsuana', 'Brasil', 'Brunéi', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Bután', 'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Chad', 'Chile', 'China', 'Chipre', 'Clipperton Island', 'Colombia', 'Comoras', 'Congo', 'Coral Sea Islands', 'Corea del Norte', 'Corea del Sur', 'Costa de Marfil', 'Costa Rica', 'Croacia', 'Cuba', 'Curacao', 'Dhekelia', 'Dinamarca', 'Dominica', 'Ecuador', 'Egipto', 'El Salvador', 'El Vaticano', 'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 'Estados Unidos', 'Estonia', 'Etiopía', 'Filipinas', 'Finlandia', 'Fiyi', 'Francia', 'Gabón', 'Gambia', 'Gaza Strip', 'Georgia', 'Ghana', 'Gibraltar', 'Granada', 'Grecia', 'Groenlandia', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea Ecuatorial', 'Guinea-Bissau', 'Guyana', 'Haití', 'Honduras', 'Hong Kong', 'Hungría', 'India', 'Indian Ocean', 'Indonesia', 'Irán', 'Iraq', 'Irlanda', 'Isla Bouvet', 'Isla Christmas', 'Isla Norfolk', 'Islandia', 'Islas Caimán', 'Islas Cocos', 'Islas Cook', 'Islas Feroe', 'Islas Georgia del Sur y Sandwich del Sur', 'Islas Heard y McDonald', 'Islas Malvinas', 'Islas Marianas del Norte', 'Islas Marshall', 'Islas Pitcairn', 'Islas Salomón', 'Islas Turcas y Caicos', 'Islas Vírgenes Americanas', 'Islas Vírgenes Británicas', 'Israel', 'Italia', 'Jamaica', 'Jan Mayen', 'Japón', 'Jersey', 'Jordania', 'Kazajistán', 'Kenia', 'Kirguizistán', 'Kiribati', 'Kosovo', 'Kuwait', 'Laos', 'Lesoto', 'Letonia', 'Líbano', 'Liberia', 'Libia', 'Liechtenstein', 'Lituania', 'Luxemburgo', 'Macao', 'Macedonia', 'Madagascar', 'Malasia', 'Malaui', 'Maldivas', 'Malí', 'Malta', 'Man, Isle of', 'Marruecos', 'Mauricio', 'Mauritania', 'México', 'Micronesia', 'Moldavia', 'Mónaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Mozambique', 'Mundo', 'Namibia', 'Nauru', 'Navassa Island', 'Nepal', 'Nicaragua', 'Níger', 'Nigeria', 'Niue', 'Noruega', 'Nueva Caledonia', 'Nueva Zelanda', 'Omán', 'Pacific Ocean', 'Países Bajos', 'Pakistán', 'Palaos', 'Panamá', 'Papúa-Nueva Guinea', 'Paracel Islands', 'Paraguay', 'Perú', 'Polinesia Francesa', 'Polonia', 'Portugal', 'Puerto Rico', 'Qatar', 'Reino Unido', 'República Centroafricana', 'República Democrática del Congo', 'República Dominicana', 'Ruanda', 'Rumania', 'Rusia', 'Sáhara Occidental', 'Samoa', 'Samoa Americana', 'San Bartolomé', 'San Cristóbal y Nieves', 'San Marino', 'San Martín', 'San Pedro y Miquelón', 'San Vicente y las Granadinas', 'Santa Helena', 'Santa Lucía', 'Santo Tomé y Príncipe', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leona', 'Singapur', 'Sint Maarten', 'Siria', 'Somalia', 'Southern Ocean', 'Spratly Islands', 'Sri Lanka', 'Suazilandia', 'Sudáfrica', 'Sudán', 'Sudán del Sur', 'Suecia', 'Suiza', 'Surinam', 'Svalbard y Jan Mayen', 'Tailandia', 'Taiwán', 'Tanzania', 'Tayikistán', 'Territorio Británico del Océano Indico', 'Territorios Australes Franceses', 'Timor Oriental', 'Togo', 'Tokelau', 'Tonga', 'Trinidad y Tobago', 'Túnez', 'Turkmenistán', 'Turquía', 'Tuvalu', 'Ucrania', 'Uganda', 'Unión Europea', 'Uruguay', 'Uzbekistán', 'Vanuatu', 'Venezuela', 'Vietnam', 'Wake Island', 'Wallis y Futuna', 'West Bank', 'Yemen', 'Yibuti', 'Zambia', 'Zimbabue'],
@@ -335,6 +334,7 @@ export default {
       zoomControl: true,
       attributionControl: true,
       zoomSnap: true,
+      scrollWheelZoom: false,
     },
     // Lista completa de proveedores para mapas: https://leaflet-extras.github.io/leaflet-providers/preview/
     tileProviders: [
@@ -375,15 +375,6 @@ export default {
     }
   }),
 
-  beforeRouteLeave(to, from, next){
-    if(!this.success){
-      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del video")
-      if(respuesta){
-        next()
-      }
-    }
-  },
-
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     // En caso de crear nuevo registro:
@@ -394,11 +385,10 @@ export default {
     videoService.getVideoById(to.params.id).then(res => {
       next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
         let video = res.data.video;
-        let participantes = '';
         
         // Verificar inicializar áreas en caso de que alguna esté vacía:
         if(!video.identificacion)
-          video.identificacion = {fecha: new Date().toISOString().substr(0, 10),};
+          video.identificacion = {};
         if(!video.contenidoEstructura)
           video.contenidoEstructura = {};
         if(!video.accesoUso)
@@ -407,23 +397,14 @@ export default {
           video.documentacionAsociada = {};
         if(!video.notas)
           video.notas = {};
-        if(!video.controlDescripcion){
+        if(!video.controlDescripcion)
           video.controlDescripcion = { fechaDescripcion: new Date().toISOString().substr(0, 10), fechaActualizacion: new Date().toISOString().substr(0, 10) };
-        } else {
-          if(video.controlDescripcion.nombreArchivero){
-            video.controlDescripcion.nombreArchivero.map(archivero => {
-              participantes += `${archivero},`
-            })
-            participantes = participantes.substring(0, participantes.length-1)
-          }
-        }
         if(!video.adicional)
           video.adicional = {isPublic: true};
 
         // Asignación final
         vm.video = video;
         vm.editMode = true;
-        vm.participantes = participantes
       });
     })
     // En caso de error (400 HTTP status code)
@@ -433,6 +414,20 @@ export default {
         vm.video = null;
       })
     });
+  },
+
+  // Acciones justo antes de cambiar de ruta o salir
+  beforeRouteLeave(to, from, next){
+    if(!this.success){ // en caso de que aún no se ha concluido de trabajar el formulario
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se perderán los datos del formulario")
+      if(respuesta){
+        next()
+      }
+      // en caso de respuesta negativa, se retiene en la ruta actual
+    }
+    else{ // en caso de éxito al trabajar con el formulario
+      next()
+    }
   },
 
   methods: {
@@ -449,33 +444,15 @@ export default {
           await this.uploadVideoFile();
         if(this.files.image) // archivo de imagen
           await this.uploadImageFile();
-        if(this.files.document)
-          await this.uploadDocumentFile(); // documento de texto (pdf)
+        if(this.files.document) // documento de texto (pdf)
+          await this.uploadDocumentFile();
         
         // Enviar datos textuales a base de datos
-
-        // Se obtienen los archivistas actuales
-        let archivistasActuales = this.participantes.split(",")
-        let nombreArchivistas = []
-        // Se actualiza la lista de archivistas
-        archivistasActuales.forEach(name => {
-          if(!nombreArchivistas.includes(name.trim())){
-            nombreArchivistas.push(name.trim())
-          }
-        });
-
-        this.video.adicional.user = this.computedUserId
-
-        // Copia de video a almacenar
-        const videoFinal = {...this.video}
-
-        // Asignacion de nombre de archiveros
-        videoFinal.controlDescripcion.nombreArchivero = nombreArchivistas
-
         const request = {
-          video: videoFinal,
+          video: this.video,
         };
         let myResponse; // objeto res después de creación o edición del registro
+        // actualizar registro ya existente o crear uno nuevo:
         if (this.editMode) {
           myResponse = await videoService.updateVideo(request);
         } else {
@@ -486,11 +463,13 @@ export default {
         this.isUploading = false; // termina subida de archivos e información
         this.success = true; // subida de registro completada exitosamente
         this.videoId = myResponse.data.id; // identificador en base de datos
-        // this.$router.push({name: 'home'}); // TODO: Redireccionamiento a página del registro
 
         // Se elimina el escucha para prevención de salida de página
         window.removeEventListener("beforeunload", this.preventNav);
-      } catch (err) {
+
+        // Reenviar a la vista del registro recien creado
+        this.$router.push({name: 'video-view', params: {id: this.videoId}});
+      } catch (err) { // error de conexión
         this.error = err;
       }
     },
@@ -504,7 +483,7 @@ export default {
         const response = await fileService.uploadVideo(formData); // petición desde API
         this.video.adicional.video = response.data.file.filename; // asignación del nombre de archivo guardado
       }
-      catch(err){
+      catch(err){ // error de conexión
         this.error = err;
       }
     },
@@ -515,9 +494,9 @@ export default {
       formData.append('codigoReferencia', this.video.identificacion.codigoReferencia); // adjuntar campo con información extra
       try{
         const response = await fileService.uploadImage(formData); // petición desde API
-        this.video.adicional.imagen = response.data.file.filename; // asignación del nombre de archivo guardado
+        this.video.adicional.imagen = response.data.filename; // asignación del nombre de archivo guardado
       }
-      catch(err){
+      catch(err){ // error de conexión
         this.error = err;
       }
     },
@@ -530,15 +509,16 @@ export default {
         const response = await fileService.uploadDocument(formData); // petición desde API
         this.video.adicional.calificacion = response.data.file.filename; // asignación del nombre de archivo guardado
       }
-      catch(err){
+      catch(err){ // error de conexión
         this.error = err;
       }
     },
 
-    preventNav(event) {
+    // TODO @EmmanuelCruz Documentar
+    preventNav: function(event) {
       event.preventDefault()
       event.returnValue = ""
-    }
+    },
 
     // Agregar marcador al dar clic en mapa
     // addMarker(event) {
@@ -571,21 +551,31 @@ export default {
     computedUserFullname(){
       return this.$store.state.fullname;
     },
+    // Conversión de arreglo/lista a texto/string para nombres de archivistas
+    computedArchivista(){
+      return this.video.controlDescripcion.nombreArchivero.join(', ');
+    }
   },
 
+  // TODO @EmmanuelCruz Documentar
   beforeDestroy() {
     window.removeEventListener("beforeunload", this.preventNav);
   },
 
-  mounted: function () {
+  // Acciones a realizar justo antes de montar y renderizar componente Vue
+  mounted() {
     window.addEventListener("beforeunload", this.preventNav);
+
+    // Agregar nombre completo de archivista si no está enlistado
+    if(!this.video.controlDescripcion.nombreArchivero.includes(this.computedUserFullname))
+      this.video.controlDescripcion.nombreArchivero.push(this.computedUserFullname);
+    // Agregar id de usuario de archivista si no está enlistado
+    if(!this.video.adicional.user.includes( this.computedUserId ))
+      this.video.adicional.user.push(this.computedUserId);
   },
 
   // Asignaciones cuando han terminado de procesarse opciones relacionadas con estados
   created() {
-    // Asignar nombre y id de usuario:
-    this.video.controlDescripcion.nombreArchivero = this.computedUserFullname;
-    this.video.adicional.user = this.computedUserId;
   }
 }
 </script>

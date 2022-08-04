@@ -62,14 +62,15 @@ import * as fs from 'fs' // biblioteca para manejo de archivos en sistema (files
         // Renombre de archivos usando código de referencia. Ejemplo: Foo.mp4 -> MXIM-AV-2-67.mp4
         const oldPath = req.file.path; // file.destination + file.filename
         const fileExtension = (req.file.originalname.match(/\.(.+)$/i))[1]; // caracteres finales después de punto (.) final
-        const newPath = `${req.file.destination}/${req.body.codigoReferencia}.${fileExtension}`; // nuevo nombre de archivo
+        const newFileName = `${req.body.codigoReferencia}.${fileExtension}`; // nuevo nombre de archivo
+        const newPath = `${req.file.destination}/${newFileName}`;
         try {
             fs.renameSync(oldPath, newPath); // usar método síncrono para resolver errores adecuadamente
         } catch (error) {
             return res.status(501).json({ message: 'No se pudo renombrar el archivo'});
         }
 
-        return res.status(200).json({ file: req.file, message: 'Video subido correctamente'});
+        return res.status(200).json({ file: req.file, filename: newFileName, message: 'Video subido correctamente'});
     });
 }
 
@@ -134,14 +135,14 @@ export function uploadImage(req, res){
         // Renombre de archivos usando código de referencia. Ejemplo: Foo.jpg -> MXIM-AV-2-67.jpg
         const oldPath = req.file.path; // file.destination + file.filename
         const fileExtension = (req.file.originalname.match(/\.(.+)$/i))[1]; // caracteres finales después de punto (.) final
-        const newPath = `${req.file.destination}/${req.body.codigoReferencia}.${fileExtension}`; // nuevo nombre de archivo
+        const newFileName = `${req.body.codigoReferencia}.${fileExtension}`; // nuevo nombre de archivo
+        const newPath = `${req.file.destination}/${newFileName}`;
         try {
             fs.renameSync(oldPath, newPath); // usar método síncrono para resolver errores adecuadamente
         } catch (error) {
             return res.status(501).json({ message: 'No se pudo renombrar el archivo'});
         }
-
-        return res.status(200).json({ file: req.file, message: 'Imagen subida correctamente'});
+        return res.status(200).json({ file: req.file, filename: newFileName, message: 'Imagen subida correctamente'});
     });
 }
 
@@ -206,13 +207,13 @@ export function uploadImage(req, res){
         // Renombre de archivos usando código de referencia. Ejemplo: Foo.pdf -> MXIM-AV-2-67.pdf
         const oldPath = req.file.path; // file.destination + file.filename
         const fileExtension = (req.file.originalname.match(/\.(.+)$/i))[1]; // caracteres finales después de punto (.) final
-        const newPath = `${req.file.destination}/${req.body.codigoReferencia}.${fileExtension}`; // nuevo nombre de archivo
+        const newFileName = `${req.body.codigoReferencia}.${fileExtension}`; // nuevo nombre de archivo
+        const newPath = `${req.file.destination}/${newFileName}`;
         try {
             fs.renameSync(oldPath, newPath); // usar método síncrono para resolver errores adecuadamente
         } catch (error) {
             return res.status(501).json({ message: 'No se pudo renombrar el archivo'});
         }
-
-        return res.status(200).json({ file: req.file, message: 'Documento subido correctamente'});
+        return res.status(200).json({ file: req.file, filename: newFileName, message: 'Documento subido correctamente'});
     });
 }
