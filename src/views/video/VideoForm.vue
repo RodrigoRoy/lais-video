@@ -21,7 +21,7 @@
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
+          <v-btn href="/">Ir a inicio</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -81,11 +81,14 @@
 
               <v-text-field v-model="video.identificacion.lugar" label="Lugar de registro" hint="Nombre del lugar o lugares, donde se llevó a cabo el registro, partiendo de lo particular a lo general"></v-text-field>
 
-              <l-map style="height: 300px" :zoom="zoom" :center="center" :options="mapOptions"> <!-- @click="addMarker" -->
+              <l-map ref="leafletMap" style="height: 300px" :zoom="map.zoom" :center="map.center" :options="map.options">
                 <l-control-layers position="topright"></l-control-layers>
-                <l-tile-layer v-for="tileProvider in tileProviders" :key="tileProvider.name" :name="tileProvider.name" :visible="tileProvider.visible" :url="tileProvider.url" :attribution="tileProvider.attribution" layer-type="base"/>
-                <v-geosearch :options="geosearchOptions"></v-geosearch>
-                <l-marker :draggable="true" :lat-lng="markerLatLng" :visible="markerVisibility"></l-marker> <!-- @click="removeMarker()" -->
+                <l-tile-layer v-for="tileProvider in map.tileProviders" :key="tileProvider.name" :name="tileProvider.name" :visible="tileProvider.visible" :url="tileProvider.url" :attribution="tileProvider.attribution" layer-type="base"/>
+                <v-geosearch :options="map.geosearchOptions"></v-geosearch>
+                <l-marker ref="leafletMarker" :draggable="map.marker.draggable" :lat-lng.sync="map.marker.latLng" :visible="map.marker.visibility"></l-marker>
+                <l-control position="bottomleft">
+                  <v-btn fab small rounded @click="clickButtonMap"><v-icon>mdi-map-marker</v-icon></v-btn>
+                </l-control>
               </l-map>
 
               <!-- Los calendarios requiere parámetros adicionales que se indican en la documentación de Vuetify -->
@@ -218,7 +221,7 @@ import moment from 'moment' // formatos de fechas
 import * as videoService from '../../services/VideoService' // servicio para llamadas al API
 import * as fileService from '../../services/FileService' // servicio para subir archivos al servidor desde API
 import L from 'leaflet' // elementos principales para mapas
-import { LMap, LTileLayer, LMarker, LControlLayers } from 'vue2-leaflet' // elementos principales para mapas
+import { LMap, LTileLayer, LMarker, LControlLayers, LControl } from 'vue2-leaflet' // elementos principales para mapas
 import { OpenStreetMapProvider } from 'leaflet-geosearch' // proveedores de búsqueda para mapas
 import VGeosearch from 'vue2-leaflet-geosearch' // búsqueda en mapas
 
@@ -231,7 +234,6 @@ Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-
 export default {
   name: 'VideoForm',
   components: {
@@ -239,6 +241,7 @@ export default {
     LTileLayer,
     LMarker,
     LControlLayers,
+    LControl,
     VGeosearch
   },
   data: () => ({
@@ -323,56 +326,64 @@ export default {
     },
 
     // Valores para usar en mapa
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution:
-    '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    zoom: 15,
-    center: L.latLng(19.37651880288312, -99.18512156842415),
-    markerLatLng: L.latLng(19.37651880288312, -99.18512156842415),
-    markerVisibility: true,
-    mapOptions: {
-      zoomControl: true,
-      attributionControl: true,
-      zoomSnap: true,
-      scrollWheelZoom: false,
+    map: {
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution:
+      '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      zoom: 15,
+      center: L.latLng(19.37651880288312, -99.18512156842415),
+      marker: {
+        latLng: L.latLng(19.37651880288312, -99.18512156842415),
+        visibility: true,
+        draggable: true,
+      },
+      options: {
+        zoomControl: true,
+        attributionControl: true,
+        zoomSnap: true,
+        scrollWheelZoom: false,
+      },
+      // Lista completa de proveedores para mapas: https://leaflet-extras.github.io/leaflet-providers/preview/
+      tileProviders: [
+        {
+          name: 'OpenStreetMap',
+          url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          visible: true,
+          attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        },
+        {
+          name: 'OpenTopoMap',
+          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+          visible: false,
+          attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+        },
+        {
+          name: 'Terrain',
+          url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png',
+          visible: false,
+          attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          subdomains: 'abcd',
+          minZoom: 0,
+          maxZoom: 18
+        },
+        {
+          name: 'WorldImagery',
+          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          visible: false,
+          attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        },
+      ],
+      // Opciones de barra de búsqueda en mapa (https://github.com/smeijer/leaflet-geosearch)
+      geosearchOptions: {
+        provider: new OpenStreetMapProvider({params: {'accept-language': 'es'}}), // resultados en español indicado en params
+        showMarker: true,
+        showPopup: false,
+        searchLabel: 'Escribe una dirección',
+        // marker:,
+        maxMarkers: 1,
+        autoClose: true,
+      }
     },
-    // Lista completa de proveedores para mapas: https://leaflet-extras.github.io/leaflet-providers/preview/
-    tileProviders: [
-      {
-        name: 'OpenStreetMap',
-        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        visible: true,
-        attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      },
-      {
-        name: 'OpenTopoMap',
-        url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-        visible: false,
-        attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-      },
-      {
-        name: 'Terrain',
-        url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png',
-        visible: false,
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        subdomains: 'abcd',
-        minZoom: 0,
-        maxZoom: 18
-      },
-      {
-        name: 'WorldImagery',
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        visible: false,
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-      },
-    ],
-    // Opciones de barra de búsqueda en mapa (https://github.com/smeijer/leaflet-geosearch)
-    geosearchOptions: {
-      provider: new OpenStreetMapProvider({params: {'accept-language': 'es'}}), // resultados en español indicado en params
-      showMarker: true,
-      showPopup: false,
-      searchLabel: 'Escribe una dirección'
-    }
   }),
 
   // Obtención de información desde API, antes de renderizar vista
@@ -431,6 +442,13 @@ export default {
   },
 
   methods: {
+    // mover marcador al centro de lo que se observa en el mapa
+    clickButtonMap: function(){
+      const mapViewCenter = this.$refs.leafletMap.mapObject.getCenter();
+      // asigna y actualiza marcador correctamente en el mapa:
+      this.$refs.leafletMarker.setLatLng(mapViewCenter);
+    },
+    
     // Comportamiento al concluir el llenado del formulario y presionar el botón para enviar información a base de datos
     onSubmit: async function(){
       // Validación del formulario
@@ -519,17 +537,6 @@ export default {
       event.preventDefault()
       event.returnValue = ""
     },
-
-    // Agregar marcador al dar clic en mapa
-    // addMarker(event) {
-    //   this.markerLatLng = event.latlng;
-    //   this.markerVisibility = true;
-    // },
-    // Eliminar marcador al dar clic en mapa
-    // removeMarker() {
-    //   this.markerLatLng = undefined;
-    //   this.markerVisibility = false;
-    // }
   },
 
   // Métodos específicos para variables y valores calculados
