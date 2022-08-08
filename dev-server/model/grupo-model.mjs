@@ -5,7 +5,7 @@ const grupoSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: {type: String, required: true, trim: true, index: {unique: true}},
     proyectoInvestigacion: {type: String, trim: true},
-    pais: {type: String, trim: true},
+    // pais: {type: String, trim: true}, // puede ser autogenerado
     fecha: {type: Date},
     entidadProductora: {type: String, trim: true},
     investigacion: {type: String, trim: true},
@@ -27,14 +27,14 @@ const grupoSchema = new mongoose.Schema({
     notas: {type: String, trim: true},
   },
   controlDescripcion: {
-    //TODO Mejorar registro de usuarios (archivistas) [{type: Schema.Types.ObjectId, ref: 'Usuario'}]
-    archivista: {type: String, trim: true},
+    documentalistas: [{type: String, trim: true}],
     // fechaDescripcion: createdAt
     // fechaActualizacion: updatedAt
   },
   adicional: {
     imagen: {type: String},
     isPublic: {type: Boolean, default: true},
+    user: [{type: ObjectId, ref: 'user'}],
     coleccion: {type: ObjectId, ref: 'coleccionVideo'},
     grupo: {type: ObjectId, ref: 'grupoVideo'},
   }

@@ -2,14 +2,14 @@
 
 <template>
   <div>
-    <!-- TODO Esta forma de representar caso de éxito al subir archivo debe modificarse -->
+    <!-- Caso de éxito al subir información -->
     <v-alert v-model="success" dismissible type="success">
       <v-row align="center">
         <v-col class="grow">
           Información subida correctamente con ID: {{ videoId }}
         </v-col>
         <v-col class="shrink">
-          <v-btn :href="`/video/${videoId}`">Ver registro</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
+          <v-btn :href="`/video/${videoId}`">Ver registro</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -21,7 +21,7 @@
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn> <!-- TODO Incorrect URL redirect. Use <router-link> instead -->
+          <v-btn href="/">Ir a inicio</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -398,7 +398,7 @@ export default {
         if(!video.notas)
           video.notas = {};
         if(!video.controlDescripcion)
-          video.controlDescripcion = { fechaDescripcion: new Date().toISOString().substr(0, 10), fechaActualizacion: new Date().toISOString().substr(0, 10) };
+          video.controlDescripcion = {};
         if(!video.adicional)
           video.adicional = {isPublic: true};
 
@@ -470,6 +470,7 @@ export default {
         // Reenviar a la vista del registro recien creado
         this.$router.push({name: 'video-view', params: {id: this.videoId}});
       } catch (err) { // error de conexión
+        this.success = false;
         this.error = err;
       }
     },
@@ -519,17 +520,6 @@ export default {
       event.preventDefault()
       event.returnValue = ""
     },
-
-    // Agregar marcador al dar clic en mapa
-    // addMarker(event) {
-    //   this.markerLatLng = event.latlng;
-    //   this.markerVisibility = true;
-    // },
-    // Eliminar marcador al dar clic en mapa
-    // removeMarker() {
-    //   this.markerLatLng = undefined;
-    //   this.markerVisibility = false;
-    // }
   },
 
   // Métodos específicos para variables y valores calculados

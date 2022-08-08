@@ -238,7 +238,7 @@
             <v-icon left>mdi-image</v-icon>Imagen
           </p>
           <p>
-            <v-img :src="`${publicPath}files/image/${video.adicional.imagen}`" height="220px"  contain></v-img>
+            <v-img :src="`${publicPath}files/image/${video.adicional.imagen}`" height="220px" contain></v-img>
           </p>
         </div>
 

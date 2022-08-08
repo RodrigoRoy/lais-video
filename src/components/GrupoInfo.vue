@@ -182,10 +182,9 @@
       <!-- Última columna con la información adicional -->
       <v-col xs="12" sm="12" md="5">
         <div v-if="grupo.adicional">
-          <!-- Imagen @TODO cambiar por grupo.adicional.imagen -->
-          <div :v-if="true">
+          <div :v-if="grupo.adicional.imagen">
             <p>
-              <v-img :src="require('@/assets/Foto_Acervo1.png')" height="220px" contain></v-img>
+              <v-img :src="`${publicPath}files/image/${grupo.adicional.imagen}`" height="220px" contain></v-img>
             </p>
           </div>
 
@@ -210,13 +209,12 @@ export default {
     VueMarkdown,
     Hint
   },
-  props: {
-    // El objeto coleccion representa un conjunto documental, es decir, un grupo jerarquico dentro de la organización del acervo
-    // Nota: el objeto coleccion será obtenido desde la base de datos en futuras iteraciones del código
-    grupo: { type: Object }
+  props: { // Propiedades (sólo lectura) o argumentos para el componente
+    grupo: { type: Object } // grupo audiovisual organizado por áreas
   },
   data: () => ({
-    // Variables locales
+    // Ruta del directorio "public"
+    publicPath: process.env.BASE_URL,
   })
 }
 </script>

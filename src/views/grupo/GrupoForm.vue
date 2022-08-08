@@ -2,6 +2,18 @@
 
 <template>
   <div>
+    <!-- Caso de éxito al subir información -->
+    <v-alert v-model="success" dismissible type="success">
+      <v-row align="center">
+        <v-col class="grow">
+          Información subida correctamente con ID: {{ grupoId }}
+        </v-col>
+        <v-col class="shrink">
+          <v-btn :href="`/grupo/${grupoId}`">Ver registro</v-btn>
+        </v-col>
+      </v-row>
+    </v-alert>
+
     <!-- En caso de error en petición al API -->
     <v-alert prominent type="error" v-if="error">
       <v-row align="center">
@@ -9,7 +21,7 @@
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn>
+          <v-btn href="/">Ir a inicio</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -121,7 +133,7 @@
           <v-tab-item value="controlDescripcion" >
             <v-card flat>
               <!-- Nota: Los nombres podrían aparecen automáticamente porque pueden obtenerse del usuario que está conectado, según lo indica la base de datos -->
-              <v-text-field v-model="grupo.controlDescripcion.documentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
+              <v-text-field v-model="computedDocumentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
 
               <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
                 <template v-slot:activator="{ on }">
@@ -141,7 +153,7 @@
 
           <v-tab-item value="adicional" >
             <v-card flat>
-              <v-file-input v-model="grupo.adicional.imagen" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
+              <v-file-input v-model="files.image" show-size accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
 
               <v-checkbox v-model="grupo.adicional.isPublic" label="Registro público"></v-checkbox>
             </v-card>
@@ -149,27 +161,28 @@
         </v-tabs-items>
 
         <!-- Botón para finalizar el llenado del formulario -->
-        <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>Registrar</v-btn>
+        <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>
+          <span v-if="!editMode">Crear</span>
+          <span v-else>Actualizar</span>
+        </v-btn>
       </v-form>
 
-      <!-- Visualización textual del objeto grupo (solo para efectos de prueba) -->
-      <pre>{{ grupo }}</pre>
     </v-card>
   </div>
 </template>
 
 <script>
-import * as grupoService from '../../services/GrupoService'
 import moment from 'moment' // para formatos de fechas
+import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API
+import * as fileService from '../../services/FileService' // servicio para subir archivos al servidor desde API
 
 export default {
+  name: 'GrupoForm',
   data: () => ({
     // El objeto grupo representa un conjunto documental, es decir, un grupo audiovisual organizado por áreas
     // Algunos campos deben inicializarse, por ejemplo fechas, mientras que otros son valores por default, por ejemplo reglas o normas.
     grupo: {
-      identificacion: {
-        fecha: new Date().toISOString().substr(0, 10),
-      },
+      identificacion: {},
       contexto: {},
       contenidoEstructura: {},
       accesoUso: {
@@ -177,13 +190,31 @@ export default {
       },
       notas: {},
       controlDescripcion: {
-        fechaDescripcion: new Date().toISOString().substr(0, 10),
-        fechaActualizacion: new Date().toISOString().substr(0, 10),
+        documentalistas: [],
       },
       adicional: {
           isPublic: true,
+          user: [],
       },
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
+
+    // Auxiliar para almacenar información de archivos a subir
+    files: {
+      image: null,
+    },
+
+    // Id del registro después de ser creado en base de datos
+    grupoId: '',
+    // Determina si se está editando o creando un registro
+    editMode: false,
+    // Determina si se está realizando subida de archivos (video, imagen, documentos) 
+    isUploading: false,
+    // Determina si hubo éxito al subir un registro (paso final del formulario)
+    success: false,
+    // Determina si hay algún mensaje de error. Deshabilita completamente el uso del formulario cuando está asignado
+    error: false,
 
     // Auxiliar que representa numéricamente cuál pestaña (tab) está activa
     tab: null,
@@ -204,9 +235,6 @@ export default {
       ]
     },
 
-    // Identificador para saber si el grupo se subió correctamente
-    success: false
-
     // Nota: Propuesta de representación de personas para el campo de investigación y sus semblanzas
     // people: [
     //   {
@@ -219,12 +247,17 @@ export default {
     // ]
   }),
 
+  // Acciones justo antes de cambiar de ruta o salir
   beforeRouteLeave(to, from, next){
-    if(!this.success){
-      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos del grupo")
+    if(!this.success){ // en caso de que aún no se ha concluido de trabajar el formulario
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se perderán los datos del formulario")
       if(respuesta){
         next()
       }
+      // en caso de respuesta negativa, se retiene en la ruta actual
+    }
+    else{ // en caso de éxito al trabajar con el formulario
+      next()
     }
   },
 
@@ -251,7 +284,7 @@ export default {
         if(!grupo.notas)
           grupo.notas = {};
         if(!grupo.controlDescripcion)
-          grupo.controlDescripcion = { fechaDescripcion: new Date().toISOString().substr(0, 10), fechaActualizacion: new Date().toISOString().substr(0, 10) };
+          grupo.controlDescripcion = {};
         if(!grupo.adicional)
           grupo.adicional = {isPublic: true};
           
@@ -281,21 +314,54 @@ export default {
     onSubmit: async function(){
       if(!this.$refs.grupoForm.validate()) // Se activa validación del formulario
         return;
-      const request = {
-        grupo: this.grupo,
-      };
+
+      this.isUploading = true; // inicia subida de archivos e información
       try {
-        // const newGrupo = await grupoService.createGroup(request); // TODO: Asignación en redirrecionamiento al grupo recien creado
-        await grupoService.createGroup(request);
-        this.success = true
+        if(this.files.image) // archivo de imagen
+          await this.uploadImageFile();
+        
+        // Enviar datos textuales a base de datos
+        const request = {
+          grupo: this.grupo,
+        };
+        let myResponse; // objeto res después de creación o edición del registro
+        if (this.editMode) {
+          myResponse = await grupoService.updateGroup(request);
+        } else {
+          myResponse = await grupoService.createGroup(request);
+        }
+
+        // Notificaciones:
+        this.isUploading = false; // termina subida de archivos e información
+        this.success = true; // subida de registro completada exitosamente
+        this.grupoId = myResponse.data.id; // identificador en base de datos
+
+        // Se elimina el escucha para prevención de salida de página
         window.removeEventListener("beforeunload", this.preventNav);
-        this.$router.push({name: 'home'}); // TODO: Redireccionamiento al grupo (usando newGroup.data.id)
-      } catch (error) {
+
+        // Reenviar a la vista del registro recien creado
+        this.$router.push({name: 'grupo-view', params: {id: this.grupoId}});
+      } catch (error) { // error de conexión
         this.success = false;
         this.error = error;
       }
     },
+
+    // Subir un archivo de imagen desde API
+    uploadImageFile: async function(){
+      const formData = new FormData(); // creación de formulario en blanco
+      formData.append('image', this.files.image); // adjuntar campo con objeto tipo File
+      formData.append('codigoReferencia', this.grupo.identificacion.codigoReferencia); // adjuntar campo con información extra
+      try{
+        const response = await fileService.uploadImage(formData); // petición desde API
+        this.grupo.adicional.imagen = response.data.filename; // asignación del nombre de archivo guardado
+      }
+      catch(err){ // error de conexión
+        this.error = err;
+      }
+    },
     
+    // TODO @EmmanuelCruz Documentar
     preventNav(event) {
       event.preventDefault()
       event.returnValue = ""
@@ -309,19 +375,39 @@ export default {
       return this.grupo.identificacion.fecha ? moment(this.grupo.identificacion.fecha).format('DD/MM/YYYY') : '';
     },
     computedFechaDescripcion(){
-      return this.grupo.controlDescripcion.fechaDescripcion ? moment(this.grupo.controlDescripcion.fechaDescripcion).format('DD/MM/YYYY') : '';
+      return this.grupo.createdAt ? moment(this.grupo.createdAt).format('DD/MM/YYYY') : '';
     },
     computedFechaActualizacion(){
-      return this.grupo.controlDescripcion.fechaActualizacion ? moment(this.grupo.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
+      return this.grupo.updatedAt ? moment(this.grupo.updatedAt).format('DD/MM/YYYY') : '';
+    },
+    // Manera estandar para usar variables globales (state) como variables locales
+    computedUserId(){
+      return this.$store.state.userId;
+    },
+    computedUserFullname(){
+      return this.$store.state.fullname;
+    },
+    // Conversión de arreglo/lista a texto/string para nombres de archivistas
+    computedDocumentalistas(){
+      return this.grupo.controlDescripcion.documentalistas.join(', ');
     }
   },
 
+  // TODO @EmmanuelCruz Documentar
   beforeDestroy() {
     window.removeEventListener("beforeunload", this.preventNav);
   },
 
+  // Acciones a realizar justo antes de montar y renderizar componente Vue
   mounted: function () {
     window.addEventListener("beforeunload", this.preventNav);
+
+    // Agregar nombre completo de archivista si no está enlistado
+    if(!this.grupo.controlDescripcion.documentalistas.includes(this.computedUserFullname))
+      this.grupo.controlDescripcion.documentalistas.push(this.computedUserFullname);
+    // Agregar id de usuario de archivista si no está enlistado
+    if(!this.grupo.adicional.user.includes( this.computedUserId ))
+      this.grupo.adicional.user.push(this.computedUserId);
   }
 }
 </script>
