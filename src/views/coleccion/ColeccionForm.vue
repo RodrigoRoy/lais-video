@@ -21,7 +21,7 @@
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir al inicio</v-btn>
+          <v-btn href="/">Ir al inicio</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -33,7 +33,7 @@
 
       <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contexto, etc) -->
       <v-form ref="coleccionForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
-        <v-tabs v-model="tab" centered icons-and-text >
+        <v-tabs v-model="tab" centered icons-and-text show-arrows>
           <v-tabs-slider></v-tabs-slider>
 
           <!-- Encabezados de pestañas -->
@@ -143,7 +143,6 @@
 
           <v-tab-item value="controlDescripcion" >
             <v-card flat>
-              <!-- Nota: Los nombres podrían aparecen automáticamente porque pueden obtenerse del usuario que está conectado, según lo indica la base de datos -->
               <v-text-field v-model="computedDocumentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
 
               <v-text-field v-model="coleccion.controlDescripcion.reglasNormas" label="Reglas o normas" hint="Normas que se utilizaron para la elaboración de la ficha"></v-text-field>
@@ -181,9 +180,6 @@
           <span v-else>Actualizar</span>
         </v-btn>
       </v-form>
-
-      <!-- Visualización textual del objeto coleccion (solo para efectos de prueba) -->
-      <!-- <pre>{{ coleccion }}</pre> -->
     </v-card>
   </div>
 </template>
@@ -227,12 +223,12 @@ export default {
 
     // Id del registro después de ser creado en base de datos
     coleccionId: '',
-
     // Determina si se está realizando subida de archivos (video, imagen, documentos) 
     isUploading: false,
-
     // Bandera para determinar si está editando o creando una colección.
     editMode: false,
+    // Identificador para saber si la coleccion se subió correctamente
+    success: false,
     // Texto de error, en caso de haber
     error: false,
 
@@ -255,9 +251,6 @@ export default {
       ]
     },
 
-    // Identificador para saber si la coleccion se subió correctamente
-    success: false
-
     // Nota: Propuesta de representación de personas para el campo de investigación y sus semblanzas
     // people: [
     //   {
@@ -273,10 +266,13 @@ export default {
   beforeRouteLeave(to, from, next){
     if(!this.success){ // en caso de que aún no se ha concluido de trabajar el formulario
       const respuesta = window.confirm("¿Seguro que quieres salir? Se perderán los datos del formulario")
-      // en caso de respuesta negativa, se retiene en la ruta actual
       if(respuesta){ // en caso de éxito al trabajar con el formulario
         next()
       }
+      // en caso de respuesta negativa, se retiene en la ruta actual
+    }
+    else{ // en caso de éxito al trabajar con el formulario
+      next()
     }
   },
 
@@ -293,7 +289,7 @@ export default {
         
         // Verificar inicializar áreas en caso de que alguna esté vacía:
         if(!coleccion.identificacion)
-          coleccion.identificacion = {fecha: new Date().toISOString().substr(0, 10),};
+          coleccion.identificacion = {};
         if(!coleccion.contexto)
           coleccion.contexto = {};
         if(!coleccion.contenidoEstructura)
@@ -303,9 +299,9 @@ export default {
         if(!coleccion.notas)
           coleccion.notas = {};
         if(!coleccion.controlDescripcion)
-          coleccion.controlDescripcion = {};
+          coleccion.controlDescripcion = {documentalistas: []};
         if(!coleccion.adicional)
-          coleccion.adicional = {isPublic: true};
+          coleccion.adicional = {isPublic: true, user: []};
 
         // Asignación final
         vm.coleccion = coleccion;
@@ -333,7 +329,9 @@ export default {
     onSubmit: async function(){
       if(!this.$refs.coleccionForm.validate()) // Se activa validación del formulario
         return;
+
       this.isUploading = true; // inicia subida de archivos e información
+      
       try {
         if(this.files.image) // archivo de imagen
           await this.uploadImageFile();
@@ -342,7 +340,6 @@ export default {
         const request = {
           coleccion: this.coleccion,
         };
-
         let myResponse; // objeto res después de creación o edición del registro
         if (this.editMode) {
           myResponse = await coleccionService.updateColection(request);
@@ -354,10 +351,13 @@ export default {
         this.isUploading = false; // termina subida de archivos e información
         this.success = true; // subida de registro completada exitosamente
         this.coleccionId = myResponse.data.id; // identificador en base de datos
+        
+        // Se elimina el escucha para prevención de salida de página
         window.removeEventListener("beforeunload", this.preventNav);
+
         // Reenviar a la vista del registro recien creado
         this.$router.push({name: 'coleccion-view', params: {id: this.coleccionId}});
-      } catch (error) {
+      } catch (error) { // error de conexión
         this.success = false;
         this.error = error;
       }

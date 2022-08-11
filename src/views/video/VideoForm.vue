@@ -409,9 +409,9 @@ export default {
         if(!video.notas)
           video.notas = {};
         if(!video.controlDescripcion)
-          video.controlDescripcion = {};
+          video.controlDescripcion = {nombreArchivero: []};
         if(!video.adicional)
-          video.adicional = {isPublic: true};
+          video.adicional = {isPublic: true, user: []};
 
         // Asignación final
         vm.video = video;

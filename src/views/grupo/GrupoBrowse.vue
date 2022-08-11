@@ -73,21 +73,16 @@ export default {
   data: () => ({
     // Ruta del directorio "public"
     publicPath: process.env.BASE_URL,
-
     // El objeto grupos (en plural) tiene la información mínima de todos los subconjuntos que contiene el grupo actual
     grupos: [],
-
     // Auxiliar para copiar la información de un objeto de la lista "grupos". Se emplea en grupos con el método openDialog
     grupo: null,
-
-    // Representación jerárquica de los grupos a los que pertenecen las unidades documentales
-    // breadcrumbs: [],
-
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false,
-
     // Texto de error, en caso de haber
     error: null,
+    // Representación jerárquica de los grupos a los que pertenecen las unidades documentales
+    // breadcrumbs: [],
   }),
 
   // Obtención de información desde API, antes de renderizar vista

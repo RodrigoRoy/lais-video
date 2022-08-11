@@ -87,7 +87,6 @@ export function update(req, res){
   // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
   // Grupo.findOneAndReplace({_id: grupo._id}, grupo, error => {
   Grupo.findByIdAndUpdate({_id: grupo._id}, grupo, {overwrite: true}, (error, document) => {
-    console.log("Grupo encontrado?: ", document);
     if(error){
       return res.status(500).json({message: error})
     }
@@ -97,7 +96,7 @@ export function update(req, res){
     if(!document){
       return res.status(400).json({message: `El registro con id ${grupo._id} no existe`});
     }
-    return res.status(200).json({message: `Registro ${grupo.identificacion.codigoReferencia} actualizado`})
+    return res.status(200).json({id: grupo._id, message: `Registro ${grupo.identificacion.codigoReferencia} actualizado`})
   });
 }
 

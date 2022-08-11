@@ -87,7 +87,6 @@ export function update(req, res){
   // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
   // Coleccion.findOneAndReplace({_id: coleccion._id}, coleccion, error => {
   Coleccion.findByIdAndUpdate({_id: coleccion._id}, coleccion, {overwrite: true}, (error, document) => {
-    console.log("Colección _id?: ", coleccion);
     if(error){
       return res.status(500).json({message: error})
     }
@@ -97,7 +96,7 @@ export function update(req, res){
     if(!document){
       return res.status(400).json({message: `El registro con id ${grupo._id} no existe`});
     }
-    return res.status(200).json({message: `Registro ${coleccion.identificacion.codigoReferencia} actualizado`})
+    return res.status(200).json({id: coleccion._id, message: `Registro ${coleccion.identificacion.codigoReferencia} actualizado`})
   });
 }
 

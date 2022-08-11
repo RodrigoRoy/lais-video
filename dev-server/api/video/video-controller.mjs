@@ -41,7 +41,7 @@ export function create(req, res){
  */
 export function update(req, res){
   const video = new Video(req.body.video);
-  // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
+  // findByIdAndUpdate() requiere que el segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
   // Video.findOneAndReplace({_id: video._id}, video, error => {
   Video.findByIdAndUpdate({_id: video._id}, video, {overwrite: true}, (error, document) => {
     if(error){

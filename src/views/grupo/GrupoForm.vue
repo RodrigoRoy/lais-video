@@ -33,7 +33,7 @@
 
       <!-- Formulario dividido por pestañas (tabs) que representan cada área (identificación, contexto, etc) -->
       <v-form ref="grupoForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit">
-        <v-tabs v-model="tab" centered icons-and-text >
+        <v-tabs v-model="tab" centered icons-and-text show-arrows>
           <v-tabs-slider></v-tabs-slider>
 
           <!-- Encabezados de pestañas -->
@@ -284,9 +284,9 @@ export default {
         if(!grupo.notas)
           grupo.notas = {};
         if(!grupo.controlDescripcion)
-          grupo.controlDescripcion = {};
+          grupo.controlDescripcion = {documentalistas: []};
         if(!grupo.adicional)
-          grupo.adicional = {isPublic: true};
+          grupo.adicional = {isPublic: true, user: []};
           
         // Asignación final
         vm.grupo = grupo;

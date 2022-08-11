@@ -218,12 +218,12 @@
                 <p v-if="video.controlDescripcion.fechaDescripcion">
                   <span class="font-weight-bold">Fecha de descripción</span>
                   <hint hint="Fecha en que se elaboró la ficha de la unidad"></hint>
-                  {{ video.controlDescripcion.fechaDescripcion | date}}
+                  {{ video.createdAt | date}}
                 </p>
                 <p v-if="video.controlDescripcion.fechaActualizacion">
                   <span class="font-weight-bold">Fecha de actualización</span>
                   <hint hint="Fecha de la última modificación a la ficha de la unidad"></hint>
-                  {{ video.controlDescripcion.fechaActualizacion | date}}
+                  {{ video.updatedAt | date}}
                 </p>
               </v-card-text>
             </v-card>

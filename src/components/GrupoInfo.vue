@@ -52,7 +52,7 @@
                   <span class="font-weight-bold">Fecha</span>
                   <hint hint="Fecha en que se hizo el registro"></hint>
                   <br>
-                  {{ grupo.identificacion.fecha }}
+                  {{ grupo.identificacion.fecha | date }}
                 </p>
                 <p v-if="grupo.identificacion && grupo.identificacion.entidadProductora">
                   <span class="font-weight-bold">Entidad productora</span>
@@ -165,13 +165,13 @@
                   <span class="font-weight-bold">Fecha de descripción</span>
                   <hint hint="Fecha en que se elaboró la ficha de la unidad"></hint>
                   <br>
-                  {{ grupo.controlDescripcion.fechaDescripcion }}
+                  {{ grupo.created | date }}
                 </p>
                 <p v-if="grupo.controlDescripcion && grupo.controlDescripcion.fechaActualizacion">
                   <span class="font-weight-bold">Fecha de actualización</span>
                   <hint hint="Fecha de la última modificación a la ficha de la unidad"></hint>
                   <br>
-                  {{ grupo.controlDescripcion.fechaActualizacion }}
+                  {{ grupo.updatedAt | date }}
                 </p>
               </v-card-text>
             </v-card>
@@ -209,13 +209,13 @@ export default {
     VueMarkdown,
     Hint
   },
-  props: { // Propiedades (sólo lectura) o argumentos para el componente
-    grupo: { type: Object } // grupo audiovisual organizado por áreas
-  },
   data: () => ({
     // Ruta del directorio "public"
     publicPath: process.env.BASE_URL,
-  })
+  }),
+  props: { // Propiedades (sólo lectura) o argumentos para el componente
+    grupo: { type: Object } // grupo audiovisual organizado por áreas
+  }
 }
 </script>
 
@@ -225,5 +225,9 @@ export default {
 .align-left-tab{
   justify-content: left;
   text-align: left
+}
+/* Enlaces de color gris (blanco con transparencia) */
+a {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 </style>

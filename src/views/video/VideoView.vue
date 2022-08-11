@@ -10,7 +10,7 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn>
+          <v-btn href="/">Ir a inicio</v-btn>
         </v-col>
       </v-row>
     </v-alert>

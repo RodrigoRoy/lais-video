@@ -23,12 +23,7 @@
       <v-row no-gutters align="start" justify="start">
         <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
           <v-card class="ma-4 pa-4" outlined tile>
-            <v-img
-              :src="
-                require(`@/../public/files/image/${coleccion.adicional.imagen}`)
-              "
-              height="150px"
-            ></v-img>
+            <v-img :src="(`${publicPath}files/image/${coleccion.adicional.imagen}`)" height="150px" ></v-img>
             <v-card-title class="text-center justify-center">
               <p v-snip="2">
                 {{ coleccion.identificacion.titulo }}
@@ -54,15 +49,15 @@
           <!-- <v-card-title class="headline">Información completa</v-card-title> -->
           <v-card-text>
             <coleccion-info
-              v-bind:coleccion="currentSelection"
+              v-bind:coleccion="coleccion"
             ></coleccion-info>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <div v-if="currentSelection">
-              <v-btn @click="goToEdit(currentSelection)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon></v-btn>
-              <v-btn @click="remove(currentSelection)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon></v-btn>
-              <v-btn @click="goToURL(currentSelection)" class="mr-2">URL <v-icon>mdi-link</v-icon></v-btn>
+            <div v-if="coleccion">
+              <v-btn @click="goToEdit(coleccion)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon></v-btn>
+              <v-btn @click="remove(coleccion)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon></v-btn>
+              <v-btn @click="goToURL(coleccion)" class="mr-2">URL <v-icon>mdi-link</v-icon></v-btn>
               <!-- <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn> -->
             </div>
             <!-- <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn> -->
@@ -85,20 +80,18 @@ export default {
     ColeccionInfo, // Información dentro de v-dialog
   },
   data: () => ({
+    // Ruta del directorio "public"
+    publicPath: process.env.BASE_URL,
     // El objeto colecciones (en plural) tiene la información mínima de todos los subconjuntos que contiene el conjunto actual
     colecciones: [],
-
     // Auxiliar para copiar la información de un objeto de la lista "colecciones". Se emplea en conjunto con el método openDialog
-    currentSelection: null,
-
-    // Representación jerárquica de los conjuntos a los que pertenecen las unidades documentales
-    // breadcrumbs: [],
-
+    coleccion: null,
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false,
-
     // Texto de error, en caso de haber
     error: null,
+    // Representación jerárquica de los conjuntos a los que pertenecen las unidades documentales
+    // breadcrumbs: [],
   }),
 
   // Obtención de información desde API, antes de renderizar vista
@@ -138,7 +131,7 @@ export default {
     // Permite abrir una ventana emergente (dialog) de forma programática mostrando la información dada como parámetro
     openDialog: function (colection) {
       this.dialog = true;
-      this.currentSelection = colection;
+      this.coleccion = colection;
     },
     // Cierra el cuadro de dialogo actual
     closeDialog(){

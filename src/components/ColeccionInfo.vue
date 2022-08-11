@@ -64,7 +64,7 @@
                   <span class="font-weight-bold">Fecha</span>
                   <hint hint="Fecha en que se hizo el registro"></hint>
                   <br>
-                  {{ coleccion.identificacion.fecha }}
+                  {{ coleccion.identificacion.fecha | date}}
                 </p>
                 <p v-if="coleccion.identificacion.nivelDescripcion">
                   <span class="font-weight-bold">Nivel de descripcion</span>
@@ -185,17 +185,17 @@
                   <span class="font-weight-bold">Fecha de descripción</span>
                   <hint hint="Fecha en que se elaboró la ficha de la unidad"></hint>
                   <br>
-                  {{ coleccion.createdAt }}
+                  {{ coleccion.createdAt | date }}
                 </p>
                 <p v-if="coleccion.updatedAt">
                   <span class="font-weight-bold">Fecha de actualización</span>
                   <hint hint="Fecha de la última modificación a la ficha de la unidad"></hint>
                   <br>
-                  {{ coleccion.updatedAt }}
+                  {{ coleccion.updatedAt | date }}
                 </p>
                 <p v-if="coleccion.controlDescripcion.reglasNormas">
-                  <!-- TODO @EmmanuelCruz descripcion -->
                   <span class="font-weight-bold">Reglas o normas</span>
+                  <!-- TODO @EmmanuelCruz descripcion -->
                   <hint hint="Reglas o normas"></hint>
                   <br>
                   {{ coleccion.controlDescripcion.reglasNormas }}
@@ -209,10 +209,9 @@
       <!-- Última columna con la información adicional -->
       <v-col xs="12" sm="12" md="5">
         <div v-if="coleccion.adicional">
-          <!-- Imagen @TODO cambiar por coleccion.adicional.imagen -->
-          <div :v-if="true">
+          <div :v-if="coleccion.adicional.imagen">
             <p>
-              <v-img :src="require(`@/../public/files/image/${coleccion.adicional.imagen}`)" height="220px" contain></v-img>
+              <v-img :src="`${publicPath}files/image/${coleccion.adicional.imagen}`" height="220px" contain></v-img>
             </p>
           </div>
 
@@ -237,14 +236,13 @@ export default {
     VueMarkdown,
     Hint
   },
-  props: {
-    // El objeto coleccion representa un conjunto documental, es decir, un grupo jerarquico dentro de la organización del acervo
-    // Nota: el objeto coleccion será obtenido desde la base de datos en futuras iteraciones del código
-    coleccion: { type: Object }
-  },
   data: () => ({
-    // Variables locales
-  })
+    // Ruta del directorio "public"
+    publicPath: process.env.BASE_URL,
+  }),
+  props: { // Propiedades (sólo lectura) o argumentos para el componente
+    coleccion: { type: Object } // colección audiovisual organizada por áreas
+  },
 }
 </script>
 
@@ -254,5 +252,9 @@ export default {
 .align-left-tab{
   justify-content: left;
   text-align: left
+}
+/* Enlaces de color gris (blanco con transparencia) */
+a {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 </style>
