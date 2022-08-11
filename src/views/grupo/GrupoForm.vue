@@ -361,7 +361,7 @@ export default {
       }
     },
     
-    // TODO @EmmanuelCruz Documentar
+    // Función que controla el evento de salida o recarga de páginas. Se activa al entrar al formulario y se desactiva al salir o llenar correctamente
     preventNav(event) {
       event.preventDefault()
       event.returnValue = ""
@@ -393,7 +393,7 @@ export default {
     }
   },
 
-  // TODO @EmmanuelCruz Documentar
+  // Destruye el evento que se encuentra escuchado por la salida o recarga de páginas
   beforeDestroy() {
     window.removeEventListener("beforeunload", this.preventNav);
   },
