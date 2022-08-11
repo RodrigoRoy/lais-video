@@ -18,7 +18,7 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
     <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un video -->
     <v-row no-gutters align="start" justify="start">
-      <v-col cols="12" md="3" v-for="video in videos" :key="video.id">
+      <v-col cols="12" md="3" v-for="video in videos" :key="video._id">
         <v-card class="ma-4 pa-4" outlined tile @click="openDialog(video)">
           <v-img :src="`${publicPath}files/image/${video.adicional.imagen}`" height="150px"></v-img>
           <v-card-title class="justify-center">
@@ -76,13 +76,27 @@ export default {
     // Objeto que representa al registro actual
     video: null,
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
-    dialog: false
+    dialog: false,
+    // Texto de error, en caso de haber
+    error: null,
   }),
   
+  // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     videoService.getAllVideos().then(res => {
       next(vm => {
         vm.videos = res.data.videos;
+        // En caso de que no haya grupos
+        if (vm.videos.length === 0){
+          vm.error = 'Grupo vacío'
+        }
+      });
+    })
+    // En caso de error (400 HTTP status code)
+    .catch(error => {
+      next(vm => {
+        vm.error = error.message;
+        vm.videos = null;
       })
     });
   },
@@ -123,7 +137,7 @@ export default {
       try {
         const response = await videoService.deleteVideo(video._id);
         this.message = response.data.message;
-        this.$router.go();
+        this.$router.go(); // recargar ruta actual
       } catch (error) {
         this.error = error;
         this.closeDialog();

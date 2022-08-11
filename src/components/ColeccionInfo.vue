@@ -66,23 +66,18 @@
                   <br>
                   {{ coleccion.identificacion.fecha }}
                 </p>
-                <p v-if="coleccion.identificacion.proyectoInvestigacion">
-                  <span class="font-weight-bold">Proyecto de investigación</span>
-                  <hint hint="Se refiere al proyecto de investigación para el cual fueron realizados los registros a documentar."></hint>
+                <p v-if="coleccion.identificacion.nivelDescripcion">
+                  <span class="font-weight-bold">Nivel de descripcion</span>
+                  <!-- TODO @EmmanuelCruz descripcion -->
+                  <hint hint="Se refiere al nivel de descripción del proyecto"></hint>
                   <br>
-                  {{ coleccion.identificacion.proyectoInvestigacion }}
+                  {{ coleccion.identificacion.nivelDescripcion }}
                 </p>
-                <p v-if="coleccion.identificacion.investigacion">
-                  <span class="font-weight-bold">Investigación</span>
-                  <hint hint="Se consigna el nombre completo de la persona responsable de la investigación para la que se realizaron los registros a documentar."></hint>
-                  <br>
-                  {{ coleccion.identificacion.investigacion }}
-                </p>
-                <p v-if="coleccion.identificacion.coordinacionProyecto">
+                <p v-if="coleccion.identificacion.coordinacion">
                   <span class="font-weight-bold">Coordinación del proyecto</span>
                   <hint hint="Se consigna a la persona coordinadora del proyecto de investigación para el que se realizaron los registros a documentar."></hint>
                   <br>
-                  {{ coleccion.identificacion.coordinacionProyecto }}
+                  {{ coleccion.identificacion.coordinacion }}
                 </p>
               </v-card-text>
             </v-card>
@@ -96,6 +91,13 @@
                   <hint hint="Datos sobre el origen, evolución y desarrollo de la entidad productora de la colección"></hint>
                   <br>
                   {{ coleccion.contexto.historiaInstitucional }}
+                </p>
+                <p v-if="coleccion.contexto.historiaArchivistica">
+                  <span class="font-weight-bold">Historia Archivistica</span>
+                  <!-- TODO @EmmanuelCruz descripcion -->
+                  <hint hint="Historia archivistica"></hint> 
+                  <br>
+                  {{ coleccion.contexto.historiaArchivistica }}
                 </p>
                 <p v-if="coleccion.contexto.semblanzaBiografica">
                   <span class="font-weight-bold">Semblanza biográfica</span>
@@ -177,19 +179,26 @@
                   <span class="font-weight-bold">Documentalistas</span>
                   <hint hint="Se consignan los nombres de las personas que realizaron la descripción."></hint>
                   <br>
-                  {{ coleccion.controlDescripcion.documentalistas }}
+                  {{ coleccion.controlDescripcion.documentalistas.join(', ') }}
                 </p>
-                <p v-if="coleccion.controlDescripcion.fechaDescripcion">
+                <p v-if="coleccion.createdAt">
                   <span class="font-weight-bold">Fecha de descripción</span>
                   <hint hint="Fecha en que se elaboró la ficha de la unidad"></hint>
                   <br>
-                  {{ coleccion.controlDescripcion.fechaDescripcion }}
+                  {{ coleccion.createdAt }}
                 </p>
-                <p v-if="coleccion.controlDescripcion.fechaActualizacion">
+                <p v-if="coleccion.updatedAt">
                   <span class="font-weight-bold">Fecha de actualización</span>
                   <hint hint="Fecha de la última modificación a la ficha de la unidad"></hint>
                   <br>
-                  {{ coleccion.controlDescripcion.fechaActualizacion }}
+                  {{ coleccion.updatedAt }}
+                </p>
+                <p v-if="coleccion.controlDescripcion.reglasNormas">
+                  <!-- TODO @EmmanuelCruz descripcion -->
+                  <span class="font-weight-bold">Reglas o normas</span>
+                  <hint hint="Reglas o normas"></hint>
+                  <br>
+                  {{ coleccion.controlDescripcion.reglasNormas }}
                 </p>
               </v-card-text>
             </v-card>
@@ -203,7 +212,7 @@
           <!-- Imagen @TODO cambiar por coleccion.adicional.imagen -->
           <div :v-if="true">
             <p>
-              <v-img :src="require('@/assets/Foto_Acervo1.png')" height="220px" contain></v-img>
+              <v-img :src="require(`@/../public/files/image/${coleccion.adicional.imagen}`)" height="220px" contain></v-img>
             </p>
           </div>
 

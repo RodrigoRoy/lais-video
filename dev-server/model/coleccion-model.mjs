@@ -32,7 +32,7 @@ const coleccionSchema = new mongoose.Schema({
   },
   controlDescripcion: {
     //TODO Mejorar registro de usuarios (archivistas) [{type: Schema.Types.ObjectId, ref: 'Usuario'}]
-    archivista: {type: String, trim: true},
+    documentalistas: [{type: String, trim: true}], // Lista de documentalistas
     // TODO Refinar nombre de norma
     reglasNormas: {type: String, trim: true, default: 'Norma de catalogación LAIS 2022 basada en ISAD(G)'},
     // fechaDescripcion: createdAt
@@ -42,7 +42,8 @@ const coleccionSchema = new mongoose.Schema({
     imagen: {type: String, trim: true},
     presentacion: {type: String, trim: true},
     isPublic: {type: Boolean, default: true},
-    coleccion: {type: ObjectId, ref: 'coleccionVideo'}
+    coleccion: {type: ObjectId, ref: 'coleccionVideo'},
+    user: [{type: ObjectId, ref: 'user'}]
   }
 },{
   collection: 'coleccionDocumentalVideo',

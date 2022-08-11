@@ -1,4 +1,4 @@
-<!-- Vista para navegar y ver los grupos -->
+<!-- Vista para navegar y ver los grupos documentales (conjuntos de registros en video) -->
 <template>
     <div>
         <!-- En caso de error en petición al API -->
@@ -6,9 +6,6 @@
             <v-row align="center">
                 <v-col class="grow">
                     {{ error }}
-                </v-col>
-                <v-col class="shrink">
-                    <v-btn href="/home">Ir a inicio</v-btn>
                 </v-col>
             </v-row>
         </v-alert>
@@ -20,9 +17,9 @@
 
             <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
             <v-row no-gutters align="start" justify="start">
-                <v-col cols="12" md="3" v-for="(grupo, i) in grupos" :key="i">
+                <v-col cols="12" md="3" v-for="grupo in grupos" :key="grupo._id">
                     <v-card class="ma-4 pa-4" outlined tile>
-                        <v-img :src="require('@/assets/Caratulas_Proyectos/Foto_Acervo1.png')" height="150px"></v-img>
+                        <v-img :src="`${publicPath}files/image/${grupo.adicional.imagen}`" height="150px"></v-img>
                         <v-card-title class="text-center justify-center">
                             <p v-snip="2">
                                 {{ grupo.identificacion.titulo }}
@@ -47,12 +44,16 @@
                 <v-card>
                     <!-- <v-card-title class="headline">Información completa</v-card-title> -->
                     <v-card-text>
-                        <grupo-info v-bind:grupo="currentSelection"></grupo-info>
+                        <!-- Componente para el render de la información del grupo -->
+                        <grupo-info :grupo="grupo"></grupo-info>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
+                        <v-btn @click="goToEdit(grupo)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon> </v-btn>
+                        <v-btn @click="remove(grupo)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon> </v-btn>
+                        <v-btn @click="goToURL(grupo)" class="mr-2">URL <v-icon>mdi-link</v-icon> </v-btn>
                         <!-- <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn> -->
-                        <v-btn @click="dialog = false">Cerrar <v-icon>mdi-close</v-icon></v-btn>
+                        <v-btn @click="closeDialog()">Cerrar <v-icon>mdi-close</v-icon></v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -62,7 +63,7 @@
 
 <script>
 import GrupoInfo from '@/components/GrupoInfo.vue'
-import * as grupoService from '../../services/GrupoService'
+import * as grupoService from '../../services/GrupoService' // servicio para llamadas al 
 
 export default {
   name: 'GrupoBrowse',
@@ -70,11 +71,14 @@ export default {
     GrupoInfo // Información dentro de v-dialog
   },
   data: () => ({
+    // Ruta del directorio "public"
+    publicPath: process.env.BASE_URL,
+
     // El objeto grupos (en plural) tiene la información mínima de todos los subconjuntos que contiene el grupo actual
     grupos: [],
 
     // Auxiliar para copiar la información de un objeto de la lista "grupos". Se emplea en grupos con el método openDialog
-    currentSelection: null,
+    grupo: null,
 
     // Representación jerárquica de los grupos a los que pertenecen las unidades documentales
     // breadcrumbs: [],
@@ -88,14 +92,11 @@ export default {
 
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
-    // En caso de editar un registro existente:
     grupoService.getAllGroups().then(res => {
       next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
-        let grupos = res.data.grupos;
-        console.log(grupos);
-        vm.grupos = grupos;
+        vm.grupos = res.data.grupos;
         // En caso de que no haya grupos
-        if (grupos.length === 0){
+        if (vm.grupos.length === 0){
           vm.error = 'Grupo vacío'
         }
       });
@@ -110,17 +111,52 @@ export default {
   },
 
   methods: {
-    // Permite de manera programática ir a una ubicación definida en el archivo router.js
+    // @TODO Permite de manera programática ir a una ubicación definida en el archivo router.js
     // Recibe como parámetro el nombre dado en router
     // goTo: function(routerName){
     //   this.$router.push({name: routerName});
     // },
 
-    // Recibe un objeto de la lista "grupos" como parámetro
-    // Permite abrir una ventana emergente (dialog) de forma programática mostrando la información dada como parámetro
-    openDialog: function(grupo){
+    /**
+     * Abre un cuadro de dialogo y muestra la información del registro
+     * @param Object - información que representa un grupo documental
+     */
+    openDialog(grupoData) {
+      this.grupo = grupoData;
       this.dialog = true;
-      this.currentSelection = grupo;
+    },
+    // Cierra el cuadro de dialogo actual
+    closeDialog(){
+      this.grupo = null;
+      this.dialog = false;
+    },
+    /**
+     * Envia a la ruta URL de edición del registro del grupo actual
+     * @param Object - representa el grupo documental, debe contener el atributo "_id"
+     */
+    goToEdit(grupo){
+      this.$router.push({name: 'grupo-edit', params: {id: grupo._id}});
+    },
+    /**
+     * Envia a la ruta URL de vista individual del registro del grupo actual
+     * @param Object - representa el grupo documental, debe contener el atributo "_id"
+     */
+    goToURL(grupo){
+      this.$router.push({name: 'grupo-view', params: {id: grupo._id}});
+    },
+    /**
+     * Elimina o remueve el registro del grupo actual
+     * @param Object - representa el grupo documental, debe contener el atributo "_id"
+     */
+    async remove(grupo){
+      try {
+        const response = await grupoService.deleteGroup(grupo._id);
+        this.message = response.data.message;
+        this.$router.go(); // recargar ruta actual
+      } catch (error) {
+        this.error = error;
+        this.closeDialog();
+      }
     },
 
   }

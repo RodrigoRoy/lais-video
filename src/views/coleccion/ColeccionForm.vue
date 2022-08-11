@@ -2,6 +2,18 @@
 
 <template>
   <div>
+    <!-- Caso de éxito al subir información -->
+    <v-alert v-model="success" dismissible type="success">
+      <v-row align="center">
+        <v-col class="grow">
+          Información subida correctamente con ID: {{ coleccionId }}
+        </v-col>
+        <v-col class="shrink">
+          <v-btn :href="`/coleccion/${coleccionId}`">Ver registro</v-btn>
+        </v-col>
+      </v-row>
+    </v-alert>
+
     <!-- En caso de error en petición al API -->
     <v-alert prominent type="error" v-if="error">
       <v-row align="center">
@@ -132,7 +144,7 @@
           <v-tab-item value="controlDescripcion" >
             <v-card flat>
               <!-- Nota: Los nombres podrían aparecen automáticamente porque pueden obtenerse del usuario que está conectado, según lo indica la base de datos -->
-              <v-text-field v-model="coleccion.controlDescripcion.documentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
+              <v-text-field v-model="computedDocumentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
 
               <v-text-field v-model="coleccion.controlDescripcion.reglasNormas" label="Reglas o normas" hint="Normas que se utilizaron para la elaboración de la ficha"></v-text-field>
 
@@ -154,7 +166,7 @@
 
           <v-tab-item value="adicional" >
             <v-card flat>
-              <v-file-input v-model="coleccion.adicional.imagen" show-size counter chips accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
+              <v-file-input v-model="files.image" show-size accept="image/*" prepend-icon="mdi-image" label="Portada"></v-file-input>
 
               <v-textarea v-model="coleccion.adicional.presentacion" label="Presentación" hint="" auto-grow rows="5" row-height="25" ></v-textarea>
 
@@ -165,7 +177,7 @@
 
         <!-- Botón para finalizar el llenado del formulario -->
         <v-btn type="submit" :disable="!validForm" color="primary" block elevation="6" x-large>
-          <span v-if="!editMode">Registrar</span>
+          <span v-if="!editMode">Crear</span>
           <span v-else>Actualizar</span>
         </v-btn>
       </v-form>
@@ -177,17 +189,17 @@
 </template>
 
 <script>
-import * as coleccionService from '../../services/ColeccionService'
+import * as coleccionService from '../../services/ColeccionService' // servicio para llamadas al API
 import moment from 'moment' // para formatos de fechas
+import * as fileService from '../../services/FileService' // servicio para subir archivos al servidor desde API
 
 export default {
+  name: 'ColeccionForm',
   data: () => ({
     // El objeto coleccion representa una conjunto documental, es decir, un grupo audiovisual organizado por áreas
     // Algunos campos deben inicializarse, por ejemplo fechas, mientras que otros son valores por default, por ejemplo reglas o normas.
     coleccion: {
-      identificacion: {
-        fecha: new Date().toISOString().substr(0, 10),
-      },
+      identificacion: {},
       contexto: {},
       contenidoEstructura: {
         organizacion: 'Por proyecto de investigación',
@@ -197,18 +209,32 @@ export default {
       },
       notas: {},
       controlDescripcion: {
+        documentalistas: [],
         reglasNormas: 'LAIS, Lineamientos para la descripción de Registros de video propios, 2021',
-        fechaDescripcion: new Date().toISOString().substr(0, 10),
-        fechaActualizacion: new Date().toISOString().substr(0, 10),
       },
       adicional: {
         isPublic: true,
+        user: [],
       },
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
+
+    // Auxiliar para almacenar información de archivos a subir
+    files: {
+      image: null,
+    },
+
+    // Id del registro después de ser creado en base de datos
+    coleccionId: '',
+
+    // Determina si se está realizando subida de archivos (video, imagen, documentos) 
+    isUploading: false,
+
     // Bandera para determinar si está editando o creando una colección.
     editMode: false,
     // Texto de error, en caso de haber
-    error: null,
+    error: false,
 
     // Auxiliar que representa numéricamente cuál pestaña (tab) está activa
     tab: null,
@@ -245,9 +271,10 @@ export default {
   }),
 
   beforeRouteLeave(to, from, next){
-    if(!this.success){
-      const respuesta = window.confirm("¿Seguro que quieres salir? Se podrían perder los datos de la colección")
-      if(respuesta){
+    if(!this.success){ // en caso de que aún no se ha concluido de trabajar el formulario
+      const respuesta = window.confirm("¿Seguro que quieres salir? Se perderán los datos del formulario")
+      // en caso de respuesta negativa, se retiene en la ruta actual
+      if(respuesta){ // en caso de éxito al trabajar con el formulario
         next()
       }
     }
@@ -276,7 +303,7 @@ export default {
         if(!coleccion.notas)
           coleccion.notas = {};
         if(!coleccion.controlDescripcion)
-          coleccion.controlDescripcion = { fechaDescripcion: new Date().toISOString().substr(0, 10), fechaActualizacion: new Date().toISOString().substr(0, 10) };
+          coleccion.controlDescripcion = {};
         if(!coleccion.adicional)
           coleccion.adicional = {isPublic: true};
 
@@ -306,16 +333,51 @@ export default {
     onSubmit: async function(){
       if(!this.$refs.coleccionForm.validate()) // Se activa validación del formulario
         return;
-      const request = {
-        coleccion: this.coleccion,
-      };
-      const newColeccion = await coleccionService.createColection(request);
-      console.log('newColeccion: ', newColeccion);
-      this.success = true
-      window.removeEventListener("beforeunload", this.preventNav);
-      this.$router.push({name: 'home'}); // TODO: Redireccionamiento a la colección (usando newColeccion.data.id)
-    },
+      this.isUploading = true; // inicia subida de archivos e información
+      try {
+        if(this.files.image) // archivo de imagen
+          await this.uploadImageFile();
         
+        // Enviar datos textuales a base de datos
+        const request = {
+          coleccion: this.coleccion,
+        };
+
+        let myResponse; // objeto res después de creación o edición del registro
+        if (this.editMode) {
+          myResponse = await coleccionService.updateColection(request);
+        } else {
+          myResponse = await coleccionService.createColection(request);
+        }
+
+        // Notificaciones:
+        this.isUploading = false; // termina subida de archivos e información
+        this.success = true; // subida de registro completada exitosamente
+        this.coleccionId = myResponse.data.id; // identificador en base de datos
+        window.removeEventListener("beforeunload", this.preventNav);
+        // Reenviar a la vista del registro recien creado
+        this.$router.push({name: 'coleccion-view', params: {id: this.coleccionId}});
+      } catch (error) {
+        this.success = false;
+        this.error = error;
+      }
+    },
+
+    // Subir un archivo de imagen desde API
+    uploadImageFile: async function(){
+      const formData = new FormData(); // creación de formulario en blanco
+      formData.append('image', this.files.image); // adjuntar campo con objeto tipo File
+      formData.append('codigoReferencia', this.coleccion.identificacion.codigoReferencia); // adjuntar campo con información extra
+      try{
+        const response = await fileService.uploadImage(formData); // petición desde API
+        this.coleccion.adicional.imagen = response.data.filename; // asignación del nombre de archivo guardado
+      }
+      catch(err){ // error de conexión
+        this.error = err;
+      }
+    },
+    
+    // Función que controla el evento de salida o recarga de páginas. Se activa al entrar al formulario y se desactiva al salir o llenar correctamente
     preventNav(event) {
       event.preventDefault()
       event.returnValue = ""
@@ -329,19 +391,39 @@ export default {
       return this.coleccion.identificacion.fecha ? moment(this.coleccion.identificacion.fecha).format('DD/MM/YYYY') : '';
     },
     computedFechaDescripcion(){
-      return this.coleccion.controlDescripcion.fechaDescripcion ? moment(this.coleccion.controlDescripcion.fechaDescripcion).format('DD/MM/YYYY') : '';
+      return this.coleccion.createdAt ? moment(this.coleccion.createdAt).format('DD/MM/YYYY') : '';
     },
     computedFechaActualizacion(){
-      return this.coleccion.controlDescripcion.fechaActualizacion ? moment(this.coleccion.controlDescripcion.fechaActualizacion).format('DD/MM/YYYY') : '';
+      return this.coleccion.updatedAt ? moment(this.coleccion.updatedAt).format('DD/MM/YYYY') : '';
+    },
+    // Manera estandar para usar variables globales (state) como variables locales
+    computedUserId(){
+      return this.$store.state.userId;
+    },
+    computedUserFullname(){
+      return this.$store.state.fullname;
+    },
+    // Conversión de arreglo/lista a texto/string para nombres de archivistas
+    computedDocumentalistas(){
+      return this.coleccion.controlDescripcion.documentalistas.join(', ');
     }
   },
 
+  // Destruye el evento que se encuentra escuchado por la salida o recarga de páginas
   beforeDestroy() {
     window.removeEventListener("beforeunload", this.preventNav);
   },
 
+  // Acciones a realizar justo antes de montar y renderizar componente Vue
   mounted: function () {
     window.addEventListener("beforeunload", this.preventNav);
+
+    // Agregar nombre completo de archivista si no está enlistado
+    if(!this.coleccion.controlDescripcion.documentalistas.includes(this.computedUserFullname))
+      this.coleccion.controlDescripcion.documentalistas.push(this.computedUserFullname);
+    // Agregar id de usuario de archivista si no está enlistado
+    if(!this.coleccion.adicional.user.includes( this.computedUserId ))
+      this.coleccion.adicional.user.push(this.computedUserId);
   }
 }
 </script>
