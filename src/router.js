@@ -13,7 +13,7 @@ import Register from './views/authentication/Register.vue'
 import VideoForm from './views/video/VideoForm.vue'
 import VideoView from './views/video/VideoView.vue'
 import VideoViewTemplate from './views/video/VideoViewTemplate.vue'
-import VideoViewAll from './views/video/VideoViewAll.vue'
+import VideoBrowse from './views/video/VideoBrowse.vue'
 import ColeccionBrowse from './views/coleccion/ColeccionBrowse.vue'
 import ColeccionForm from './views/coleccion/ColeccionForm'
 import ColeccionView from './views/coleccion/ColeccionView.vue'
@@ -62,7 +62,7 @@ const routes = new Router({
     {
       path: '/video',
       name: 'video-view-all',
-      component: VideoViewAll
+      component: VideoBrowse
     },
     {
       // Visualizar registro de video (requiere autentificación)

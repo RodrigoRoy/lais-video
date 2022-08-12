@@ -64,7 +64,7 @@ import { PdfMakeWrapper, Table, Txt, Img } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 
 export default {
-  name: 'VideoViewAll',
+  name: 'VideoBrowse',
   components: {
     VideoInfo // Información dentro de v-dialog
   },

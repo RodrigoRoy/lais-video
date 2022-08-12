@@ -54,6 +54,16 @@
           </v-list-item>
           <v-list-item v-if="$store.state.isLoggedIn">
             <v-list-item-title>
+              <router-link :to="{path: '/coleccion/nuevo'}" class="nav-link">Nueva coleccion</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="$store.state.isLoggedIn">
+            <v-list-item-title>
+              <router-link :to="{path: '/grupo/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Nuevo grupo</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="$store.state.isLoggedIn">
+            <v-list-item-title>
               <router-link to="/video/nuevo" class="nav-link">Nuevo registro</router-link>
             </v-list-item-title>
           </v-list-item>

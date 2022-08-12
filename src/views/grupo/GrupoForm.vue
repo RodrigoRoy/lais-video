@@ -173,7 +173,7 @@
 
 <script>
 import moment from 'moment' // para formatos de fechas
-import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API
+import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API (grupo)
 import * as fileService from '../../services/FileService' // servicio para subir archivos al servidor desde API
 
 export default {
@@ -195,6 +195,8 @@ export default {
       adicional: {
           isPublic: true,
           user: [],
+          // coleccion: this.$route.query.type && this.$route.query.type === 'collection' ? this.$route.query.from : undefined,
+          // grupo: this.$route.query.type && this.$route.query.type === 'group' ? this.$route.query.from : undefined,
       },
       createdAt: new Date(),
       updatedAt: new Date(),

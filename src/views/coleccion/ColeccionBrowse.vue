@@ -9,7 +9,7 @@
           {{ error }}
         </v-col>
         <v-col class="shrink">
-          <v-btn href="/home">Ir a inicio</v-btn>
+          <v-btn href="/">Ir a inicio</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -22,7 +22,7 @@
       <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
       <v-row no-gutters align="start" justify="start">
         <v-col cols="12" md="3" v-for="(coleccion, i) in colecciones" :key="i">
-          <v-card class="ma-4 pa-4" outlined tile>
+          <v-card class="ma-4 pa-4" outlined tile @click="goToGroup(coleccion)">
             <v-img :src="(`${publicPath}files/image/${coleccion.adicional.imagen}`)" height="150px" ></v-img>
             <v-card-title class="text-center justify-center">
               <p v-snip="2">
@@ -151,6 +151,13 @@ export default {
      */
     goToURL(coleccion){
       this.$router.push({name: 'coleccion-view', params: {id: coleccion._id}});
+    },
+    /**
+     * Envia a la ruta URL de vista individual del registro de coleccion actual
+     * @param Object - representa el registro de coleccion, debe contener el atributo "_id"
+     */
+    goToGroup(colectionOrigin){
+      this.$router.push({name: 'grupo-browse', query: {from: colectionOrigin._id, type: 'collection'}});
     },
     /**
      * Elimina o remueve el registro de coleccion actual
