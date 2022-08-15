@@ -155,3 +155,20 @@ export function show(req, res){
     return res.status(200).json({grupo: grupo, message: 'Registro obtenido correctamente'});
   })
 }
+
+/**
+ * Regresa un listado de todas los grupos que pertenecen a una colección específica
+ * @param {Object} req - Petición (request) recibida por http
+ * @param {Object} res - Respuesta (response) a enviar por http
+ * @returns JSON con un listado de los grupos con el mismo id de la colección solicitada
+ */
+export function getByCollection(req, res){
+  // console.log('req.body:', req.body)
+  Grupo.find({'adicional.coleccion': req.body.coleccionId}, (error, grupos) => {
+    if(error){
+      return res.status(500).json({message: error});
+    }
+    return res.status(200).json({grupos: grupos});
+  })
+  .sort({createdAt: -1});
+}

@@ -48,3 +48,13 @@ export function deleteGroup(id){
 export function updateGroup(grupo){
   return http().put('/grupo', grupo);
 }
+
+/**
+ * Obtiene los grupos documentales de una colección particular
+ * @param {string} coleccionId - Id de la colección documental
+ * @returns objecto que enlista todos los grupos documentales
+ */
+ export function getGroupsByCollection(coleccionId){
+   // TODO Corregir sintaxis para enviar datos en petición al API (con Axios)
+  return http().get('/grupo/filter/coleccion', {data: {'coleccionId': coleccionId}});
+}

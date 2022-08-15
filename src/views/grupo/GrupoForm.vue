@@ -132,8 +132,7 @@
 
           <v-tab-item value="controlDescripcion" >
             <v-card flat>
-              <!-- Nota: Los nombres podrían aparecen automáticamente porque pueden obtenerse del usuario que está conectado, según lo indica la base de datos -->
-              <v-text-field v-model="computedDocumentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción"></v-text-field>
+              <v-text-field v-model="computedDocumentalistas" label="Documentalistas" hint="Nombres de las personas que llevaron a cabo la descripción" readonly></v-text-field>
 
               <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
                 <template v-slot:activator="{ on }">
@@ -178,6 +177,7 @@ import * as fileService from '../../services/FileService' // servicio para subir
 
 export default {
   name: 'GrupoForm',
+  props: { from: String, type: String },
   data: () => ({
     // El objeto grupo representa un conjunto documental, es decir, un grupo audiovisual organizado por áreas
     // Algunos campos deben inicializarse, por ejemplo fechas, mientras que otros son valores por default, por ejemplo reglas o normas.
@@ -195,6 +195,8 @@ export default {
       adicional: {
           isPublic: true,
           user: [],
+          // coleccion: this.type && this.type === 'collection' ? this.from : undefined,
+          // grupo: this.type && this.type === 'group' ? this.from : undefined,
           // coleccion: this.$route.query.type && this.$route.query.type === 'collection' ? this.$route.query.from : undefined,
           // grupo: this.$route.query.type && this.$route.query.type === 'group' ? this.$route.query.from : undefined,
       },
@@ -410,6 +412,13 @@ export default {
     // Agregar id de usuario de archivista si no está enlistado
     if(!this.grupo.adicional.user.includes( this.computedUserId ))
       this.grupo.adicional.user.push(this.computedUserId);
+    
+    if(this.from){
+      if(this.type && this.type === 'collection')
+        this.grupo.adicional.coleccion = this.from
+      if(this.type && this.type === 'group')
+        this.grupo.adicional.grupo = this.from
+    }
   }
 }
 </script>

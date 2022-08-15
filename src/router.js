@@ -129,6 +129,7 @@ const routes = new Router({
       path: '/grupo/nuevo',
       name: 'grupo-create',
       component: GrupoForm,
+      props: route => ({ from: route.query.from, type: route.query.type}),
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();
@@ -143,6 +144,7 @@ const routes = new Router({
       path: '/grupo/:id/edit',
       name: 'grupo-edit',
       component: GrupoForm,
+      props: route => ({ from: route.query.from, type: route.query.type}),
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();
@@ -162,6 +164,7 @@ const routes = new Router({
       // Visualizar grupos
       path: '/grupo',
       name: 'grupo-browse',
+      props: route => ({ from: route.query.from, type: route.query.type}),
       component: GrupoBrowse
     },
     {

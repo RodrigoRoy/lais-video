@@ -67,6 +67,7 @@ import * as grupoService from '../../services/GrupoService' // servicio para lla
 
 export default {
   name: 'GrupoBrowse',
+  props: { from: String, type: String },
   components: {
     GrupoInfo // Información dentro de v-dialog
   },
@@ -104,6 +105,21 @@ export default {
       })
     });
   },
+
+  // TODO Corregir sintaxis para enviar datos en petición al API (con Axios)
+  // beforeMount() {
+  //   console.log('this.from: ', this.from)
+  //   grupoService.getGroupsByCollection(this.from).then(res => {
+  //     console.log('res.data: ', res.data)
+  //     this.grupos = res.data.grupos;
+  //     if(this.grupos.length === 0)
+  //       this.error = 'Grupo vacío'
+  //   })
+  //   .catch(error => {
+  //     this.error = error;
+  //     this.grupos = null;
+  //   });
+  // },
 
   methods: {
     // @TODO Permite de manera programática ir a una ubicación definida en el archivo router.js

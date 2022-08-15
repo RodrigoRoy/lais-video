@@ -103,7 +103,6 @@ export default {
         next((vm) => {
           // vm es necesario para asignaciones, "this" no existe en este contexto
           let colecciones = res.data.colecciones;
-          console.log("colecciones", colecciones);
           vm.colecciones = colecciones;
           // En caso de que no haya colecciones
           if (colecciones.length === 0) {

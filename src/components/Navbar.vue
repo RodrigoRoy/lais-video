@@ -23,7 +23,7 @@
       </v-btn>
 
       <v-btn rounded color="transparent">
-        <router-link to="/video" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
+        <router-link to="/coleccion" exact>Colección<v-icon>mdi-apps</v-icon></router-link>
       </v-btn>
 
       <!-- Barra de búsqueda -->
@@ -52,19 +52,19 @@
               <router-link to="/login" class="nav-link" exact>Iniciar sesión</router-link>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="$store.state.isLoggedIn">
+          <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'coleccion-browse'">
             <v-list-item-title>
               <router-link :to="{path: '/coleccion/nuevo'}" class="nav-link">Nueva coleccion</router-link>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="$store.state.isLoggedIn">
+          <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'grupo-browse'">
             <v-list-item-title>
               <router-link :to="{path: '/grupo/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Nuevo grupo</router-link>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="$store.state.isLoggedIn">
+          <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'video-browse'">
             <v-list-item-title>
-              <router-link to="/video/nuevo" class="nav-link">Nuevo registro</router-link>
+              <router-link :to="{path: '/video/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Nuevo registro</router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item v-if="$store.state.isLoggedIn">

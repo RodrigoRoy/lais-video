@@ -171,9 +171,6 @@
 
           <v-tab-item value="controlDescripcion" >
             <v-card flat>
-              <!-- Nota: Este campo podría cambiar o eliminarse en el futuro -->
-              <!-- <v-textarea v-model="video.controlDescripcion.notaArchivero" label="Nota del archivero" hint="Fuentes usadas para complementar la información de la ficha (producción original, sitios web, publicaciones, etc.)" auto-grow rows="3" row-height="25" ></v-textarea> -->
-
               <v-text-field v-model="computedArchivista" label="Archivista" hint="Nombre completo de la persona que elaboró la ficha de la unidad" readonly></v-text-field>
 
               <v-menu v-model="menuCalendar2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px" >
