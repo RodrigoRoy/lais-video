@@ -14,7 +14,7 @@ export function generateJWT(user){
         active: user.active,
         id: user._id
     };
-    return jwt.sign({user: tokenData}, process.env.MY_TOKEN, {expiresIn: '7d'}); // Token válido durante 7 días
+    return jwt.sign({user: tokenData}, process.env.MY_TOKEN);
 }
 
 /**

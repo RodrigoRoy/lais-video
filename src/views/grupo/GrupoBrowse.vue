@@ -63,7 +63,7 @@
 
 <script>
 import GrupoInfo from '@/components/GrupoInfo.vue'
-import * as grupoService from '../../services/GrupoService' // servicio para llamadas al 
+import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API
 
 export default {
   name: 'GrupoBrowse',
@@ -86,48 +86,43 @@ export default {
     // breadcrumbs: [],
   }),
 
-  // Obtención de información desde API, antes de renderizar vista
-  beforeRouteEnter(to, from, next){
-    grupoService.getAllGroups().then(res => {
-      next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
-        vm.grupos = res.data.grupos;
-        // En caso de que no haya grupos
-        if (vm.grupos.length === 0){
-          vm.error = 'Grupo vacío'
-        }
-      });
-    })
-    // En caso de error (400 HTTP status code)
-    .catch(error => {
-      next(vm => {
-        vm.error = error.message;
-        vm.grupos = null;
-      })
-    });
-  },
-
-  // TODO Corregir sintaxis para enviar datos en petición al API (con Axios)
-  // beforeMount() {
-  //   console.log('this.from: ', this.from)
-  //   grupoService.getGroupsByCollection(this.from).then(res => {
-  //     console.log('res.data: ', res.data)
-  //     this.grupos = res.data.grupos;
-  //     if(this.grupos.length === 0)
-  //       this.error = 'Grupo vacío'
+  // Obtención de información desde API, antes de crear vista
+  // NOTA: Usar beforeMount() porque "this" no está disponible para determinar filtrado con this.props
+  // beforeRouteEnter(to, from, next){
+  //   grupoService.getAllGroups().then(res => {
+  //     next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
+  //       vm.grupos = res.data.grupos;
+  //       // En caso de que no haya grupos
+  //       if (vm.grupos.length === 0){
+  //         vm.error = 'Grupo vacío'
+  //       }
+  //     });
   //   })
+  //   // En caso de error (400 HTTP status code)
   //   .catch(error => {
-  //     this.error = error;
-  //     this.grupos = null;
+  //     next(vm => {
+  //       vm.error = error.message;
+  //       vm.grupos = null;
+  //     })
   //   });
   // },
 
-  methods: {
-    // @TODO Permite de manera programática ir a una ubicación definida en el archivo router.js
-    // Recibe como parámetro el nombre dado en router
-    // goTo: function(routerName){
-    //   this.$router.push({name: routerName});
-    // },
+  // Obtención de información desde API, antes de renderizar vista
+  beforeMount() {
+    // Obtener solamente los grupos pertenecientes a una colección o grupo determinado
+    // recordar que this.from (id) y this.type son props
+    grupoService.filter(this.from, this.type).then(res => {
+      this.grupos = res.data.grupos;
+      if(this.grupos.length === 0)
+        this.error = 'Grupo vacío'
+    })
+    .catch(error => { // En caso de error (400 HTTP status code)
+      this.error = error;
+      this.grupos = null;
+    });
+  },
 
+  methods: {
     /**
      * Abre un cuadro de dialogo y muestra la información del registro
      * @param Object - información que representa un grupo documental

@@ -1,5 +1,4 @@
 import Grupo from '../../model/grupo-model.mjs';
-// import moment from 'moment';
 // import * as auth from '../../services/auth-service';
 
 /**
@@ -157,14 +156,21 @@ export function show(req, res){
 }
 
 /**
- * Regresa un listado de todas los grupos que pertenecen a una colección específica
+ * Regresa un listado de los grupos contenidos en otro grupo o colección específica.
+ * La petición debe incluir querys URL:
+ * - 'from' - ID de origen (string)
+ * - 'type' - tipo de documento ('collection' o 'group')
+ * Ejemplo: GET grupo/filter?from=123456789&type=collection
  * @param {Object} req - Petición (request) recibida por http
  * @param {Object} res - Respuesta (response) a enviar por http
- * @returns JSON con un listado de los grupos con el mismo id de la colección solicitada
+ * @returns JSON con un listado de los grupos con el mismo id del grupo o colección solicitada
  */
-export function getByCollection(req, res){
-  // console.log('req.body:', req.body)
-  Grupo.find({'adicional.coleccion': req.body.coleccionId}, (error, grupos) => {
+export function filter(req, res){
+  if(!req.query.from || !req.query.type) // no proceder si faltan URL queries
+    return res.status(400).json({message: 'Faltan URL queries: from, type'});
+  // crear Query de Mongoose según los parámetros en URL
+  const myQuery = req.query.type === 'collection' ? {'adicional.coleccion': req.query.from} : {'adicional.grupo': req.query.from};
+  Grupo.find(myQuery, (error, grupos) => {
     if(error){
       return res.status(500).json({message: error});
     }

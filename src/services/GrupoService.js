@@ -50,11 +50,11 @@ export function updateGroup(grupo){
 }
 
 /**
- * Obtiene los grupos documentales de una colección particular
- * @param {string} coleccionId - Id de la colección documental
- * @returns objecto que enlista todos los grupos documentales
+ * Obtiene los grupos documentales contenidos en una colección o grupo particular
+ * @param {string} fromId - Id de la colección o grupo documental
+ * @param {string} type - Tipo de dato/documento: 'collection' 'group'
+ * @returns objecto que enlista los grupos documentales segun los parámetros
  */
- export function getGroupsByCollection(coleccionId){
-   // TODO Corregir sintaxis para enviar datos en petición al API (con Axios)
-  return http().get('/grupo/filter/coleccion', {data: {'coleccionId': coleccionId}});
+ export function filter(fromId, type){
+  return http().get('/grupo/filter', {params: {'from': fromId, 'type': type}});
 }
