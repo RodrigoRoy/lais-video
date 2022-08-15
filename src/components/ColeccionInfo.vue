@@ -69,7 +69,7 @@
                 <p v-if="coleccion.identificacion.nivelDescripcion">
                   <span class="font-weight-bold">Nivel de descripcion</span>
                   <!-- TODO @EmmanuelCruz descripcion -->
-                  <hint hint="Se refiere al nivel de descripción del proyecto"></hint>
+                  <hint hint="Colección. Se considera como una colección dado que es un conjunto de documentos que tienen características comunes en su producción."></hint>
                   <br>
                   {{ coleccion.identificacion.nivelDescripcion }}
                 </p>
@@ -95,7 +95,7 @@
                 <p v-if="coleccion.contexto.historiaArchivistica">
                   <span class="font-weight-bold">Historia Archivistica</span>
                   <!-- TODO @EmmanuelCruz descripcion -->
-                  <hint hint="Historia archivistica"></hint> 
+                  <hint hint="La historia y el desarrollo de la colección, indicando aquellos hechos que han contribuido a conformar su estructura y organización actual. También refiere si los materiales fueron utilizados con otros fines"></hint> 
                   <br>
                   {{ coleccion.contexto.historiaArchivistica }}
                 </p>
@@ -196,7 +196,7 @@
                 <p v-if="coleccion.controlDescripcion.reglasNormas">
                   <span class="font-weight-bold">Reglas o normas</span>
                   <!-- TODO @EmmanuelCruz descripcion -->
-                  <hint hint="Reglas o normas"></hint>
+                  <hint hint="Las normas que se utilizaron para la elaboración de la ficha."></hint>
                   <br>
                   {{ coleccion.controlDescripcion.reglasNormas }}
                 </p>
