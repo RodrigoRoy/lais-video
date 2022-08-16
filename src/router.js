@@ -50,6 +50,7 @@ const routes = new Router({
       path: '/video/nuevo',
       name: 'video-form',
       component: VideoForm,
+      props: route => ({ from: route.query.from, type: route.query.type}),
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();
@@ -61,7 +62,8 @@ const routes = new Router({
     },
     {
       path: '/video',
-      name: 'video-view-all',
+      name: 'video-browse',
+      props: route => ({ from: route.query.from, type: route.query.type}),
       component: VideoBrowse
     },
     {
@@ -69,6 +71,7 @@ const routes = new Router({
       path: '/video/:id/edit',
       name: 'video-edit',
       component: VideoForm,
+      props: route => ({ from: route.query.from, type: route.query.type}),
       beforeEnter: (to, from, next) => {
         if(auth.isLoggedIn()){
           next();

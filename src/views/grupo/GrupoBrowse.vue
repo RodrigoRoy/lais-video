@@ -21,7 +21,7 @@
             <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
             <v-row no-gutters align="start" justify="start">
                 <v-col cols="12" md="3" v-for="grupo in grupos" :key="grupo._id">
-                    <v-card class="ma-4 pa-4" outlined tile>
+                    <v-card class="ma-4 pa-4" outlined tile @click="goToGroupOrVideo(grupo)">
                         <v-img :src="`${publicPath}files/image/${grupo.adicional.imagen}`" height="150px"></v-img>
                         <v-card-title class="text-center justify-center">
                             <p v-snip="2">
@@ -66,11 +66,12 @@
 
 <script>
 import GrupoInfo from '@/components/GrupoInfo.vue'
-import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API
+import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API (grupos)
+import * as videoService from '../../services/VideoService' // servicio para llamadas al API (videos)
 
 export default {
   name: 'GrupoBrowse',
-  props: { from: String, type: String },
+  props: { from: String, type: String }, // from: id de origen/referencia, type: 'collection' | 'group'
   components: {
     GrupoInfo // Información dentro de v-dialog
   },
@@ -92,7 +93,7 @@ export default {
   }),
 
   // Obtención de información desde API, antes de crear vista
-  // NOTA: Usar beforeMount() porque "this" no está disponible para determinar filtrado con this.props
+  // NOTA: Usar beforeMount() porque "this" no está disponible para determinar filtrado con props
   // beforeRouteEnter(to, from, next){
   //   grupoService.getAllGroups().then(res => {
   //     next(vm => { // vm es necesario para asignaciones, "this" no existe en este contexto
@@ -125,6 +126,32 @@ export default {
       this.setAlert(error, 'error')
       this.grupos = null;
     });
+  },
+
+  // Observar cambios de propiedades en this
+  watch: {
+    /**
+     * Si el grupo actual está vacio (por cambio en query params o borrado de grupos en base de datos), mostrar mensaje correspondiente
+     * @param {Object[]} newGrupos - nuevo valor de la lista de grupos (this.grupos)
+     */
+    grupos(newGrupos){
+      if(newGrupos && newGrupos.length === 0){
+        this.setAlert('Grupo vacío', 'info', [{text: 'Crear grupo', href: `/grupo/nuevo?from=${this.from}&type=${this.type}`}, {text: 'Crear video', href: `/video/nuevo?from=${this.from}&type=${this.type}`}])
+      }
+    },
+    /**
+     * Si URL cambia (de query params) sin salir del componente actual (GrupoBrowse), asegurar que la lista de grupos corresponda.
+     * Esto es particularmente necesario cuando se usa el botón de regreso del navegador web al explorar entre grupos anidados
+     */
+    $route(){
+      grupoService.filter(this.from, this.type).then(res => {
+        this.myAlert.active = false; // importante desactivar alerta para no bloquear visibilidad (v-alert en template)
+        this.grupos = res.data.grupos
+      }).catch(error => {
+        this.setAlert(error, 'error')
+        this.grupos = null
+      });
+    }
   },
 
   methods: {
@@ -170,13 +197,35 @@ export default {
       this.$router.push({name: 'grupo-view', params: {id: grupo._id}});
     },
     /**
+     * Envia a la ruta URL de grupos o videos para la selección actual.
+     * Los grupos pueden contener otros grupos o hacer referencia a videos, se determina que la ruta URL
+     * sea para grupos si la vista para videos es vacia.
+     * @param {Object} groupOrigin - referencia al objeto que representa el grupo actual
+     */
+    async goToGroupOrVideo(groupOrigin){
+      try {
+        const videoResponse = await videoService.filter(groupOrigin._id) // lista de videos con referencia al grupo seleccionado
+        if(videoResponse.data.videos && videoResponse.data.videos.length !== 0){ // si la lista de videos es vacia
+          this.$router.push({name: 'video-browse', query: {from: groupOrigin._id, type: 'group'}}) // ir a vista de videos
+        }
+        else{ // de lo contrario, ir a vista de grupo (NOTA: router no re-renderizará el componente/vista porque no hay cambio en path, solo en query params)
+          const grupoResponse = await grupoService.filter(groupOrigin._id, this.type) // lista de (sub)grupos con referencia al grupo seleccionado
+          this.myAlert.active = false; // importante desactivar alerta para no bloquear visibilidad (v-alert en template)
+          this.grupos = grupoResponse.data.grupos // actualizar elementos
+          this.$router.push({name: 'grupo-browse', query: {from: groupOrigin._id, type: 'group'}}) // cambiar URL (re-renderizado se dispara en watch para this.$route)
+        }
+      } catch (error) {
+        this.setAlert(error, 'error')
+      }
+    },
+    /**
      * Elimina o remueve el registro del grupo actual
      * @param {Object} grupo - representa el grupo documental, debe contener el atributo "_id"
      */
     async remove(grupo){
       try {
-        const response = await grupoService.deleteGroup(grupo._id);
-        this.message = response.data.message;
+        const myResponse = await grupoService.deleteGroup(grupo._id);
+        this.message = myResponse.data.message;
         this.$router.go(); // recargar ruta actual
       } catch (error) {
         this.error = error;

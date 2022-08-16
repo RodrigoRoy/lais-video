@@ -233,6 +233,7 @@ Icon.Default.mergeOptions({
 
 export default {
   name: 'VideoForm',
+  props: { from: String, type: String }, // from: id de origen/referencia, type: 'collection' | 'group'
   components: {
     LMap,
     LTileLayer,
@@ -577,6 +578,9 @@ export default {
     // Agregar id de usuario de archivista si no está enlistado
     if(!this.video.adicional.user.includes( this.computedUserId ))
       this.video.adicional.user.push(this.computedUserId);
+    
+    // Agregar id de referencia y tipo de procedencia
+    this.video.adicional.grupo = this.from && this.type && this.type === 'group' ? this.from : undefined;
   },
 
   // Asignaciones cuando han terminado de procesarse opciones relacionadas con estados

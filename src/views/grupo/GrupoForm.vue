@@ -413,6 +413,7 @@ export default {
     if(!this.grupo.adicional.user.includes( this.computedUserId ))
       this.grupo.adicional.user.push(this.computedUserId);
     
+    // Agregar id de referencia y tipo de procedencia
     if(this.from){
       if(this.type && this.type === 'collection')
         this.grupo.adicional.coleccion = this.from

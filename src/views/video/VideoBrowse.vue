@@ -68,6 +68,7 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfma
 
 export default {
   name: 'VideoBrowse',
+  props: { from: String, type: String }, // from: id de origen/referencia, type: 'collection' | 'group'
   components: {
     VideoInfo // Información dentro de v-dialog
   },

@@ -84,7 +84,7 @@ export default {
     publicPath: process.env.BASE_URL,
     // El objeto colecciones (en plural) tiene la información mínima de todos los subconjuntos que contiene el conjunto actual
     colecciones: [],
-    // Auxiliar para copiar la información de un objeto de la lista "colecciones". Se emplea en conjunto con el método openDialog
+    // Auxiliar para copiar la información de un objeto de la lista "colecciones". Se emplea en conjunto con la función openDialog
     coleccion: null,
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false,
@@ -97,10 +97,10 @@ export default {
   }),
 
   // Obtención de información desde API, antes de renderizar vista
+  // NOTA: Usar beforeMount() porque "this" no está disponible para usar función setAlert()
   // beforeRouteEnter(to, from, next) {
   //   // En caso de editar un registro existente:
-  //   coleccionService
-  //     .getAllColections()
+  //   coleccionService.getAllColections()
   //     .then((res) => {
   //       next((vm) => {
   //         // vm es necesario para asignaciones, "this" no existe en este contexto
@@ -181,8 +181,8 @@ export default {
       this.$router.push({name: 'coleccion-view', params: {id: coleccion._id}});
     },
     /**
-     * Envia a la ruta URL de vista individual del registro de coleccion actual
-     * @param {Object} coleccionOrigin - representa el registro de coleccion, debe contener el atributo "_id"
+     * Envia a la ruta URL de grupos para la selección actual
+     * @param {Object} coleccionOrigin - referencia al objeto que representa la colección actual
      */
     goToGroup(colectionOrigin){
       this.$router.push({name: 'grupo-browse', query: {from: colectionOrigin._id, type: 'collection'}});
