@@ -48,3 +48,12 @@ export function deleteVideo(id){
 export function updateVideo(video){
   return http().put('/video', video);
 }
+
+/**
+ * Obtiene los videos contenidos en un grupo particular
+ * @param {string} fromId - Id del grupo documental
+ * @returns objecto que enlista los videos segun los parámetros
+ */
+ export function filter(fromId){
+  return http().get('/video/filter', {params: {'from': fromId}});
+}

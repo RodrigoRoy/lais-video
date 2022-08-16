@@ -92,3 +92,26 @@ export function show(req, res){
     return res.status(200).json({video: video, message: "Registro obtenido correctamente"});
   })
 }
+
+/**
+ * Regresa un listado de los videos contenidos en otro grupo específica.
+ * La petición debe incluir query URL:
+ * 'from' - ID de origen (string)
+ * Ejemplo: GET video/filter?from=123456789
+ * @param {Object} req - Petición (request) recibida por http
+ * @param {Object} res - Respuesta (response) a enviar por http
+ * @returns JSON con un listado de los videos con el mismo id del grupo solicitado
+ */
+ export function filter(req, res){
+  if(!req.query.from) // no proceder si faltan URL queries
+    return res.status(400).json({message: 'Falta URL query from: usar ?from=<groupId>'});
+  // crear Query de Mongoose según los parámetros en URL
+  const myQuery = {'adicional.grupo': req.query.from};
+  Video.find(myQuery, (error, videos) => {
+    if(error){
+      return res.status(500).json({message: error});
+    }
+    return res.status(200).json({videos: videos});
+  })
+  .sort({createdAt: -1});
+}

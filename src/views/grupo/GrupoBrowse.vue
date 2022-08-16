@@ -1,13 +1,16 @@
 <!-- Vista para navegar y ver los grupos documentales (conjuntos de registros en video) -->
 <template>
     <div>
-        <!-- En caso de error en petición al API -->
-        <v-alert prominent type="error" v-if="error">
-            <v-row align="center">
-                <v-col class="grow">
-                    {{ error }}
-                </v-col>
-            </v-row>
+        <!-- En caso de error/advertencia/información -->
+        <v-alert prominent :type="myAlert.type" v-if="myAlert.active">
+          <v-row align="center">
+            <v-col class="grow">
+              {{ myAlert.message }}
+            </v-col>
+            <v-col class="shrink" v-for="(button, index) in myAlert.buttons" :key="index">
+              <v-btn :href="button.href">{{ button.text }}</v-btn>
+            </v-col>
+          </v-row>
         </v-alert>
 
         <v-container v-else>
@@ -80,8 +83,10 @@ export default {
     grupo: null,
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false,
-    // Texto de error, en caso de haber
-    error: null,
+    // Texto y tipo de mensaje de v-alert
+    myAlert: {
+      active: false,
+    },
     // Representación jerárquica de los grupos a los que pertenecen las unidades documentales
     // breadcrumbs: [],
   }),
@@ -114,10 +119,10 @@ export default {
     grupoService.filter(this.from, this.type).then(res => {
       this.grupos = res.data.grupos;
       if(this.grupos.length === 0)
-        this.error = 'Grupo vacío'
+        this.setAlert('Grupo vacío', 'info', [{text: 'Crear grupo', href: `/grupo/nuevo?from=${this.from}&type=${this.type}`}, {text: 'Crear video', href: `/video/nuevo?from=${this.from}&type=${this.type}`}])
     })
     .catch(error => { // En caso de error (400 HTTP status code)
-      this.error = error;
+      this.setAlert(error, 'error')
       this.grupos = null;
     });
   },
@@ -137,22 +142,36 @@ export default {
       this.dialog = false;
     },
     /**
+     * Configura las propiedades a usar en v-alert
+     * @param {string} message - Texto a mostrar
+     * @param {string} type - Tipo de alerta: success, error, warning, info
+     * @param {Object[]} buttons - Lista de propiedades para crear botones que acompañan la alerta. ejemplo: [{text: 'My text', href: '/some/path'}]
+     */
+    setAlert(message, type = 'info', buttons = []){
+      this.myAlert = {
+        active: true,
+        message: message,
+        type: type,
+        buttons: buttons,
+      };
+    },
+    /**
      * Envia a la ruta URL de edición del registro del grupo actual
-     * @param Object - representa el grupo documental, debe contener el atributo "_id"
+     * @param {Object} grupo - representa el grupo documental, debe contener el atributo "_id"
      */
     goToEdit(grupo){
       this.$router.push({name: 'grupo-edit', params: {id: grupo._id}});
     },
     /**
      * Envia a la ruta URL de vista individual del registro del grupo actual
-     * @param Object - representa el grupo documental, debe contener el atributo "_id"
+     * @param {Object} grupo - representa el grupo documental, debe contener el atributo "_id"
      */
     goToURL(grupo){
       this.$router.push({name: 'grupo-view', params: {id: grupo._id}});
     },
     /**
      * Elimina o remueve el registro del grupo actual
-     * @param Object - representa el grupo documental, debe contener el atributo "_id"
+     * @param {Object} grupo - representa el grupo documental, debe contener el atributo "_id"
      */
     async remove(grupo){
       try {

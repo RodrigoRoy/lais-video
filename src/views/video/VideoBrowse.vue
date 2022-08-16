@@ -7,11 +7,14 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
     <h2 class="text-h3 text-center">Unidades simples</h2>
     <!-- <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs> -->
 
-    <!-- En caso de error en petición al API -->
-    <v-alert prominent dismissible type="error" v-if="error">
+    <!-- En caso de error/advertencia/información -->
+    <v-alert prominent :type="myAlert.type" v-if="myAlert.active">
       <v-row align="center">
         <v-col class="grow">
-          {{ error }}
+          {{ myAlert.message }}
+        </v-col>
+        <v-col class="shrink" v-for="(button, index) in myAlert.buttons" :key="index">
+          <v-btn :href="button.href">{{ button.text }}</v-btn>
         </v-col>
       </v-row>
     </v-alert>
@@ -77,34 +80,50 @@ export default {
     video: null,
     // Auxiliar que representa si la ventana de dialogo con la información del video se muestra (true) o no (false)
     dialog: false,
-    // Texto de error, en caso de haber
-    error: null,
+    // Texto y tipo de mensaje de v-alert
+    myAlert: {
+      active: false,
+    },
   }),
   
   // Obtención de información desde API, antes de renderizar vista
-  beforeRouteEnter(to, from, next){
-    videoService.getAllVideos().then(res => {
-      next(vm => {
-        vm.videos = res.data.videos;
-        // En caso de que no haya grupos
-        if (vm.videos.length === 0){
-          vm.error = 'Grupo vacío'
-        }
-      });
+  // beforeRouteEnter(to, from, next){
+  //   videoService.getAllVideos().then(res => {
+  //     next(vm => {
+  //       vm.videos = res.data.videos;
+  //       // En caso de que no haya grupos
+  //       if (vm.videos.length === 0){
+  //         vm.error = 'Grupo vacío'
+  //       }
+  //     });
+  //   })
+  //   // En caso de error (400 HTTP status code)
+  //   .catch(error => {
+  //     next(vm => {
+  //       vm.error = error.message;
+  //       vm.videos = null;
+  //     })
+  //   });
+  // },
+
+  // Obtención de información desde API, antes de renderizar vista
+  beforeMount(){
+    videoService.filter(this.from, this.type).then(res => {
+      this.videos = res.data.videos;
+      // En caso de que no haya videos
+      if(this.videos.length === 0)
+        this.setAlert('Sin registros de video', 'info', [{text: 'Crear video', href: `/video/nuevo?from=${this.from}&type=${this.type}`}])
     })
-    // En caso de error (400 HTTP status code)
     .catch(error => {
-      next(vm => {
-        vm.error = error.message;
-        vm.videos = null;
-      })
-    });
+      this.setAlert(error, 'error')
+      this.videos = null
+    })
   },
 
   methods: {
     /**
      * Abre un cuadro de dialogo y muestra la información del registro
-     * @param Object - información que representa un registro de video
+     * @param {Object} videoData - información que representa un registro de video
      */
     openDialog(videoData) {
       this.video = videoData;
@@ -116,22 +135,36 @@ export default {
       this.dialog = false;
     },
     /**
+     * Configura las propiedades a usar en v-alert
+     * @param {string} message - Texto a mostrar
+     * @param {string} type - Tipo de alerta: success, error, warning, info
+     * @param {Object[]} buttons - Lista de propiedades para crear botones que acompañan la alerta. ejemplo: [{text: 'My text', href: '/some/path'}]
+     */
+    setAlert(message, type = 'info', buttons = []){
+      this.myAlert = {
+        active: true,
+        message: message,
+        type: type,
+        buttons: buttons,
+      };
+    },
+    /**
      * Envia a la ruta URL de edición del registro de video actual
-     * @param Object - representa el registro de video, debe contener el atributo "_id"
+     * @param {Object} video - representa el registro de video, debe contener el atributo "_id"
      */
     goToEdit(video){
       this.$router.push({name: 'video-edit', params: {id: video._id}});
     },
     /**
      * Envia a la ruta URL de vista individual del registro de video actual
-     * @param Object - representa el registro de video, debe contener el atributo "_id"
+     * @param {Object} video - representa el registro de video, debe contener el atributo "_id"
      */
     goToURL(video){
       this.$router.push({name: 'video-view', params: {id: video._id}});
     },
     /**
      * Elimina o remueve el registro de video actual
-     * @param Object - representa el registro de video, debe contener el atributo "_id"
+     * @param {Object} video - representa el registro de video, debe contener el atributo "_id"
      */
     async remove(video){
       try {
