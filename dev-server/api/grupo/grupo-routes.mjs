@@ -9,5 +9,6 @@ router.get('/grupo/:id', controller.show);
 router.post('/grupo', auth.requireLogin, controller.create);
 router.put('/grupo', auth.requireLogin, controller.update);
 router.delete('/grupo/:id', auth.requireLogin, controller.remove);
+router.get('/grupo/breadcrumbs/:id', controller.getBreadcrumbs) // TODO @EmmanuelCruz incorporar autenticacion
 
 export default router;

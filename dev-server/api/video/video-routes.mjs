@@ -9,5 +9,6 @@ router.get('/video/:id', controller.show);
 router.post('/video', auth.requireLogin, controller.create);
 router.put('/video', auth.requireLogin, controller.update);
 router.delete('/video/:id', auth.requireLogin, controller.remove);
+router.get('/video/breadcrumbs/:id', controller.getBreadcrumbs) // TODO @EmmanuelCruz incorporar autenticacion
 
 export default router;

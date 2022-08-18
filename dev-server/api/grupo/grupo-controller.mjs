@@ -1,4 +1,7 @@
 import Grupo from '../../model/grupo-model.mjs';
+import Coleccion from '../../model/coleccion-model.mjs';
+import Video from '../../model/video-model.mjs';
+
 // import * as auth from '../../services/auth-service';
 
 /**
@@ -177,4 +180,91 @@ export function filter(req, res){
     return res.status(200).json({grupos: grupos});
   })
   .sort({createdAt: -1});
+}
+
+/**
+ * Obtiene el breadcrumbs de un grupo.
+ * @param {Object} req - Petición (request) recibida por http que incluye el id del video a eliminar
+ * @param {Object} res - Respuesta (response) a enviar por http
+ * @returns JSON con un mensaje de error o éxito de eliminación.
+ */
+ export async function getBreadcrumbs(req, res){
+
+  // Arreglo de respuesta
+  let breadcrumbsArray = []
+
+  // Se obtiene el video
+  let grupoObtenido = null
+  await Grupo.findOne({_id: req.params.id}, (error, grupo) => {
+    if(error){
+      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
+    }
+    if(!grupo){
+      return res.status(400).json({message: 'Error de la base de datos'});
+    }
+    grupoObtenido = grupo
+  })
+
+  // Se obtienen los videos de la colección para saber si es un grupo de grupos o un grupo que contiene videos
+  let videosDeGrupo = []
+  const myQuery = {'adicional.grupo': req.params.id};
+  await Video.find(myQuery, (error, videos) => {
+    if(error){
+      return res.status(500).json({message: error});
+    }
+    videosDeGrupo = videos
+  })
+  .sort({createdAt: -1});
+
+  breadcrumbsArray.push({
+    text: grupoObtenido.identificacion.codigoReferencia,
+    disabled: true,
+    href: `/${videosDeGrupo.length > 0 ? 'video' : 'grupo' }?from=${grupoObtenido._id}&type=group`
+  })
+
+  // Se obtiene el grupo padre o coleccion del grupo
+  let grupoColeccionObtenido = {...grupoObtenido}
+
+  while(grupoColeccionObtenido._doc.adicional.grupo){
+    await Grupo.findOne({_id: grupoColeccionObtenido._doc.adicional.grupo.toString()}, (error, grupo) => {
+      if(error){
+        return res.status(500).json({message: error});
+      }
+      if(!grupo){
+        return res.status(400).json({message: `No hay registro del grupo con id ${req.params.id}`});
+      }
+      grupoColeccionObtenido = grupo
+      breadcrumbsArray.unshift({
+        text: grupo.identificacion.codigoReferencia,
+        disabled: false,
+        href: `/grupo?from=${grupoColeccionObtenido._id}&type=group`
+      })
+    })
+  }
+
+  // Se obtiene la coleccion
+
+  await Coleccion.findOne({_id: grupoColeccionObtenido._doc.adicional.coleccion.toString()}, (error, coleccion) => {
+    if(error){
+      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
+    }
+    if(!coleccion){
+      return res.status(400).json({message: 'Error de la base de datos'});
+    }
+
+    breadcrumbsArray.unshift({
+      text: coleccion.identificacion.codigoReferencia,
+      disabled: false,
+      href: `/grupo?from=${coleccion._id}&type=collection`
+    })
+  })
+
+  breadcrumbsArray.unshift({
+    text: 'Inicio',
+    disabled: false,
+    href: `/coleccion`
+  })
+  
+
+  return res.status(200).json({breadcrumbs: breadcrumbsArray})
 }
