@@ -203,7 +203,7 @@ export function filter(req, res){
       return res.status(400).json({message: 'Error de la base de datos'});
     }
     grupoObtenido = grupo
-  })
+  }).lean()
 
   // Se obtienen los videos de la colección para saber si es un grupo de grupos o un grupo que contiene videos
   let videosDeGrupo = []
@@ -225,8 +225,8 @@ export function filter(req, res){
   // Se obtiene el grupo padre o coleccion del grupo
   let grupoColeccionObtenido = {...grupoObtenido}
 
-  while(grupoColeccionObtenido._doc.adicional.grupo){
-    await Grupo.findOne({_id: grupoColeccionObtenido._doc.adicional.grupo.toString()}, (error, grupo) => {
+  while(grupoColeccionObtenido.adicional.grupo){
+    await Grupo.findOne({_id: grupoColeccionObtenido.adicional.grupo.toString()}, (error, grupo) => {
       if(error){
         return res.status(500).json({message: error});
       }
@@ -234,17 +234,17 @@ export function filter(req, res){
         return res.status(400).json({message: `No hay registro del grupo con id ${req.params.id}`});
       }
       grupoColeccionObtenido = grupo
-      breadcrumbsArray.unshift({
+      breadcrumbsArray.push({
         text: grupo.identificacion.codigoReferencia,
         disabled: false,
         href: `/grupo?from=${grupoColeccionObtenido._id}&type=group`
       })
-    })
+    }).lean()
   }
 
   // Se obtiene la coleccion
 
-  await Coleccion.findOne({_id: grupoColeccionObtenido._doc.adicional.coleccion.toString()}, (error, coleccion) => {
+  await Coleccion.findOne({_id: grupoColeccionObtenido.adicional.coleccion.toString()}, (error, coleccion) => {
     if(error){
       return res.status(500).json({message: 'Error de petición. URL incorrecta'});
     }
@@ -252,19 +252,19 @@ export function filter(req, res){
       return res.status(400).json({message: 'Error de la base de datos'});
     }
 
-    breadcrumbsArray.unshift({
+    breadcrumbsArray.push({
       text: coleccion.identificacion.codigoReferencia,
       disabled: false,
       href: `/grupo?from=${coleccion._id}&type=collection`
     })
-  })
+  }).lean()
 
-  breadcrumbsArray.unshift({
+  breadcrumbsArray.push({
     text: 'Inicio',
     disabled: false,
     href: `/coleccion`
   })
   
 
-  return res.status(200).json({breadcrumbs: breadcrumbsArray})
+  return res.status(200).json({breadcrumbs: breadcrumbsArray.reverse()})
 }
