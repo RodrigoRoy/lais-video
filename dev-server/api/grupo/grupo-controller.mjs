@@ -268,3 +268,45 @@ export function filter(req, res){
 
   return res.status(200).json({breadcrumbs: breadcrumbsArray.reverse()})
 }
+
+/**
+ * Obtiene la profundidad de un grupo.
+ * @param {Object} req - Petición (request) recibida por http que incluye el id del grupo
+ * @param {Object} res - Respuesta (response) a enviar por http
+ * @returns JSON con un mensaje de error o éxito de cákculo de profundidad.
+ */
+ export async function getDepth(req, res){
+
+  // Arreglo de respuesta
+  let profundidad = 1
+
+  // Se obtiene el video
+  let grupoObtenido = null
+  await Grupo.findOne({_id: req.params.id}, (error, grupo) => {
+    if(error){
+      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
+    }
+    if(!grupo){
+      return res.status(400).json({message: 'Error de la base de datos'});
+    }
+    grupoObtenido = grupo
+  }).lean()
+
+  // Se obtiene el grupo padre o coleccion del grupo
+  let grupoColeccionObtenido = {...grupoObtenido}
+
+  while(grupoColeccionObtenido.adicional.grupo){
+    await Grupo.findOne({_id: grupoColeccionObtenido.adicional.grupo.toString()}, (error, grupo) => {
+      if(error){
+        return res.status(500).json({message: error});
+      }
+      if(!grupo){
+        return res.status(400).json({message: `No hay registro del grupo con id ${req.params.id}`});
+      }
+      grupoColeccionObtenido = grupo
+      profundidad++
+    }).lean()
+  }
+
+  return res.status(200).json({depth: profundidad})
+}

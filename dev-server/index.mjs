@@ -4,8 +4,12 @@
 
 import 'dotenv/config' // variables de ambiente @see .env
 import express from 'express'
+import helmet from 'helmet'
 const app = express()
 const port = process.env.MY_PORT // puerto a usar
+
+// Configuracion de helmet
+app.use(helmet())
 
 import {registerRoutes} from './routes.mjs'
 import {setEnvironment} from './config/env.mjs'
