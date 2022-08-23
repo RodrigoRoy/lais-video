@@ -15,8 +15,9 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
       </v-row>
     </v-alert>
 
+    <!-- Usar v-if/v-else evita advertencias/errores en consola al renderizar -->
     <v-container v-else>
-      <!-- Usar v-if/v-else evita advertencias/errores en consola al renderizar -->
+      <v-breadcrumbs :items="breadcrumbs" divider=">" class="justify-center"></v-breadcrumbs>
       <v-card v-if="grupo">
         <v-card-text>
           <!-- Componente para el render de la información del grupo -->
@@ -43,15 +44,37 @@ export default {
 
   data: () => ({
     // El objeto grupo representa una unidad documental, es decir, un registro audiovisual organizado por áreas
-    grupo: {},
+    grupo: {
+      identificacion: {},
+      contexto: {},
+      contenidoEstructura: {},
+      accesoUso: {},
+      notas: {},
+      controlDescripcion: {},
+      adicional: {},
+    },
+    // Representación jerárquica de los grupos a los que pertenecen el grupo documental
+    breadcrumbs: [],
+    // Mensaje de error, en caso de haber
+    error: null,
   }),
 
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     grupoService.getGroupById(to.params.id).then(res => { // :id en URL es to.params.id
       next(vm => { // vm es necesario para asignaciones, this no existe en este contexto
-        let grupo = res.data.grupo;
-        vm.grupo = grupo;
+        vm.grupo = res.data.grupo;
+
+        // Obtener listado breadcrumbs
+        grupoService.breadcrumbs(to.params.id).then(response => {
+          vm.breadcrumbs = response.data.breadcrumbs
+        })
+        .catch(error => {
+          next(vm => {
+            vm.error = error.message;
+            vm.breadcrumbs = null;
+          })
+        })
       });
     })
     // En caso de error (400 HTTP status code)

@@ -57,3 +57,13 @@ export function updateVideo(video){
  export function filter(fromId){
   return http().get('/video/filter', {params: {'from': fromId}});
 }
+
+/**
+ * Obtiene la lista de navegación del video (breadcrumbs)
+ * @param {string} videoId - Id del registro de video
+ * @returns objecto con propiedad breadcrumbs que representa la lista de navegación como objetos
+ * usando la sintaxis definida por Vuetify (https://vuetifyjs.com/en/components/breadcrumbs/)
+ */
+ export function breadcrumbs(videoId){
+  return http().get(`/video/breadcrumbs/${videoId}`);
+}

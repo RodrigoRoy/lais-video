@@ -16,7 +16,7 @@
         <v-container v-else>
             <!-- Encabezado con título del conjunto y el camino dentro del grupo (breadcrumbs) en caso de tener -->
             <h2 class="text-h3 text-center">Grupos</h2>
-            <!-- <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs> -->
+            <v-breadcrumbs :items="breadcrumbs" divider=">" class="justify-center"></v-breadcrumbs>
 
             <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
             <v-row no-gutters align="start" justify="start">
@@ -89,7 +89,7 @@ export default {
       active: false,
     },
     // Representación jerárquica de los grupos a los que pertenecen las unidades documentales
-    // breadcrumbs: [],
+    breadcrumbs: [],
   }),
 
   // Obtención de información desde API, antes de crear vista
@@ -119,8 +119,18 @@ export default {
     // recordar que this.from (id) y this.type son props
     grupoService.filter(this.from, this.type).then(res => {
       this.grupos = res.data.grupos;
+      // En caso de que no haya grupos
       if(this.grupos.length === 0)
         this.setAlert('Grupo vacío', 'info', [{text: 'Crear grupo', href: `/grupo/nuevo?from=${this.from}&type=${this.type}`}, {text: 'Crear video', href: `/video/nuevo?from=${this.from}&type=${this.type}`}])
+
+      // obtener listado breadcrumbs
+      grupoService.breadcrumbs(this.from).then(response => {
+        this.breadcrumbs = response.data.breadcrumbs
+      })
+      .catch(error => {
+        this.setAlert(error, 'error')
+        this.breadcrumbs = null
+      })
     })
     .catch(error => { // En caso de error (400 HTTP status code)
       this.setAlert(error, 'error')

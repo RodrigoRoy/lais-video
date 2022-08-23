@@ -5,7 +5,7 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
   <v-container>
     <!-- Encabezado con título del conjunto y el camino dentro de la colección (breadcrumbs) -->
     <h2 class="text-h3 text-center">Unidades simples</h2>
-    <!-- <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs> -->
+    <v-breadcrumbs :items="breadcrumbs" divider=">" class="justify-center"></v-breadcrumbs>
 
     <!-- En caso de error/advertencia/información -->
     <v-alert prominent :type="myAlert.type" v-if="myAlert.active">
@@ -62,7 +62,8 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
 
 <script>
 import VideoInfo from '@/components/VideoInfo.vue'
-import * as videoService from '../../services/VideoService' // servicio para llamadas al API
+import * as videoService from '../../services/VideoService' // servicio para llamadas al API (video)
+import * as grupoService from '../../services/GrupoService' // servicio para llamadas al API (grupo)
 import { PdfMakeWrapper, Table, Txt, Img } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 
@@ -85,6 +86,8 @@ export default {
     myAlert: {
       active: false,
     },
+    // Representación jerárquica de los grupos a los que pertenecen las unidades documentales
+    breadcrumbs: [],
   }),
   
   // Obtención de información desde API, antes de renderizar vista
@@ -114,6 +117,15 @@ export default {
       // En caso de que no haya videos
       if(this.videos.length === 0)
         this.setAlert('Sin registros de video', 'info', [{text: 'Crear video', href: `/video/nuevo?from=${this.from}&type=${this.type}`}])
+      
+      // obtener listado breadcrumbs
+      grupoService.breadcrumbs(this.from).then(response => {
+        this.breadcrumbs = response.data.breadcrumbs
+      })
+      .catch(error => {
+        this.setAlert(error, 'error')
+        this.breadcrumbs = null
+      })
     })
     .catch(error => {
       this.setAlert(error, 'error')

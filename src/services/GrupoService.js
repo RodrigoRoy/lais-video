@@ -58,3 +58,13 @@ export function updateGroup(grupo){
  export function filter(fromId, type){
   return http().get('/grupo/filter', {params: {'from': fromId, 'type': type}});
 }
+
+/**
+ * Obtiene la lista de navegación del grupo (breadcrumbs)
+ * @param {string} grupoId - Id del grupo documental
+ * @returns objecto con propiedad breadcrumbs que representa la lista de navegación como objetos
+ * usando la sintaxis definida por Vuetify (https://vuetifyjs.com/en/components/breadcrumbs/)
+ */
+ export function breadcrumbs(grupoId){
+  return http().get(`/grupo/breadcrumbs/${grupoId}`);
+}

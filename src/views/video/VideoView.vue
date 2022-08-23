@@ -15,15 +15,16 @@ Se reutiliza la misma vista para cualquier conjunto con unidades documentales --
       </v-row>
     </v-alert>
 
-    <v-container v-else>
     <!-- Usar v-if/v-else evita advertencias/errores en consola al renderizar -->
-    <v-card v-if="video">
-      <v-card-text>
-        <!-- Componente para el render de la información del video -->
-        <video-info :video="video"></video-info>
-      </v-card-text>
-    </v-card>
-  </v-container>
+    <v-container v-else>
+      <v-breadcrumbs :items="breadcrumbs" divider=">" class="justify-center"></v-breadcrumbs>
+      <v-card v-if="video">
+        <v-card-text>
+          <!-- Componente para el render de la información del video -->
+          <video-info :video="video"></video-info>
+        </v-card-text>
+      </v-card>
+    </v-container>
   </div>
 </template>
 
@@ -43,15 +44,37 @@ export default {
 
   data: () => ({
     // El objeto video representa una unidad documental, es decir, un registro audiovisual organizado por áreas
-    video: {},
+    video: {
+      identificacion: {},
+      contenidoEstructura: {},
+      accesoUso: {},
+      documentacionAsociada: {},
+      notas: {},
+      controlDescripcion: {},
+      adicional: {},
+    },
+    // Representación jerárquica de los grupos a los que pertenecen el registro en video
+    breadcrumbs: [],
+    // Mensaje de error, en caso de haber
+    error: null,
   }),
 
   // Obtención de información desde API, antes de renderizar vista
   beforeRouteEnter(to, from, next){
     videoService.getVideoById(to.params.id).then(res => { // :id en URL es to.params.id
       next(vm => { // vm es necesario para asignaciones, this no existe en este contexto
-        let video = res.data.video;
-        vm.video = video;
+        vm.video = res.data.video;
+
+        // Obtener listado breadcrumbs
+        videoService.breadcrumbs(to.params.id).then(response => {
+          vm.breadcrumbs = response.data.breadcrumbs
+        })
+        .catch(error => {
+          next(vm => {
+            vm.error = error.message;
+            vm.breadcrumbs = null;
+          })
+        })
       });
     })
     // En caso de error (400 HTTP status code)
