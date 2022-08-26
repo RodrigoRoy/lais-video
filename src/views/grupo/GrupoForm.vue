@@ -81,6 +81,8 @@
 
               <v-text-field v-model="grupo.identificacion.proyectoInvestigacion" label="Proyecto de investigación" hint="Proyecto de investigación para el cual fueron realizados los registros a documentar"></v-text-field>
 
+              <v-text-field v-model="grupo.identificacion.titulo" label="Título" hint="Título de la unidad de descripción"></v-text-field>
+
               <!-- Nota: País o países podrían ser autogenerados a partir de la información de las unidades documentales contenida -->
               <!-- <v-autocomplete v-model="grupo.identificacion.pais" :items="paises" item-text="nombre" label="País" hint="País o países de producción del registro en video"></v-autocomplete> -->
 
@@ -91,6 +93,8 @@
                 </template>
                 <v-date-picker v-model="grupo.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months></v-date-picker>
               </v-menu>
+
+              <v-select v-model="grupo.identificacion.nivelDescripcion" :items="['Grupo', 'Subgrupo', 'Serie', 'Subserie']" label="Nivel de descripción"></v-select>
 
               <v-text-field v-model="grupo.identificacion.entidadProductora" label="Entidad productora" hint="Nombre de la entidad o entidades que produjeron los registros audiovisuales"></v-text-field>
               

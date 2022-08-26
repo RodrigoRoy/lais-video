@@ -5,7 +5,7 @@
   <header>
     <v-app-bar app absolute dark scroll-target="#app-container" color="#5c6bc088" :hide-on-scroll="true"> <!-- color="primary" -->
       <!-- Iconos del lado izquierdo -->
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
       <a href="https://www.institutomora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/moraEscalado.png')" height="40"/></a>
       <a href="http://lais.mora.edu.mx/" target="_blank"><img class="mr-3" :src="require('../assets/lais_logo.png')" height="40"/></a>
       <!-- <v-toolbar-title class="headline">
@@ -33,7 +33,7 @@
       </v-btn>
 
       <!-- Menú situado a la derecha para registro e inicio de sesión -->
-      <v-menu bottom left >
+      <v-menu bottom left open-on-hover>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon color="yellow" v-bind="attrs" v-on="on" >
             <v-icon>mdi-dots-vertical</v-icon>
@@ -42,36 +42,92 @@
 
         <!-- Contenido del menu para registro e inicio de sesión -->
         <v-list>
-          <v-list-item v-if="!$store.state.isLoggedIn">
-            <v-list-item-title>
-              <router-link to="/registrar" class="nav-link" exact>Registrar</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item v-if="!$store.state.isLoggedIn">
-            <v-list-item-title>
-              <router-link to="/login" class="nav-link" exact>Iniciar sesión</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'coleccion-browse'">
-            <v-list-item-title>
-              <router-link :to="{path: '/coleccion/nuevo'}" class="nav-link">Nueva coleccion</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'grupo-browse'">
-            <v-list-item-title>
-              <router-link :to="{path: '/grupo/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Nuevo grupo</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'video-browse'">
-            <v-list-item-title>
-              <router-link :to="{path: '/video/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Nuevo registro</router-link>
-            </v-list-item-title>
-          </v-list-item>
+          <!-- <v-subheader>Menú principal</v-subheader> -->
           <v-list-item v-if="$store.state.isLoggedIn">
-            <v-list-item-title>
-              <a v-on:click.prevent="logout()" class="nav-link" href="#">Cerrar sesión</a>
-            </v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{this.$store.state.fullname ? this.$store.state.fullname : ''}}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip v-if="$store.state.admin" outlined x-small color="green" class="mr-2 text-caption"> Admin </v-chip>
+                <v-chip v-if="!$store.state.active" outlined x-small color="red" class="mr-2 text-caption"> Bloqueado <v-icon>mdi-lock</v-icon></v-chip>
+                <v-icon dense :disabled="!$store.state.operation.create" color="green">mdi-plus-circle</v-icon>
+                <v-icon dense :disabled="!$store.state.operation.update" color="green">mdi-pencil-circle</v-icon>
+                <v-icon dense :disabled="!$store.state.operation.delete" color="green">mdi-delete-circle</v-icon>
+              </v-list-item-subtitle>
+            </v-list-item-content>
           </v-list-item>
+
+          <!-- <v-divider></v-divider> -->
+
+          <v-list-item-group>            
+            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'coleccion-browse'">
+              <v-list-item-icon>
+                <v-icon>mdi-plus</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <router-link :to="{path: '/coleccion/nuevo'}" class="nav-link">Crear colección</router-link>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'grupo-browse'">
+              <v-list-item-icon>
+                <v-icon>mdi-plus</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <router-link :to="{path: '/grupo/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Crear grupo</router-link>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'video-browse'">
+              <v-list-item-icon>
+                <v-icon>mdi-plus</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <router-link :to="{path: '/video/nuevo', query: {from: $route.query.from, type: $route.query.type}}" class="nav-link">Crear registro</router-link>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider v-if="$store.state.isLoggedIn"></v-divider>
+
+            <v-list-item v-if="!$store.state.isLoggedIn">
+              <v-list-item-icon>
+                <v-icon>mdi-account-plus</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <router-link to="/registrar" class="nav-link" exact>Registrar</router-link>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item v-if="!$store.state.isLoggedIn">
+              <v-list-item-icon>
+                <v-icon>mdi-login</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <router-link to="/login" class="nav-link" exact>Iniciar sesión</router-link>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item v-if="$store.state.isLoggedIn">
+              <v-list-item-icon>
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <a v-on:click.prevent="logout()" class="nav-link" href="#">Cerrar sesión</a>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
         </v-list>
       </v-menu>
 

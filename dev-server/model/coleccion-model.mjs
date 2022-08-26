@@ -41,7 +41,6 @@ const coleccionSchema = new mongoose.Schema({
     imagen: {type: String, trim: true},
     presentacion: {type: String, trim: true},
     isPublic: {type: Boolean, default: true},
-    // coleccion: {type: ObjectId, ref: 'coleccionVideo'},
     user: [{type: ObjectId, ref: 'user'}]
   }
 },{

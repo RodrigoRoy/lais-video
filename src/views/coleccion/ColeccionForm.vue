@@ -94,7 +94,7 @@
                 <v-date-picker v-model="coleccion.identificacion.fecha" @input="menuCalendar1 = false" show-adjacent-months></v-date-picker>
               </v-menu>
 
-              <v-select v-model="coleccion.identificacion.nivelDescripcion" :items="['Colección', 'Grupo', 'Subgrupo', 'Subsubgrupo']" label="Nivel de descripción"></v-select>
+              <v-select v-model="coleccion.identificacion.nivelDescripcion" :items="['Colección', 'Grupo', 'Subgrupo', 'Serie', 'Subserie']" label="Nivel de descripción"></v-select>
 
               <!-- <v-text-field v-model="coleccion.identificacion.investigacion" label="Investigación" hint="Personas responsables de la investigación para la cual se realizaron los registros a documentar"></v-text-field> -->
 

@@ -5,8 +5,10 @@ const grupoSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: {type: String, required: true, trim: true, index: {unique: true}},
     proyectoInvestigacion: {type: String, trim: true},
+    titulo: {type: String, trim: true},
     // pais: {type: String, trim: true}, // puede ser autogenerado
     fecha: {type: Date},
+    nivelDescripcion: {type: String, enum: ['Colección', 'Grupo', 'Subgrupo', 'Serie', 'Subserie'], default: 'Grupo'},
     entidadProductora: {type: String, trim: true},
     investigacion: {type: String, trim: true},
     coordinacionProyecto: {type: String, trim: true},
