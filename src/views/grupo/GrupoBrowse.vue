@@ -127,9 +127,10 @@ export default {
       grupoService.breadcrumbs(this.from).then(response => {
         this.breadcrumbs = response.data.breadcrumbs
       })
-      .catch(error => {
-        this.setAlert(error, 'error')
-        this.breadcrumbs = null
+      .catch(() => {
+      // .catch(error => {
+        // this.setAlert(error, 'error')
+        this.breadcrumbs = []
       })
     })
     .catch(error => { // En caso de error (400 HTTP status code)
@@ -157,6 +158,14 @@ export default {
       grupoService.filter(this.from, this.type).then(res => {
         this.myAlert.active = false; // importante desactivar alerta para no bloquear visibilidad (v-alert en template)
         this.grupos = res.data.grupos
+        grupoService.breadcrumbs(this.from).then(response => { // actualizar breadcrumbs
+          this.breadcrumbs = response.data.breadcrumbs
+        })
+        .catch(() => {
+        // .catch(error => {
+          // this.setAlert(error, 'error')
+          this.breadcrumbs = []
+        })
       }).catch(error => {
         this.setAlert(error, 'error')
         this.grupos = null

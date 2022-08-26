@@ -122,10 +122,10 @@ export default {
       grupoService.breadcrumbs(this.from).then(response => {
         this.breadcrumbs = response.data.breadcrumbs
       })
-      .catch(error => {
-        this.setAlert(error, 'error')
-        this.breadcrumbs = null
-      })
+      // .catch(error => {
+      //   this.setAlert(error, 'error')
+      //   this.breadcrumbs = null
+      // })
     })
     .catch(error => {
       this.setAlert(error, 'error')
