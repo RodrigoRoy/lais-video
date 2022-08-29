@@ -195,12 +195,35 @@ export function filter(req, res){
 
   // Se obtiene el video
   let grupoObtenido = null
-  await Grupo.findOne({_id: req.params.id}, (error, grupo) => {
+  await Grupo.findOne({_id: req.params.id}, async (error, grupo) => {
     if(error){
       return res.status(500).json({message: 'Error de petición. URL incorrecta'});
     }
     if(!grupo){
-      return res.status(400).json({message: 'Error de la base de datos'});
+
+      await Coleccion.findOne({_id: req.params.id}, (error, coleccion) => {
+        if(error){
+          return res.status(500).json({message: 'Error de petición. URL incorrecta'});
+        }
+        if(!coleccion){
+          return res.status(400).json({message: 'Error de la base de datos'});
+        }
+    
+        breadcrumbsArray.push({
+          text: coleccion.identificacion.codigoReferencia,
+          disabled: false,
+          href: `/grupo?from=${coleccion._id}&type=collection`
+        })
+      }).lean()
+
+      breadcrumbsArray.push({
+        text: 'Inicio',
+        disabled: false,
+        href: `/coleccion`
+      })
+      
+    
+      return res.status(200).json({breadcrumbs: breadcrumbsArray.reverse()})
     }
     grupoObtenido = grupo
   }).lean()
@@ -234,11 +257,19 @@ export function filter(req, res){
         return res.status(400).json({message: `No hay registro del grupo con id ${req.params.id}`});
       }
       grupoColeccionObtenido = grupo
-      breadcrumbsArray.push({
-        text: grupo.identificacion.codigoReferencia,
-        disabled: false,
-        href: `/grupo?from=${grupoColeccionObtenido._id}&type=group`
+      let repetido = false
+      breadcrumbsArray.forEach(data => {
+        if(data.text === grupoColeccionObtenido.identificacion.codigoReferencia){
+          repetido = true
+        } 
       })
+      if(!repetido) {
+        breadcrumbsArray.push({
+          text: grupoColeccionObtenido.identificacion.codigoReferencia,
+          disabled: false,
+          href: `/grupo?from=${grupoColeccionObtenido._id}&type=group`
+        })
+      }
     }).lean()
   }
 

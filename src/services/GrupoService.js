@@ -65,6 +65,6 @@ export function updateGroup(grupo){
  * @returns objecto con propiedad breadcrumbs que representa la lista de navegación como objetos
  * usando la sintaxis definida por Vuetify (https://vuetifyjs.com/en/components/breadcrumbs/)
  */
- export function breadcrumbs(grupoId){
-  return http().get(`/grupo/breadcrumbs/${grupoId}`);
+ export async function breadcrumbs(grupoId){
+  return await http().get(`/grupo/breadcrumbs/${grupoId}`);
 }
