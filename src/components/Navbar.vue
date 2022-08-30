@@ -54,9 +54,24 @@
               <v-list-item-subtitle>
                 <v-chip v-if="$store.state.admin" outlined x-small color="green" class="mr-2 text-caption"> Admin </v-chip>
                 <v-chip v-if="!$store.state.active" outlined x-small color="red" class="mr-2 text-caption"> Bloqueado <v-icon>mdi-lock</v-icon></v-chip>
-                <v-icon dense :disabled="!$store.state.operation.create" color="green">mdi-plus-circle</v-icon>
-                <v-icon dense :disabled="!$store.state.operation.update" color="green">mdi-pencil-circle</v-icon>
-                <v-icon dense :disabled="!$store.state.operation.delete" color="green">mdi-delete-circle</v-icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.create ? 'green' : 'grey'">mdi-plus-circle</v-icon>
+                  </template>
+                  <span>Permiso de creación</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.update ? 'green' : 'grey'">mdi-pencil-circle</v-icon>
+                  </template>
+                  <span>Permiso de actualización</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.delete ? 'green' : 'grey'">mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Permiso de borrado</span>
+                </v-tooltip>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
