@@ -23,6 +23,8 @@ import ColeccionProyectos2 from './views/coleccion/ColeccionProyectos2.vue'
 import GrupoBrowse from './views/grupo/GrupoBrowse.vue'
 import GrupoForm from './views/grupo/GrupoForm.vue'
 import GrupoView from './views/grupo/GrupoView.vue'
+import Usuarios from './views/usuario/UsuarioList.vue'
+import UsuarioForm from './views/usuario/UsuarioForm.vue'
 import Busqueda from './views/Busqueda.vue'
 import About from './views/About.vue'
 
@@ -235,7 +237,39 @@ const routes = new Router({
       // Cualquier otra ruta, enviar a inicio
       path: '*',
       redirect: '/'
-    }
+    },
+
+    // Rutas de usuarios
+    {
+      // Visualizar los usurios enlistados (requiere autentificación)
+      path: '/usuarios',
+      name: 'usuarios',
+      component: Usuarios,
+      props: route => ({ from: route.query.from, type: route.query.type}),
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
+    {
+      // Visualizar registro de grupo (requiere autentificación)
+      path: '/usuario/:id/edit',
+      name: 'usuario-edit',
+      component: UsuarioForm,
+      props: route => ({ from: route.query.from, type: route.query.type}),
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
   ],
   linkActiveClass: 'active'
 })
