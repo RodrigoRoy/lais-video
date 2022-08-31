@@ -11,7 +11,13 @@ import Usuario from '../../model/user-model.mjs'
 * @returns Lista de usuarios en la base de datos
 */
 export function index(req, res){
-    Usuario.find()
+    Usuario.find().sort([
+        ['admin', 'descending'], 
+        ['operation.create', 'descending'], 
+        ['operation.update', 'descending'],
+        ['operation.delete', 'descending'],
+        ['active', 'descending'],
+    ])
     .exec((err, usuarios) => {
         if(err)
             return res.status(500).json({message: err});

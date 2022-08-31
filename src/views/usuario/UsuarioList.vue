@@ -49,11 +49,11 @@
             <v-list-item-icon class="d-flex justify-space-around">
               <v-icon v-if="usuario.admin" color="blue"> mdi-star </v-icon>
               <v-icon v-else color="blue"> </v-icon>
-              <v-icon v-if="usuario.operation.create" color="red"> mdi-plus-circle </v-icon>
+              <v-icon v-if="usuario.operation.create" color="green"> mdi-plus-circle </v-icon>
               <v-icon v-else color="#BABABA"> mdi-plus-circle </v-icon>
-              <v-icon v-if="usuario.operation.update" color="red"> mdi-pencil-box </v-icon>
+              <v-icon v-if="usuario.operation.update" color="green"> mdi-pencil-box </v-icon>
               <v-icon v-else color="#BABABA"> mdi-pencil-box </v-icon>
-              <v-icon v-if="usuario.operation.delete" color="red"> mdi-delete </v-icon>
+              <v-icon v-if="usuario.operation.delete" color="green"> mdi-delete </v-icon>
               <v-icon v-else color="#BABABA"> mdi-delete </v-icon>
             </v-list-item-icon>
             <v-list-item-icon>
