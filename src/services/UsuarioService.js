@@ -30,3 +30,12 @@ export function getUsuarioById(id){
  export function updateUsuario(usuario){
   return http().put('/user', usuario);
 }
+
+/**
+  * Obtiene la lista de las colecciones, grupos y videos de un usuario
+  * @param {string} id - Id del registro de usuario
+  * @returns objeto con la lista de las colecciones, grupos y videos de un usuario 
+  */
+ export function getAllItems(id){
+  return http().get(`/user/relatedData/${id}`);
+}

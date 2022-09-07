@@ -10,6 +10,7 @@ router.get('/user', controller.index);
 router.get('/user/:id', controller.show);
 router.put('/user', controller.update);
 router.delete('/user/:id', controller.remove);
+router.get('/user/relatedData/:id', controller.indexData);
 
 /**
  * Registra todas las rutas para consulta usuarios usando el prefijo "/user"

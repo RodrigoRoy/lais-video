@@ -3,6 +3,9 @@
 * @module api/user/user-controller
 */
 import Usuario from '../../model/user-model.mjs'
+import Coleccion from '../../model/coleccion-model.mjs'
+import Grupo from '../../model/grupo-model.mjs'
+import Video from '../../model/video-model.mjs'
 
 /**
 * Obtener listado de todo los usuarios
@@ -85,4 +88,79 @@ export function remove(req, res){
         }
         return res.status(200).json({message: `Usuario ${usuario.username} borrado`});
     });
+}
+
+/**
+* Obtener listado de las colecciones, grupos y videos de un usuario
+* @param {Object} req - Petición (request) recibida por http
+* @param {Object} res - Respuesta (response) a enviar por http
+* @returns Lista de colecciones, grupos y videos de un usuario
+*/
+export function indexData(req, res){
+    Usuario.findOne({_id: req.params.id}, async (error, usuario) => {
+        if(error)
+            return res.status(500).json({message: error})
+        if(!usuario)
+            return res.status(400).json({message: 'El usuario no existe'})
+        
+        // Arreglo para almacenar datos de colecciones, grupos y videos
+        let data = []
+
+        // Obtención de colecciones por usuario
+        await Coleccion.find({'adicional.user.0': req.params.id}, (error, docs) => {
+            if(error)
+                return res.status(500).json({message: error})
+
+            docs.forEach(coleccion => {
+                let copyColeccion = {
+                    _id: coleccion._id,
+                    titulo: coleccion.identificacion.titulo,
+                    tipo: 'Colección',
+                    codigo: coleccion.identificacion.codigoReferencia,
+                    fecha: coleccion.createdAt,
+                    update: coleccion.updatedAt
+                }
+                data.push(copyColeccion)
+            })
+        }).lean()
+
+        // Obtención de grupos por usuario
+        await Grupo.find({'adicional.user.0': req.params.id}, (error, docs) => {
+            if(error)
+                return res.status(500).json({message: error})
+
+            docs.forEach(grupo => {
+                let copyGrupo = {
+                    _id: grupo._id,
+                    titulo: grupo.identificacion.titulo,
+                    tipo: 'Grupo',
+                    codigo: grupo.identificacion.codigoReferencia,
+                    fecha: grupo.createdAt,
+                    update: grupo.updatedAt
+                }
+                data.push(copyGrupo)
+            })
+        }).lean()
+
+        // Obtención de videos por usuario
+        await Video.find({'adicional.user.0': req.params.id}, (error, docs) => {
+            if(error)
+                return res.status(500).json({message: error})
+
+            docs.forEach(video => {
+                let copyVideo = {
+                    _id: video._id,
+                    titulo: video.identificacion.codigoReferencia,
+                    tipo: 'Video',
+                    codigo: video.identificacion.codigoReferencia,
+                    fecha: video.createdAt,
+                    update: video.updatedAt
+                }
+                data.push(copyVideo)
+            })
+        }).lean()
+        
+        return res.status(200).json({data: data, message: 'Datos obtenidos correctamente'})
+
+    })
 }

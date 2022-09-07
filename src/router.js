@@ -25,6 +25,7 @@ import GrupoForm from './views/grupo/GrupoForm.vue'
 import GrupoView from './views/grupo/GrupoView.vue'
 import Usuarios from './views/usuario/UsuarioList.vue'
 import UsuarioForm from './views/usuario/UsuarioForm.vue'
+import UsuarioView from './views/usuario/UsuarioView.vue'
 import Busqueda from './views/Busqueda.vue'
 import About from './views/About.vue'
 
@@ -256,7 +257,13 @@ const routes = new Router({
       }
     },
     {
-      // Visualizar registro de grupo (requiere autentificación)
+      // Visualizar registro de usario
+      path: '/usuario/:id',
+      name: 'usuario-view',
+      component: UsuarioView
+    },
+    {
+      // Visualizar registro de usuario (requiere autentificación)
       path: '/usuario/:id/edit',
       name: 'usuario-edit',
       component: UsuarioForm,
