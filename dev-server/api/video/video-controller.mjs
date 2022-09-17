@@ -169,7 +169,7 @@ export function show(req, res){
 
   // Se obtiene la coleccion
 
-  await Coleccion.findOne({_id: grupoColeccionObtenido.adicional.coleccion.toString()}, (error, coleccion) => {
+  await Coleccion.findOne({_id: grupoColeccionObtenido.adicional.coleccion}, (error, coleccion) => {
     if(error){
       return res.status(500).json({message: 'Error de petición. URL incorrecta'});
     }
