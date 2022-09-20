@@ -5,12 +5,13 @@
 import express from "express";
 const router = express.Router();
 import * as controller from './user-controller.mjs'
+import * as auth from '../../services/auth-service.mjs'
 
 router.get('/user', controller.index);
 router.get('/user/:id', controller.show);
-router.put('/user', controller.update);
-router.delete('/user/:id', controller.remove);
 router.get('/user/relatedData/:id', controller.indexData);
+router.put('/user', auth.requireLogin, controller.update);
+router.delete('/user/:id', auth.requireLogin, controller.remove);
 
 /**
  * Registra todas las rutas para consulta usuarios usando el prefijo "/user"

@@ -41,6 +41,7 @@ export default{
         active: true,
       },
       valid: false,
+      error: null,
       show1: false,
       show2: false,
       rules: {

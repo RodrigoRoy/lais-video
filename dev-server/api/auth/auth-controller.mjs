@@ -29,6 +29,9 @@ export function index(req, res){
         if(!user){
             return res.status(401).json({message: 'El usuario no existe'});
         }
+        if(!user.password){
+            return res.status(401).json({message: 'Contraseña sin establecer'})
+        }
         
         const passwordMatch = User.passwordMatches(req.body.password, user.password);
         if(!passwordMatch){

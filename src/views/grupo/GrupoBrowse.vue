@@ -52,8 +52,8 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn @click="goToEdit(grupo)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon> </v-btn>
-                        <v-btn @click="remove(grupo)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon> </v-btn>
+                        <v-btn v-if="$store.state.active && $store.state.operation.update" @click="goToEdit(grupo)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon> </v-btn>
+                        <v-btn v-if="$store.state.active && $store.state.operation.delete" @click="remove(grupo)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon> </v-btn>
                         <v-btn @click="goToURL(grupo)" class="mr-2">URL <v-icon>mdi-link</v-icon> </v-btn>
                         <!-- <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn> -->
                         <v-btn @click="closeDialog()">Cerrar <v-icon>mdi-close</v-icon></v-btn>

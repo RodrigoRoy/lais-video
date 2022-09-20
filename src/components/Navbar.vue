@@ -42,44 +42,42 @@
 
         <!-- Contenido del menu para registro e inicio de sesión -->
         <v-list>
-          <!-- <v-subheader>Menú principal</v-subheader> -->
-          <v-list-item v-if="$store.state.isLoggedIn">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{this.$store.state.fullname ? this.$store.state.fullname : ''}}
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <v-chip v-if="$store.state.admin" outlined x-small color="green" class="mr-2 text-caption"> Admin </v-chip>
-                <v-chip v-if="!$store.state.active" outlined x-small color="red" class="mr-2 text-caption"> Bloqueado <v-icon>mdi-lock</v-icon></v-chip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.create ? 'green' : 'grey'">mdi-plus-circle</v-icon>
-                  </template>
-                  <span>Permiso de creación</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.update ? 'green' : 'grey'">mdi-pencil-circle</v-icon>
-                  </template>
-                  <span>Permiso de actualización</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.delete ? 'green' : 'grey'">mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Permiso de borrado</span>
-                </v-tooltip>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+          <v-list-item-group>
+            <!-- <v-subheader>Menú principal</v-subheader> -->
+            <v-list-item v-if="$store.state.isLoggedIn">
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <router-link :to="{name: 'usuario-view', params: { id: this.$store.state.userId }}">{{this.$store.state.fullname ? this.$store.state.fullname : ''}}</router-link>
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  <v-chip v-if="$store.state.admin" outlined x-small color="green" class="mr-2 text-caption"> Admin </v-chip>
+                  <v-chip v-if="!$store.state.active" outlined x-small color="red" class="mr-2 text-caption"> Bloqueado <v-icon>mdi-lock</v-icon></v-chip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.create ? 'green' : 'grey'">mdi-plus-circle</v-icon>
+                    </template>
+                    <span>Permiso de creación</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.update ? 'green' : 'grey'">mdi-pencil-circle</v-icon>
+                    </template>
+                    <span>Permiso de actualización</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on" dense :color="$store.state.operation.delete ? 'green' : 'grey'">mdi-delete-circle</v-icon>
+                    </template>
+                    <span>Permiso de borrado</span>
+                  </v-tooltip>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
 
-          <!-- <v-divider></v-divider> -->
-
-          <v-list-item-group>            
-            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'coleccion-browse'">
+            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'coleccion-browse' && $store.state.active && $store.state.operation.create">
               <v-list-item-icon>
                 <v-icon>mdi-plus</v-icon>
               </v-list-item-icon>
@@ -89,7 +87,7 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'grupo-browse'">
+            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'grupo-browse' && $store.state.active && $store.state.operation.create">
               <v-list-item-icon>
                 <v-icon>mdi-plus</v-icon>
               </v-list-item-icon>
@@ -99,7 +97,7 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'video-browse'">
+            <v-list-item v-if="$store.state.isLoggedIn && $route.name === 'video-browse' && $store.state.active && $store.state.operation.create">
               <v-list-item-icon>
                 <v-icon>mdi-plus</v-icon>
               </v-list-item-icon>

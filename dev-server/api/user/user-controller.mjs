@@ -35,7 +35,6 @@ export function index(req, res){
  * @returns Objeto con todas las propiedas del usuario
  */
 export function show(req, res){
-    // TODO @RodrigoRoy Solamente usuarios con permisos suficientes pueden editar
     Usuario.findOne({_id: req.params.id}, (error, usuario) => {
         if(error)
             return res.status(500).json({message: error})
@@ -52,20 +51,33 @@ export function show(req, res){
  * @returns Mensaje de confirmación en actualización o mensaje de error
  */
 export function update(req, res){
-    // TODO: @RodrigoRoy Solamente usuarios con permisos suficientes pueden editar
-    const usuario = new Usuario(req.body.usuario);
-    
-    // findByIdAndUpdate() requiere que el segundo parámetro sea un UpdateQuery (incluye $set). Alternativamente usar opción "overwrite"
-    // Video.findOneAndReplace({_id: video._id}, video, error => {
-    Usuario.findByIdAndUpdate({_id: usuario._id}, usuario, {overwrite: true}, (error, document) => {
+    if(!req.body.usuario)
+        return res.status(400).json({message: 'No hay información de usuario. Verificar \'request.body.usuario\''})
+    if(!req.body.usuario._id || !req.body.usuario.username || !req.body.usuario.fullname || !req.body.usuario.operation)
+        return res.status(400).json({message: 'Información de usuario incompleta. Verificar propiedades \'_id\', \'username\', \'fullname\' y \'operation\''})
+
+    // Listar manualmente los cambios a usuario (esto evita revelar, borrar y/o sobreescribir contraseña)
+    const updateQuery = {
+        '$set': {
+            username: req.body.usuario.username,
+            fullname: req.body.usuario.fullname,
+            email: req.body.usuario.email || '',
+            operation: {
+                create: req.body.usuario.operation.create || true,
+                update: req.body.usuario.operation.update || false,
+                delete: req.body.usuario.operation.delete || false,
+            },
+            admin: req.body.usuario.admin || false,
+            active: req.body.usuario.active || true,
+        }
+    };
+
+    Usuario.findByIdAndUpdate({_id: req.body.usuario._id}, updateQuery, (error, usuario) => {
         if(error){
             return res.status(500).json({message: error})
         }
-        if(!usuario.username){
-            return res.status(400).json({message: 'Registro de usuario vacio. Verificar propiedades \'usuario\', \'usuario._id\', \'usuario.username\''});
-        }
-        if(!document){
-            return res.status(400).json({message: `El registro con id ${usuario._id} no existe`});
+        if(!usuario){
+            return res.status(400).json({message: `No hay registro del usuario con id ${req.body.usuario._id}`});
         }
         return res.status(200).json({message: 'Usuario actualizado correctamente'})
     })

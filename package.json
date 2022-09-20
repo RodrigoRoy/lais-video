@@ -42,7 +42,6 @@
     "mongoose": "^5.12.7",
     "multer": "^1.4.5-lts.1",
     "pdfmake": "^0.2.2",
-    "pdfmake-wrapper": "^2.1.2",
     "vue": "^2.6.11",
     "vue-markdown": "^2.1.2",
     "vue-router": "^3.1.6",

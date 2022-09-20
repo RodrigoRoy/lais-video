@@ -55,8 +55,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <div v-if="coleccion">
-              <v-btn @click="goToEdit(coleccion)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon></v-btn>
-              <v-btn @click="remove(coleccion)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon></v-btn>
+              <v-btn v-if="$store.state.active && $store.state.operation.update" @click="goToEdit(coleccion)" class="mr-2">Editar <v-icon>mdi-pencil</v-icon></v-btn>
+              <v-btn v-if="$store.state.active && $store.state.operation.delete" @click="remove(coleccion)" class="mr-2">Borrar <v-icon>mdi-delete</v-icon></v-btn>
               <v-btn @click="goToURL(coleccion)" class="mr-2">URL <v-icon>mdi-link</v-icon></v-btn>
               <!-- <v-btn @click="printPDF()">Ficha <v-icon>mdi-file-pdf-box</v-icon></v-btn> -->
             </div>

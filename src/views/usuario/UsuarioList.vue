@@ -19,59 +19,54 @@
     </v-alert>
 
     <v-container v-else>
-      <!-- Encabezado con título del conjunto y el camino dentro de la colección (breadcrumbs) en caso de tener -->
+      <!-- Título -->
       <h2 class="text-h3 text-center">Lista de Usuarios</h2>
-      <!-- <v-breadcrumbs :items="breadcrumbs" class="justify-center"></v-breadcrumbs> -->
 
       <!-- Organización del espacio en filas y columnas de recuadros (cards) donde cada uno representa un conjunto o grupo -->
       <v-list>
-        <v-list-item v-for="usuario in usuarios" :key="usuario._id" class="p-6 pb-8">
-          <!-- Informción del usuario -->
-          <v-list-item-content>
-            <v-list-item-title>
-              <h3 v-if="usuario.active">{{ usuario.fullname }}</h3>
-              <h3 v-else class="grey--text">{{ usuario.fullname }}</h3>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              <v-row no-gutters>
-                <v-col>
-                  <p>{{ usuario.username }}</p>
-                </v-col>
-                <v-col>
-                  <p>{{ usuario.email }}</p>
-                </v-col>
-              </v-row>
-            </v-list-item-subtitle>
-          </v-list-item-content>
+        <!-- <v-list-item-group> -->
+          <v-list-item v-for="usuario in usuarios" :key="usuario._id" class="p-4">
+            <!-- Informción del usuario -->
+            <v-list-item-content>
+              <v-list-item-title>
+                <h3 v-if="usuario.active">{{ usuario.fullname }}</h3>
+                <h3 v-else class="grey--text">{{ usuario.fullname }}</h3>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <v-row no-gutters>
+                  <v-col>
+                    <p>{{ usuario.username }}</p>
+                  </v-col>
+                  <v-col>
+                    <p>{{ usuario.email }}</p>
+                  </v-col>
+                </v-row>
+              </v-list-item-subtitle>
+            </v-list-item-content>
 
-          <!-- Acciones -->
-          <v-list-item-content>
-            <v-list-item-icon class="d-flex justify-space-around">
-              <v-icon v-if="usuario.admin" color="blue"> mdi-star </v-icon>
-              <v-icon v-else color="blue"> </v-icon>
-              <v-icon v-if="usuario.operation.create" color="green"> mdi-plus-circle </v-icon>
-              <v-icon v-else color="#BABABA"> mdi-plus-circle </v-icon>
-              <v-icon v-if="usuario.operation.update" color="green"> mdi-pencil-box </v-icon>
-              <v-icon v-else color="#BABABA"> mdi-pencil-box </v-icon>
-              <v-icon v-if="usuario.operation.delete" color="green"> mdi-delete </v-icon>
-              <v-icon v-else color="#BABABA"> mdi-delete </v-icon>
-            </v-list-item-icon>
-            <v-list-item-icon>
-              <!-- <v-icon v-else color="pink"> mdi-star </v-icon> -->
-            </v-list-item-icon>
-          </v-list-item-content>
+            <!-- Acciones -->
+            <v-list-item-content>
+              <v-list-item-icon class="d-flex justify-space-around">
+                <v-icon :class="{invisible: !usuario.admin}" color="blue"> mdi-star </v-icon>
+                <v-icon :color="usuario.operation.create ? 'green' : 'grey'"> mdi-plus-circle </v-icon>
+                <v-icon :color="usuario.operation.update ? 'green' : 'grey'"> mdi-pencil-circle </v-icon>
+                <v-icon :color="usuario.operation.delete ? 'green' : 'grey'"> mdi-delete-circle </v-icon>
+              </v-list-item-icon>
+              <v-list-item-icon>
+                <!-- <v-icon v-else color="pink"> mdi-star </v-icon> -->
+              </v-list-item-icon>
+            </v-list-item-content>
 
-          <!-- Botón de editar -->
-          <v-list-item-content class="justify-center">
-            <v-btn
-              x-large
-              color="primary"
-              @click="goToEdit(usuario)"
-            >
-              Editar
-            </v-btn>
-          </v-list-item-content>
-        </v-list-item>
+            <v-spacer></v-spacer>
+
+            <!-- Botón de editar -->
+            <v-list-item-content class="justify-center">
+              <v-btn color="primary" @click="goToEdit(usuario)">
+                Editar
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item>
+        <!-- </v-list-item-group> -->
       </v-list>
     </v-container>
   </div>
@@ -91,8 +86,6 @@ export default {
     myAlert: {
       active: false,
     },
-    // Representación jerárquica de los conjuntos a los que pertenecen las unidades documentales
-    // breadcrumbs: [],
   }),
 
   // Obtención de información desde API, antes de renderizar vista
@@ -147,3 +140,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Ocultar elementos (conservando espaciado) */
+.invisible {
+  visibility: hidden;
+}
+</style>
