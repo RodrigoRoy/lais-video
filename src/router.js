@@ -5,6 +5,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import * as auth from './services/AuthService' // servicio de autentificación (evita accesos sin permisos)
+import store from './store'
 
 // Componentes (vistas):
 import Home from './views/Home.vue'
@@ -30,6 +31,8 @@ import Busqueda from './views/Busqueda.vue'
 import About from './views/About.vue'
 
 Vue.use(Router)
+
+
 
 // Objeto Router con todas las definiciones de rutas, componentes y nombres
 const routes = new Router({
@@ -207,6 +210,49 @@ const routes = new Router({
         }
       }
     },
+    // Rutas de usuarios
+    {
+      // Visualizar los usurios enlistados (requiere autentificación)
+      path: '/usuarios',
+      name: 'usuarios',
+      component: Usuarios,
+      beforeEnter: (to, from, next) => {
+        // Solo visible con sesión iniciada y permisos de admin
+        if(auth.isLoggedIn() && store.state.admin){
+          next();
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
+    {
+      // Visualizar registro de usario
+      path: '/usuario/:id',
+      name: 'usuario-view',
+      component: UsuarioView
+    },
+    {
+      // Visualizar registro de usuario (requiere autentificación)
+      path: '/usuario/:id/edit',
+      name: 'usuario-edit',
+      component: UsuarioForm,
+      beforeEnter: (to, from, next) => {
+        if(auth.isLoggedIn()){
+          // Solo editar información de usuario si es la propia cuenta o hay permisos de admin
+          if(store.state.userId == to.params.id || store.state.admin){
+            next()
+          }
+          else{
+            // Redirigir a página de inicio
+            next('/');
+          }
+        }
+        else {
+          next('/login');
+        }
+      }
+    },
 
     // Templates / prototipos (eliminar o actualizar en el futuro)
     {
@@ -238,44 +284,6 @@ const routes = new Router({
       // Cualquier otra ruta, enviar a inicio
       path: '*',
       redirect: '/'
-    },
-
-    // Rutas de usuarios
-    {
-      // Visualizar los usurios enlistados (requiere autentificación)
-      path: '/usuarios',
-      name: 'usuarios',
-      component: Usuarios,
-      props: route => ({ from: route.query.from, type: route.query.type}),
-      beforeEnter: (to, from, next) => {
-        if(auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/login');
-        }
-      }
-    },
-    {
-      // Visualizar registro de usario
-      path: '/usuario/:id',
-      name: 'usuario-view',
-      component: UsuarioView
-    },
-    {
-      // Visualizar registro de usuario (requiere autentificación)
-      path: '/usuario/:id/edit',
-      name: 'usuario-edit',
-      component: UsuarioForm,
-      props: route => ({ from: route.query.from, type: route.query.type}),
-      beforeEnter: (to, from, next) => {
-        if(auth.isLoggedIn()){
-          next();
-        }
-        else {
-          next('/login');
-        }
-      }
     },
   ],
   linkActiveClass: 'active'

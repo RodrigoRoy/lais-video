@@ -28,8 +28,12 @@
             <p>{{ usuario.email }}</p>
           </div>
 
-          <v-btn @click="goToEdit(usuario)" color="primary" block elevation="6" x-large>
+          <v-btn @click="goToEdit(usuario)" color="primary" elevation="6" v-if="$store.state.userId == usuario._id" class="mr-4">
             <span>Editar Perfil</span>
+          </v-btn>
+
+          <v-btn :to="{ name: 'usuarios'}" color="primary" elevation="6" v-if="$store.state.admin">
+            Lista de usuarios
           </v-btn>
         </v-card-text>
       </v-card>

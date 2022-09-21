@@ -22,18 +22,18 @@
       <v-form ref="userForm" v-model="validForm" lazy-validation v-on:submit.prevent="onSubmit" enctype="multipart/form-data" >
         <div class="d-flex">
           <v-icon color="white"> mdi-account </v-icon>
-          <v-text-field class="pl-6" label="Nombre de usuario" v-model="usuario.username" ></v-text-field>
+          <v-text-field class="pl-6" label="Nombre de usuario" v-model="usuario.username" :disabled="usuario._id != $store.state.userId"></v-text-field>
         </div>
         <div class="d-flex">
           <v-icon color="white"> mdi-account </v-icon>
-          <v-text-field class="pl-6" label="Nombre completo" v-model="usuario.fullname" ></v-text-field>
+          <v-text-field class="pl-6" label="Nombre completo" v-model="usuario.fullname" :disabled="usuario._id != $store.state.userId"></v-text-field>
         </div>
         <div class="d-flex">
           <v-icon color="white"> mdi-email-open-outline </v-icon>
-          <v-text-field class="pl-6" label="Correo electrónico" v-model="usuario.email" ></v-text-field>
+          <v-text-field class="pl-6" label="Correo electrónico" v-model="usuario.email" :disabled="usuario._id != $store.state.userId"></v-text-field>
         </div>
 
-        <div>
+        <div v-if="$store.state.admin">
           <div class="pb-6 pt-10">
             <v-row no-gutters>
               <v-col cols="1">

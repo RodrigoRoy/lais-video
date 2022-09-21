@@ -236,8 +236,6 @@ export default {
           // vm es necesario para asignaciones, this no existe en este contexto
           vm.video = res.data.video;
 
-          console.log(res.data.video);
-
           // Obtener listado breadcrumbs
           videoService
             .breadcrumbs(to.params.id)
