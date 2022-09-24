@@ -189,115 +189,54 @@ export function filter(req, res){
  * @returns JSON con un mensaje de error o éxito de eliminación.
  */
  export async function getBreadcrumbs(req, res){
+  // Representación ordenada del grupo hasta la colección de origen (i.e. desde un nodo hasta la raiz)
+  let breadcrumbs = [] 
+  // Determina si el grupo actual no tiene más referencias a otro grupo
+  let isLastGroup = false
+  // Referencia al (id del) grupo actual
+  let idGrupo = req.params.id // inicializado con valor proporcionado
 
-  // Arreglo de respuesta
-  let breadcrumbsArray = []
-
-  // Se obtiene el video
-  let grupoObtenido = null
-  await Grupo.findOne({_id: req.params.id}, async (error, grupo) => {
-    if(error){
-      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
-    }
-    if(!grupo){
-
-      await Coleccion.findOne({_id: req.params.id}, (error, coleccion) => {
-        if(error){
-          return res.status(500).json({message: 'Error de petición. URL incorrecta'});
-        }
-        if(!coleccion){
-          return res.status(400).json({message: 'Error de la base de datos'});
-        }
-    
-        breadcrumbsArray.push({
-          text: coleccion.identificacion.codigoReferencia,
-          disabled: false,
-          href: `/grupo?from=${coleccion._id}&type=collection`
-        })
-      }).lean()
-
-      breadcrumbsArray.push({
-        text: 'Inicio',
-        disabled: false,
-        href: `/coleccion`
-      })
-      
-    
-      return res.status(200).json({breadcrumbs: breadcrumbsArray.reverse()})
-    }
-    grupoObtenido = grupo
-  }).lean()
-
-  // Se obtienen los videos de la colección para saber si es un grupo de grupos o un grupo que contiene videos
-  let videosDeGrupo = []
-  const myQuery = {'adicional.grupo': req.params.id};
-  await Video.find(myQuery, (error, videos) => {
-    if(error){
-      return res.status(500).json({message: error});
-    }
-    videosDeGrupo = videos
-  })
-  .sort({createdAt: -1});
-
-  breadcrumbsArray.push({
-    text: grupoObtenido.identificacion.codigoReferencia,
-    disabled: true,
-    href: `/${videosDeGrupo.length > 0 ? 'video' : 'grupo' }?from=${grupoObtenido._id}&type=group`
-  })
-
-  // Se obtiene el grupo padre o coleccion del grupo
-  let grupoColeccionObtenido = {...grupoObtenido}
-
-  while(grupoColeccionObtenido.adicional.grupo){
-    await Grupo.findOne({_id: grupoColeccionObtenido.adicional.grupo.toString()}, (error, grupo) => {
+  // Iterar en busca de grupos hasta determinar que es la última referencia
+  while (!isLastGroup) {
+    await Grupo.findOne({_id: idGrupo}, (error, grupo) => {
+      // Casos de error
       if(error){
         return res.status(500).json({message: error});
       }
       if(!grupo){
-        return res.status(400).json({message: `No hay registro del grupo con id ${req.params.id}`});
+        return res.status(400).json({message: `El registro con id ${idGrupo} no existe`});
       }
-      grupoColeccionObtenido = grupo
-      let repetido = false
-      breadcrumbsArray.forEach(data => {
-        if(data.text === grupoColeccionObtenido.identificacion.codigoReferencia){
-          repetido = true
-        } 
+
+      let hrefText = ''
+      // Comprobar referencia a un grupo
+      if(grupo.adicional && grupo.adicional.grupo){
+        hrefText = `/grupo?from=${grupo.adicional.grupo}&type=group`
+        idNode = grupo.adicional.grupo // actualizar referencia para continuar iterando
+      }
+      // Comprobar referencia a una colección (en vez de grupo)
+      else if (grupo.adicional && grupo.adicional.coleccion) {
+        hrefText = `/grupo?from=${grupo.adicional.coleccion}&type=collection`
+        // idNode = grupo.adicional.coleccion // actualizar referencia
+        isLastGroup = true // terminar de iterar, se ha llegado a una colección
+      }
+  
+      // Agregar nuevo item en breadcrumbs
+      breadcrumbs.unshift({
+        text: grupo.identificacion.codigoReferencia,
+        disabled: breadcrumbs.length === 0 ? true : false,
+        href: hrefText,
       })
-      if(!repetido) {
-        breadcrumbsArray.push({
-          text: grupoColeccionObtenido.identificacion.codigoReferencia,
-          disabled: false,
-          href: `/grupo?from=${grupoColeccionObtenido._id}&type=group`
-        })
-      }
-    }).lean()
+    })
   }
 
-  // Se obtiene la coleccion
-
-  await Coleccion.findOne({_id: grupoColeccionObtenido.adicional.coleccion.toString()}, (error, coleccion) => {
-    if(error){
-      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
-    }
-    if(!coleccion){
-      return res.status(400).json({message: 'Error de la base de datos'});
-    }
-
-    breadcrumbsArray.push({
-      text: coleccion.identificacion.codigoReferencia,
-      disabled: false,
-      href: `/grupo?from=${coleccion._id}&type=collection`
-    })
-  }).lean()
-
-  breadcrumbsArray.push({
-    text: 'Inicio',
+  // Agregar último elemento porque se ha alcanzado la raiz (nivel de colección)
+  breadcrumbs.unshift({
+    text: "Inicio",
     disabled: false,
-    href: `/coleccion`
+    href: '/coleccion'
   })
-  
 
-  return res.status(200).json({breadcrumbs: breadcrumbsArray.reverse()})
+  return res.status(200).json({breadcrumbs: breadcrumbs})
 }
 
 /**
@@ -308,35 +247,32 @@ export function filter(req, res){
  */
  export async function getDepth(req, res){
 
-  // Arreglo de respuesta
-  let profundidad = 1
+  // Profundidad o nivel de anidación de grupos
+  let profundidad = 1 // inicializado en valor mínimo
+  // Determina si el grupo actual no tiene más referencias a otro grupo
+  let isLastGroup = false
+  // Referencia al (id del) grupo actual
+  let idGrupo = req.params.id // inicializado con valor proporcionado
 
-  // Se obtiene el video
-  let grupoObtenido = null
-  await Grupo.findOne({_id: req.params.id}, (error, grupo) => {
-    if(error){
-      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
-    }
-    if(!grupo){
-      return res.status(400).json({message: 'Error de la base de datos'});
-    }
-    grupoObtenido = grupo
-  }).lean()
-
-  // Se obtiene el grupo padre o coleccion del grupo
-  let grupoColeccionObtenido = {...grupoObtenido}
-
-  while(grupoColeccionObtenido.adicional.grupo){
-    await Grupo.findOne({_id: grupoColeccionObtenido.adicional.grupo.toString()}, (error, grupo) => {
+  // Iterar en busca de grupos hasta determinar que es la última referencia
+  while (!isLastGroup) {
+    await Grupo.findOne({_id: idGrupo}, (error, grupo) => {
+      // Casos de error
       if(error){
         return res.status(500).json({message: error});
       }
       if(!grupo){
-        return res.status(400).json({message: `No hay registro del grupo con id ${req.params.id}`});
+        return res.status(400).json({message: `El registro con id ${idGrupo} no existe`});
       }
-      grupoColeccionObtenido = grupo
-      profundidad++
-    }).lean()
+      
+      // Si existe una referencia a otro grupo
+      if(grupo.adicional && grupo.adicional.grupo){
+        profundidad++ // aumentar profundidad en un nivel
+        idGrupo = grupo.adicional.grupo // actualizar referencia para buscar recursivamente
+      }
+      else // si no hay más referencia a otro grupo, terminar iteración
+        isLastGroup = true
+    })
   }
 
   return res.status(200).json({depth: profundidad})

@@ -227,12 +227,6 @@ const routes = new Router({
       }
     },
     {
-      // Visualizar registro de usario
-      path: '/usuario/:id',
-      name: 'usuario-view',
-      component: UsuarioView
-    },
-    {
       // Visualizar registro de usuario (requiere autentificación)
       path: '/usuario/:id/edit',
       name: 'usuario-edit',
@@ -252,6 +246,12 @@ const routes = new Router({
           next('/login');
         }
       }
+    },
+    {
+      // Visualizar registro de usario
+      path: '/usuario/:id',
+      name: 'usuario-view',
+      component: UsuarioView
     },
 
     // Templates / prototipos (eliminar o actualizar en el futuro)
