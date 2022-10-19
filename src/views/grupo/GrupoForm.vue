@@ -239,7 +239,7 @@ export default {
     rules: {
       codigoReferencia: [
         value => !!value || 'El código de referencia es necesario. Ejemplo: MXIM-AV-2-3-1',
-        value => /^MXIM-AV-2(-\d)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
+        value => /^MXIM-AV-2(-\d+)*$/.test(value) || 'Debe ser un código de referencia válido. Ejemplo: MXIM-AV-2-3-1',
       ]
     },
 
