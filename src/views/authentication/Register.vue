@@ -27,6 +27,7 @@
 
 <script>
 import * as auth from '../../services/AuthService'
+import * as usuario from '../../services/UsuarioService'
 
 export default{
   name: 'register',
@@ -72,8 +73,17 @@ export default{
     onSubmit: async function(){
       if(!this.$refs.formulario.validate()) // Si el formulario no es válido
         return;
+        
+      await usuario.getAllUsers().then(res => {
+        let usuarios = res.data.usuarios;
+        if (usuarios.length === 0) {
+          this.usuario.admin = true;
+        }
+      }).catch(error => {
+        console.error(error);
+      });
+        
       const user = this.usuario;
-
       const registerPromise = auth.registerUser(user);
       const loginPromise = auth.login(user);
       try {

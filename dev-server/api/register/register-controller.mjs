@@ -62,6 +62,9 @@ function validateIndex(body){
     if(StringUtil.isEmpty(body.password)){
         errors += 'Password is required. ';
     }
+    if(StringUtil.isEmpty(""+body.admin)){
+        errors += 'Admin is required. ';
+    }
     
     return {
         isValid: StringUtil.isEmpty(errors),
