@@ -4,9 +4,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId; // Datatype para referencias a 
 const videoSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: {type: String, required: true, trim: true, index: {unique: true}},
-    fecha: {type: Date},
-    lugar: {type: String, trim: true},
-    pais: {type: String, trim: true},
+    fecha: {type: Date}, // puede estar pre-definida
+    lugar: {type: String, trim: true}, // basada en LatLng
+    pais: {type: String, trim: true}, // puede estar pre-definida
     duracion: Number, // representado en total de segundos
     duracionString: {type: String, trim: true}, // representado textual
     personasEntrevistadas: {type: String, trim: true},

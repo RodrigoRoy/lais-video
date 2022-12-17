@@ -196,6 +196,8 @@ export function filter(req, res){
   // Referencia al (id del) grupo actual
   let idGrupo = req.params.id // inicializado con valor proporcionado
 
+  if(!idGrupo) return res.status(400).json({message: 'Información insuficiente. Verificar propiedad \'id\''});
+
   // Iterar en busca de grupos hasta determinar que es la última referencia
   while (!isLastGroup) {
     await Grupo.findOne({_id: idGrupo}, (error, grupo) => {
@@ -245,7 +247,7 @@ export function filter(req, res){
  * @param {Object} res - Respuesta (response) a enviar por http
  * @returns JSON con un mensaje de error o éxito de cákculo de profundidad.
  */
- export async function getDepth(req, res){
+ export async function getDepth(req, res, next){
 
   // Profundidad o nivel de anidación de grupos
   let profundidad = 1 // inicializado en valor mínimo
@@ -256,13 +258,15 @@ export function filter(req, res){
 
   // Iterar en busca de grupos hasta determinar que es la última referencia
   while (!isLastGroup) {
+    // console.log('profundidad', profundidad, 'idGrupo', idGrupo)
     await Grupo.findOne({_id: idGrupo}, (error, grupo) => {
       // Casos de error
-      if(error){
-        return res.status(500).json({message: error});
-      }
       if(!grupo){
-        return res.status(400).json({message: `El registro con id ${idGrupo} no existe`});
+        return res.status(400).json({message: `El registro con id ${idGrupo} no existe`, depth: -1});
+      }
+      if(error){
+        return next(error)
+        // return res.status(500).json({message: error});
       }
       
       // Si existe una referencia a otro grupo
